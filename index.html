@@ -6819,24 +6819,20 @@
             };
 
             const handleStart = () => {
-                // Request fullscreen mode with cross-browser fallbacks
-                try {
-                    const elem = document.documentElement;
-                    if (elem.requestFullscreen) {
-                        elem.requestFullscreen().catch(err => console.log("Fullscreen error:", err));
-                    } else if (elem.webkitRequestFullscreen) { /* Safari */
-                        elem.webkitRequestFullscreen();
-                    } else if (elem.msRequestFullscreen) { /* IE11 */
-                        elem.msRequestFullscreen();
-                    }
-                } catch (e) {
-                    console.log("Fullscreen API not supported:", e);
-                }
-
                 if (audioManagerRef.current) {
                     audioManagerRef.current.unlockAudio();
                     audioManagerRef.current.playSound('uiClick');
                 }
+                
+                // Request Fullscreen on user interaction
+                const docEl = document.documentElement;
+                const requestFullScreen = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.msRequestFullscreen;
+                if (requestFullScreen) {
+                    requestFullScreen.call(docEl).catch(err => {
+                        console.warn("Fullscreen request was blocked or not supported:", err);
+                    });
+                }
+
                 setTimeout(() => {
                     setIsLoading(false);
                     if (initialLobbyParams) {
