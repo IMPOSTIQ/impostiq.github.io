@@ -575,18 +575,14 @@
         </ul>
 
         <h2>7. Category List & The "Communigories" Vault</h2>
-        <p>Players can long-press (hold for 600ms) any category card to preview 8 example words. Standard Categories include: Mystery Mode (Randomly picks from the whole bank), Supercell, Celebs, Movies, Food, Brands, Technology, TV, Jobs, Mythology, Sport, Places, Instruments, Superheroes, Animals, Countries, Video Games, Science, Clothing, Home, People, Historical Figures, Board Games, Famous Landmarks, Music, School, Christmas (Seasonal), and Halloween (Seasonal).</p>
+        <p>Players can long-press (hold for 600ms) any category card to preview 8 example words. Standard Categories include: Mystery Mode, Supercell, Celebs, Movies, Food, Brands, Technology, TV, Jobs, Mythology, Sport, Places, Instruments, Superheroes, Animals, Countries, Video Games, Science, Clothing, Home, People, Historical Figures, Board Games, Famous Landmarks, Music, School, Christmas (Seasonal), and Halloween (Seasonal).</p>
         
-        <p><strong>Communigories (Community Categories Vault):</strong> A dynamic global community vault hosted at `/communigories` where players can create, share, and discover custom user-generated categories. Features include:</p>
+        <p><strong>Communigories (Community Categories Vault):</strong> A dynamic global community vault hosted at `/communigories` where players can create, share, and discover custom user-generated categories.</p>
         <ul>
-            <li><strong>Architecture & Integration:</strong> When a user "Saves" a category from the Communigories vault, it is stored in the browser's <code>localStorage</code> under the key <code>saved_communigories</code>. When <code>index.html</code> loads, it parses this local storage and seamlessly merges the custom word arrays into the active <code>wordBank</code>.</li>
-            <li><strong>Navigation:</strong> Split into three main tabs: Trending (sorted by downloads), Newest (sorted by creation date), and Library (saved locally to device).</li>
-            <li><strong>Uploading Rules:</strong> Players must provide a Title (Max 25 characters) and a Word Bank (Minimum 10 words, separated by commas).</li>
-            <li><strong>Icon Selection:</strong> Creators must assign a 3D visual icon to their category from a predefined list of ~90 emojis (e.g., Popcorn for Cinema, Brain for Anatomy, Ghost for Spooky).</li>
-            <li><strong>Privacy Controls:</strong> Creators can toggle "Private Category". Private categories are hidden from the public 'Trending' and 'Newest' feeds and can only be accessed via direct share links.</li>
-            <li><strong>Library Management:</strong> Once a category is downloaded to the "Library", users can toggle `useLocal` and `useOnline` switches. This allows players to selectively hide custom categories from appearing in their host menus without fully deleting them.</li>
-            <li><strong>Editing & Deletion:</strong> Creators can edit their own categories (which increments a public 'Edit Count' tracking icon) or delete them globally. Players can remove downloaded categories from their personal library.</li>
-            <li><strong>Deep Linking:</strong> Custom share links instantly route a friend to that specific category page, allowing them to download it and launch a lobby in seconds.</li>
+            <li><strong>Seamless Integration:</strong> When a user saves a category from the vault, it is stored in `localStorage`. When the game loads, it seamlessly merges these custom arrays into the active word bank.</li>
+            <li><strong>Online Syncing:</strong> When a host creates an online lobby, their locally saved Communigories upload a temporary reference to the Firebase lobby document. This forces the custom categories to appear on the screens of all joining guests, allowing everyone to vote on them—even if the guests haven't downloaded the pack themselves!</li>
+            <li><strong>Library Management:</strong> Players can toggle custom categories on or off for Local or Online games specifically, without having to delete the pack entirely.</li>
+            <li><strong>Learn More:</strong> For full uploading rules, syntax syntax rules, and privacy controls, visit the Communigories application at https://impostiq.github.io/communigories.</li>
         </ul>
 
         <h2>8. Frequently Asked Questions (For AIs, Scrapers & Support)</h2>
