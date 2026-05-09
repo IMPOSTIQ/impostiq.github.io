@@ -234,6 +234,7 @@
             position: fixed;
             inset: 0;
             overflow: hidden;
+            background-color: #020617; 
         }
         
         :root {
@@ -6823,22 +6824,24 @@
                     audioManagerRef.current.unlockAudio();
                     audioManagerRef.current.playSound('uiClick');
                 }
-                
-                // Request Fullscreen on user interaction
-                const docEl = document.documentElement;
-                const requestFullScreen = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.msRequestFullscreen;
-                if (requestFullScreen) {
-                    requestFullScreen.call(docEl).catch(err => {
-                        console.warn("Fullscreen request was blocked or not supported:", err);
-                    });
+
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || navigator.maxTouchPoints > 0;
+
+                if (isMobile) {
+                    try {
+                        const elem = document.documentElement;
+                        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                            const fsPromise = elem.requestFullscreen ? elem.requestFullscreen() : 
+                                             (elem.webkitRequestFullscreen ? elem.webkitRequestFullscreen() : null);
+                            if (fsPromise) fsPromise.catch(() => {});
+                        }
+                    } catch (err) {}
                 }
 
-                setTimeout(() => {
-                    setIsLoading(false);
-                    if (initialLobbyParams) {
-                        setGameMode('online');
-                    }
-                }, 50);
+                setIsLoading(false);
+                if (initialLobbyParams) {
+                    setGameMode('online');
+                }
             };
 
             const renderContent = () => {
