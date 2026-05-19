@@ -1,0 +1,11 @@
+Copyright (C) 2026 Fillabrona. All Rights Reserved.
+
+This software and its accompanying documentation, files, and assets (including but not limited to source code, graphics, user interface designs, and text) are the exclusive intellectual property of Fillabrona.
+
+CONFIDENTIALITY AND TERMS OF USE:
+1. Public visibility of this source code on GitHub is strictly for educational, informational, and review purposes.
+2. No permission is granted to copy, reproduce, modify, adapt, merge, publish, distribute, sublicense, rent, sell, or create derivative works of this software or any portion thereof.
+3. You may not host, re-upload, or deploy clones, copies, or variations of this game, its assets, or its scripts on any website, platform, application store, or server environment.
+4. All branding, titles, logos, and specific design methodologies (including the "Impostiq" and "Fillabrona" names and identities) remain the sole trademarks and property of the original author.
+
+Any unauthorized use, cloning, or redistribution of this material constitutes a violation of international copyright laws and will be subject to legal action.
