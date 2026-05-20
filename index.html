@@ -3194,7 +3194,10 @@
                     <div className="relative z-10 flex flex-col items-center w-full max-w-sm">
                         <div className="w-28 h-28 mb-8 relative flex items-center justify-center">
                             <div className="absolute inset-0 bg-brand-500/20 rounded-full animate-pulse-slow blur-xl"></div>
-                            <img src="https://em-content.zobj.net/source/microsoft-teams/400/disguised-face_1f978.png" alt="" draggable="false" className="w-24 h-24 animate-float" data-nosnippet="true" aria-hidden="true" />
+                            <div 
+								className="w-24 h-24 animate-float bg-contain bg-center bg-no-repeat" 
+								style={{ backgroundImage: "url('https://em-content.zobj.net/source/microsoft-teams/400/disguised-face_1f978.png')" }}
+							></div>
                         </div>
                         
                         <SeasonalTitle season={currentSeason} className="text-6xl font-display font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 mb-2 drop-shadow-lg tracking-tight" />
@@ -7215,9 +7218,15 @@
             };
 
             const renderContent = () => {
-                if (isLoading || !user || !wordBank) {
-                    return <LoadingScreen onStart={handleStart} onFinishedLoading={() => setAppReady(true)} isDataLoading={!wordBank || !user} />;
-                }
+				const isBot = /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent);
+
+				if (isBot) {
+					return <GameModeSelectionScreen onSelectMode={setGameMode} onShowHowToPlay={() => setShowHowToPlay(true)} onShowCommunigories={() => setShowCommunigories(true)} onShowSponsor={handleShowSponsorModal} audioManager={audioManagerRef.current} onMuteToggle={handleMuteToggle} isMuted={isMuted} roundedWordCount={roundedWordCount} />;
+				}
+
+				if (isLoading || !user || !wordBank) {
+					return <LoadingScreen onStart={handleStart} onFinishedLoading={() => setAppReady(true)} isDataLoading={!wordBank || !user} />;
+				}
 
                 if (gameMode === 'select') {
                     return <GameModeSelectionScreen onSelectMode={setGameMode} onShowHowToPlay={() => setShowHowToPlay(true)} onShowCommunigories={() => setShowCommunigories(true)} onShowSponsor={handleShowSponsorModal} audioManager={audioManagerRef.current} onMuteToggle={handleMuteToggle} isMuted={isMuted} roundedWordCount={roundedWordCount} />;
