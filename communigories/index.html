@@ -1559,7 +1559,7 @@
                                                 ></textarea>
                                             </div>
 
-                                            <div className="flex items-center justify-between bg-black/20 border border-white/5 rounded-[1.5rem] p-4 transition-colors">
+                                            <div className="flex items-center justify-between bg-black/20 border border-white/5 rounded-[1.5rem] p-4 transition-all duration-300">
                                                 <div className="flex items-center gap-4 pr-4">
                                                     <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 flex-shrink-0">
                                                         <FaIcon name="icon-lock" className="text-lg" />
@@ -1571,9 +1571,9 @@
                                                 </div>
                                                 <button 
                                                     onClick={() => { playSound(!isPrivate ? 'switchOn' : 'switchOff'); setIsPrivate(!isPrivate); }}
-                                                    className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-colors duration-300 ${isPrivate ? 'bg-orange-500/80' : 'bg-white/10'}`}
+                                                    className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${isPrivate ? 'bg-orange-500/80' : 'bg-white/10'}`}
                                                 >
-                                                    <div className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isPrivate ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} />
+                                                    <div className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isPrivate ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} />
                                                 </button>
                                             </div>
                                         </div>
