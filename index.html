@@ -1571,9 +1571,7 @@
 
             const handleReadMore = () => {
                 if (isExiting) return;
-                setIsExiting(true);
-                setIsVisible(false);
-                setTimeout(() => onReadMore(), 650);
+                onReadMore();
             };
 
             useEffect(() => {
@@ -6098,7 +6096,7 @@
 
             const handleShowSponsorModal = () => {
                 if (audioManagerRef.current) audioManagerRef.current.playSound('uiClick');
-                localStorage.setItem('impostiq_sponsor_ignore', 'true'); 
+                localStorage.setItem('impostiq_sponsor_later', (Date.now() + 604800000).toString()); 
                 setShowSponsorPopup(false);
                 setShowSponsorModal(true);
             };
