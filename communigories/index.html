@@ -248,6 +248,15 @@
         .subtle-shine-container { position: relative; overflow: hidden; isolation: isolate; }
         .subtle-shine-container::before { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.06) 48%, rgba(255, 255, 255, 0.06) 52%, transparent 70%); transform: translateX(-100%); animation: subtleShine 7s ease-in-out infinite; }
         @keyframes subtleShine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        
+        .smooth-pulse {
+            animation: smoothPulse 2.5s ease-in-out infinite;
+            will-change: opacity;
+        }
+        @keyframes smoothPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.55; }
+        }
     </style>
     <script>
         (function() {
@@ -1657,8 +1666,8 @@
                                             )}
                                         </div>
 
-                                        {isLoading ? (
-                                            <div className="grid grid-cols-2 gap-4 animate-pulse">
+                                       {isLoading ? (
+                                            <div className="grid grid-cols-2 gap-4 smooth-pulse">
                                                 {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
                                                     <div key={i} className="relative overflow-hidden flex flex-col items-center rounded-[1.5rem] min-h-[133px] border bg-slate-800/40 border-white/5 backdrop-blur-md">
                                                         <div className="w-full py-2 bg-black/50 border-b border-white/5 h-8 flex justify-center items-center gap-4">
