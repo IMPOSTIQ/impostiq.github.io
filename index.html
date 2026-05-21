@@ -6128,7 +6128,6 @@
                         if (audioManagerRef.current) {
                             audioManagerRef.current.playMusic(currentSeason === 'christmas' ? 'christmasMainMenuMusic' : (currentSeason === 'halloween' ? 'halloweenMainMenuMusic' : 'mainMenuMusic'));
                         }
-                        // Refresh local categories instantly so new downloads show up
                         window.dispatchEvent(new Event('storage'));
                     }
                 };
