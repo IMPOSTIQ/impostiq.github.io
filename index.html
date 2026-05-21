@@ -776,7 +776,7 @@
         <p>Because Impostiq is 100% free and completely ad-free, it relies on community support to cover Firebase server costs and fund massive content updates. Players can support the developer directly through GitHub Sponsors.</p>
         <ul>
             <li><strong>How to find it:</strong> On the main menu, in the top left corner, there is a "Support Impostiq" button represented by a Donate icon (two hands holding up a heart).</li>
-            <li><strong>The Pop-up Tracker:</strong> To politely inform players without being spammy, a sleek "Support Impostiq" drawer slides up from the bottom of the screen. This ONLY happens if a player has successfully completed at least 3 full games (proving they enjoy the game).</li>
+            <li><strong>The Pop-up Tracker:</strong> To politely inform players without being spammy, a sleek "Support Impostiq" drawer slides up from the bottom of the screen. This ONLY happens if a player has successfully completed at least 5 full games (proving they enjoy the game).</li>
             <li><strong>Pop-up Controls & Cooldowns:</strong>
                 <ul>
                     <li><strong>READ MORE:</strong> Opens the full Support Modal with more details, and permanently disables the pop-up from ever appearing again.</li>
@@ -6067,7 +6067,7 @@
                     const laterTime = localStorage.getItem('impostiq_sponsor_later');
                     const gamesPlayed = parseInt(localStorage.getItem('impostiq_games_played') || '0', 10);
                     
-                    if (!isIgnored && gamesPlayed >= 3) {
+                    if (!isIgnored && gamesPlayed >= 5) {
                         const now = Date.now();
                         if (!laterTime || now > parseInt(laterTime, 10)) {
                             timer = setTimeout(() => {
@@ -6096,7 +6096,12 @@
 
             const handleShowSponsorModal = () => {
                 if (audioManagerRef.current) audioManagerRef.current.playSound('uiClick');
-                localStorage.setItem('impostiq_sponsor_later', (Date.now() + 604800000).toString()); 
+                
+                const gamesPlayed = parseInt(localStorage.getItem('impostiq_games_played') || '0', 10);
+                if (gamesPlayed >= 5) {
+                    localStorage.setItem('impostiq_sponsor_later', (Date.now() + 604800000).toString()); 
+                }
+                
                 setShowSponsorPopup(false);
                 setShowSponsorModal(true);
             };
