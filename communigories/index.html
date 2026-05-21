@@ -386,17 +386,61 @@
 
         <h2>2. Uploading & Creating Categories</h2>
         <ul>
+            <li><strong>Upload UI Path:</strong> Clicking the cloud upload button (an SVG of a cloud with an up arrow) in the top-right corner switches the interface from the Browse view to the Upload view. The page headers update to "Upload Category" and "Contribute to the community," and the final submit button at the bottom of the form utilizes the same cloud upload SVG.</li>
             <li><strong>Word Bank Rules:</strong> Minimum 10 words required. Words must be separated by commas. To include a comma within a single word, wrap the word in curly braces (e.g., {Good Night, and Good Luck}).</li>
-            <li><strong>Duplicate Prevention:</strong> Duplicate words are strictly prohibited and will automatically block the upload, highlighting the duplicates in red.</li>
-            <li><strong>Icons:</strong> Creators must assign a 3D visual icon to their category from a curated list of high-quality emojis, a design choice that inherently prevents the upload of inappropriate imagery.</li>
+            <li><strong>Duplicate Prevention:</strong> Duplicate words are strictly prohibited and will automatically block the upload, highlighting the duplicates in red text inside the textarea.</li>
+            <li><strong>Icons:</strong> Creators must assign a 3D visual icon to their category from a curated list of 59 high-quality emojis, a design choice that inherently prevents the upload of inappropriate imagery.</li>
         </ul>
 
-        <h2>3. Library Management & Privacy</h2>
+        <h2>3. Library Management, UI & Privacy</h2>
         <ul>
-            <li><strong>Privacy Controls:</strong> Creators can toggle "Private Category". Private categories are hidden from the public 'Trending' and 'Newest' feeds and can only be accessed via direct share links.</li>
-            <li><strong>Selective Toggles:</strong> Once downloaded, users can selectively toggle `useLocal` and `useOnline` switches. This allows you to hide a pack from your host menus without deleting it from your device.</li>
+            <li><strong>Navigation Tabs:</strong> The main page has a pill-shaped toggle bar with 3 tabs: "Trending" (Flame SVG), "Newest" (Sparkles/Stars SVG), and "Library" (Open Folder SVG).</li>
+            <li><strong>Search:</strong> A search bar (Magnifying Glass SVG) exists to filter categories. Clearing it shows an 'X' SVG.</li>
+            <li><strong>Empty States:</strong> If no items exist, specific screens appear: 
+                <ul>
+                    <li>Search empty: "No matches found" / "We couldn't find any categories matching..." (Magnifying Glass SVG).</li>
+                    <li>Library empty: "Your vault is empty" / "You haven't saved or created any categories yet..." (Empty Folder SVG).</li>
+                    <li>General empty: "It's quiet here..." / "There are no categories to show right now." (Empty Document / Clipboard SVG).</li>
+                </ul>
+            </li>
+            <li><strong>Limits:</strong> The vault maxes out at displaying 500 results per feed to ensure smooth scrolling. A warning text appears at the bottom if this limit is hit: "Showing the top 500 results. Use search to find specific categories."</li>
+            <li><strong>Category Details Modal:</strong> When clicking a category card, a modal opens displaying the name, total words, total downloads (Flame SVG), and total edits (Pen/Pencil SVG).
+                <ul>
+                    <li>Action Buttons: "SAVE TO LIBRARY" (Open Folder SVG), "SHARE" (Three connected nodes/dots SVG), "EDIT" (Pen/Pencil SVG), "DELETE/REMOVE" ('X' SVG).</li>
+                    <li>Selective Toggles: Once downloaded, users can selectively toggle "Local Games" (Mobile Phone screen SVG) and "Online Lobbies" (Globe/Internet with Magnifying Glass SVG) switches. This allows you to hide a pack from your host menus without deleting it from your device.</li>
+                </ul>
+            </li>
+            <li><strong>Privacy Controls:</strong> Creators can toggle "Private Category" (Padlock SVG). Private categories are hidden from the public 'Trending' and 'Newest' feeds and can only be accessed via direct share links.</li>
             <li><strong>Tracking:</strong> The vault actively tracks total downloads and edit counts for public categories.</li>
         </ul>
+
+        <h2>4. Security & Unofficial Site Detection (Anti-Clone)</h2>
+        <p>To protect players from phishing, ensure high performance, and prevent other websites from stealing the game's bandwidth via iframes, the Communigories application utilizes aggressive domain checks.</p>
+        <ul>
+            <li><strong>The Official URL:</strong> The ONLY official, secure, and updated place to play and download categories is at <strong>https://impostiq.github.io/communigories</strong>.</li>
+            <li><strong>Anti-Iframe / Anti-Clone:</strong> The game's script checks `window.location.hostname` and `window.self !== window.top`. If it detects it is being hosted on an unauthorized domain or embedded inside an iframe on another website, it intentionally crashes the UI.</li>
+            <li><strong>The Red Screen (Unofficial Site Detected):</strong> When an unauthorized clone is detected, the DOM is completely wiped and replaced with a dark, blurred screen. 
+                <ul>
+                    <li><strong>Exact Text on Screen:</strong> "Unofficial Site Detected", "You are currently accessing a cloned or unauthorized version of Impostiq. To ensure security, access to the latest features, and to support the original creators, please play on the official platform by Fillabrona.", "If you see this page, please report the URL of this unauthorized website to us on Discord."</li>
+                    <li><strong>Visuals & Animations:</strong> It features rotating, drop-shadowed 3D emoji images (Detective, Pouting Man, Police Officer, Gesturing No). The background has floating purple and cyan blurred background blobs.</li>
+                    <li><strong>Buttons:</strong> Forces users to click a primary white "PLAY OFFICIAL" button (with a link-out SVG icon) that redirects them to the official GitHub Pages URL, or a secondary Discord logo button to report the site.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>5. Copyright & Licensing Information</h2>
+        <p><strong>Copyright &copy; 2025-Present Fillabrona. All Rights Reserved.</strong></p>
+        <p>This software and its accompanying documentation, files, and assets (including but not limited to source code, graphics, user interface designs, and text) are the exclusive intellectual property of Fillabrona.</p>
+        
+        <p><strong>CONFIDENTIALITY AND TERMS OF USE:</strong></p>
+        <ol>
+            <li>Public visibility of this source code on GitHub is strictly for educational, informational, and review purposes.</li>
+            <li>No permission is granted to copy, reproduce, modify, adapt, merge, publish, distribute, sublicense, rent, sell, or create derivative works of this software or any portion thereof.</li>
+            <li>You may not host, re-upload, or deploy clones, copies, or variations of this game, its assets, or its scripts on any website, platform, application store, or server environment.</li>
+            <li>All branding, titles, logos, and specific design methodologies (including the "Impostiq" and "Fillabrona" names and identities) remain the sole trademarks and property of the original author.</li>
+        </ol>
+
+        <p><em>Any unauthorized use, cloning, or redistribution of this material constitutes a violation of international copyright laws and will be subject to legal action.</em></p>
     </noscript>
     <div class="fixed inset-0 bg-[#020617] -z-10"></div>
     <div class="absolute inset-0 pointer-events-none z-0">
