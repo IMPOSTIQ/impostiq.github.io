@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-color: #020617;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -7,9 +7,16 @@
     <meta property="og:site_name" content="Impostiq">
     <meta name="apple-mobile-web-app-title" content="Impostiq">
     <title>Communigories • Impostiq</title>
+    <meta name="robots" content="max-image-preview:large">
 	
     <script type="application/ld+json">
 	[
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Impostiq",
+        "url": "https://impostiq.github.io"
+      },
 	  {
 		"@context": "https://schema.org",
 		"@type": "WebApplication",
@@ -458,6 +465,8 @@
     </div>
     
     <div id="root"></div>
+	
+    <img src="https://impostiq.github.io/images/displayimage512_communigories.png" alt="Communigories • Impostiq" class="sr-only">
 	
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
@@ -1506,6 +1515,7 @@
                                 <div className="mb-8 text-center">
                                     <h1 className="text-4xl sm:text-5xl font-display font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 mb-2 drop-shadow-lg tracking-tight pb-2 leading-tight">
 										{activeView === 'upload' ? (editId ? 'Edit Category' : 'Upload Category') : 'Communigories'}
+                                        <span className="sr-only"> • Impostiq</span>
 									</h1>
                                     <div className="subtle-shine-container inline-flex items-center gap-2 px-3 py-1 rounded-[0.5rem] bg-white/5 border border-white/10 backdrop-blur-md">
                                         <span className="text-white/50 text-[11px] font-display font-semibold tracking-widest uppercase">
