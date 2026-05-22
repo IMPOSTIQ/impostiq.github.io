@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-color: #020617;">
 <head>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="f_vovPG5F0fSlBF405RthRa9nx-2krtUjjF9oyWBFp0" />
@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="Impostiq">
     <meta name="description" content="A social deduction game similar to Spyfall. Players receive a secret word, but the Imposter receives nothing. Players must question each other to find the spy without revealing the word.">
     <title>Impostiq • Find the Spy</title>
+    <meta name="robots" content="max-image-preview:large">
     
     <script type="application/ld+json">
     [
@@ -15,6 +16,7 @@
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "Impostiq",
+        "alternateName": "Impostiq • Find the Spy",
         "url": "https://impostiq.github.io"
       },
       {
@@ -822,6 +824,8 @@
         <p><em>Any unauthorized use, cloning, or redistribution of this material constitutes a violation of international copyright laws and will be subject to legal action.</em></p>
     </noscript>
 
+    <img src="https://impostiq.github.io/images/displayimage512.png" alt="Impostiq • Find the Spy" class="sr-only">
+    
     <div id="root">
 
     <script type="text/babel">
@@ -1041,6 +1045,7 @@
                             draggable="false"
                         />
                         <span className={textGradientClass}>IQ</span>
+                        <span className="sr-only"> • Find the Spy</span>
                     </h1>
                 );
             }
@@ -1056,11 +1061,12 @@
                             draggable="false"
                         />
                         <span className={textGradientClass}>STIQ</span>
+                        <span className="sr-only"> • Find the Spy</span>
                     </h1>
                 );
             }
 
-            return <h1 className={`${baseWrapperClass} ${textGradientClass}`}>IMPOSTIQ</h1>;
+            return <h1 className={`${baseWrapperClass} ${textGradientClass}`}>IMPOSTIQ<span className="sr-only"> • Find the Spy</span></h1>;
         };
 
         const globalAvatarCache = new Set();
