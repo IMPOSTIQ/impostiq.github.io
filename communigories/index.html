@@ -239,14 +239,24 @@
             66% { transform: translate(-20px, 20px) scale(0.9); }
         }
         
+        .sleek-spinner {
+            animation: sleek-rotate 1.4s linear infinite;
+            transform-origin: center;
+            will-change: transform;
+        }
         .sleek-spinner circle {
             stroke: currentColor;
-            stroke-width: 5; 
-            stroke-dasharray: 1, 200;
-            stroke-dashoffset: 0;
-            animation: sleek-dash 1.5s ease-in-out infinite;
+            stroke-width: 6;
             stroke-linecap: round;
             fill: none;
+            animation: sleek-dash 1.4s ease-in-out infinite;
+            will-change: stroke-dasharray, stroke-dashoffset;
+        }
+        @keyframes sleek-rotate { 100% { transform: rotate(360deg); } }
+        @keyframes sleek-dash {
+            0%   { stroke-dasharray: 1, 200;   stroke-dashoffset: 0; }
+            50%  { stroke-dasharray: 100, 200; stroke-dashoffset: -35px; }
+            100% { stroke-dasharray: 1, 200;   stroke-dashoffset: -124px; }
         }
         @keyframes sleek-rotate { 100% { transform: rotate(360deg); } }
         @keyframes sleek-dash { 0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; } 50% { stroke-dasharray: 90, 200; stroke-dashoffset: -35px; } 100% { stroke-dasharray: 90, 200; stroke-dashoffset: -124px; } }
@@ -405,7 +415,7 @@
             <li><strong>Upload UI Path:</strong> Clicking the cloud upload button (an SVG of a cloud with an up arrow) in the top-right corner switches the interface from the Browse view to the Upload view. The page headers update to "Upload Category" and "Contribute to the community," and the final submit button at the bottom of the form utilizes the same cloud upload SVG.</li>
             <li><strong>Word Bank Rules:</strong> Minimum 10 words required. Words must be separated by commas. To include a comma within a single word, wrap the word in curly braces (e.g., {Good Night, and Good Luck}).</li>
             <li><strong>Duplicate Prevention:</strong> Duplicate words are strictly prohibited and will automatically block the upload, highlighting the duplicates in red text inside the textarea.</li>
-            <li><strong>Icons:</strong> Creators must assign a 3D visual icon to their category from a curated list of 59 high-quality emojis, a design choice that inherently prevents the upload of inappropriate imagery.</li>
+            <li><strong>Icons:</strong> Creators must assign a 3D visual icon to their category from a curated list of 242 high-quality emojis, a design choice that inherently prevents the upload of inappropriate imagery.</li>
         </ul>
 
         <h2>3. Library Management, UI & Privacy</h2>
@@ -512,7 +522,7 @@
             "icon-trash-can": props => <svg shapeRendering="geometricPrecision" viewBox="0 0 512 512" width="1em" {...props}><path fill="currentColor" d="M490.667,96c0-17.673-14.327-32-32-32h-80.555C364.632,25.757,328.549,0.13,288,0h-64c-40.549,0.13-76.632,25.757-90.112,64H53.333c-17.673,0-32,14.327-32,32l0,0c0,17.673,14.327,32,32,32H64v266.667C64,459.468,116.532,512,181.333,512h149.333C395.468,512,448,459.468,448,394.667V128h10.667C476.34,128,490.667,113.673,490.667,96zM384,394.667C384,424.122,360.122,448,330.667,448H181.333C151.878,448,128,424.122,128,394.667V128h256V394.667zM202.667,384c17.673,0,32-14.327,32-32V224c0-17.673-14.327-32-32-32s-32,14.327-32,32v128C170.667,369.673,184.994,384,202.667,384zM309.333,384c17.673,0,32-14.327,32-32V224c0-17.673-14.327-32-32-32s-32,14.327-32,32v128C277.333,369.673,291.66,384,309.333,384z"/></svg>,
             "icon-share": props => <svg shapeRendering="geometricPrecision" viewBox="0 0 512.012 512.012" width="1em" {...props}><path fill="currentColor" d="M405.339,298.678c-31.546,0.117-61.402,14.278-81.451,38.635l-115.2-52.011c2.93-9.494,4.496-19.356,4.651-29.291c-0.138-9.827-1.653-19.586-4.501-28.992l115.072-52.267c37.932,44.641,104.871,50.08,149.512,12.149S523.502,82.031,485.57,37.39S380.7-12.691,336.059,25.241c-23.88,20.291-37.565,50.102-37.386,81.437c0,3.029,0.64,5.888,0.896,8.853l-126.763,57.536c-18.688-15.229-42.026-23.601-66.133-23.723c-58.91,0-106.667,47.756-106.667,106.667s47.756,106.667,106.667,106.667c24.003-0.098,47.255-8.376,65.92-23.467l126.976,57.323c-0.256,2.965-0.896,5.803-0.896,8.811c0,58.91,47.756,106.667,106.667,106.667s106.667-47.756,106.667-106.667S464.25,298.678,405.339,298.678zM405.339,64.012c23.564,0,42.667,19.103,42.667,42.667s-19.103,42.667-42.667,42.667c-23.564,0-42.667-19.103-42.667-42.667S381.775,64.012,405.339,64.012zM106.673,298.678c-23.564,0-42.667-19.103-42.667-42.667s19.103-42.667,42.667-42.667s42.667,19.103,42.667,42.667S130.237,298.678,106.673,298.678zM405.339,448.012c-23.564,0-42.667-19.102-42.667-42.667s19.103-42.667,42.667-42.667c23.564,0,42.667,19.102,42.667,42.667S428.903,448.012,405.339,448.012z"/></svg>,
             "icon-search": props => <svg shapeRendering="geometricPrecision" viewBox="0 0 550 550" width="1.3em" {...props}><path fill="currentColor" d="M504.352,459.061l-99.435-99.477c74.402-99.427,54.115-240.344-45.312-314.746S119.261-9.277,44.859,90.15S-9.256,330.494,90.171,404.896c79.868,59.766,189.565,59.766,269.434,0l99.477,99.477c12.501,12.501,32.769,12.501,45.269,0c12.501-12.501,12.501-32.769,0-45.269L504.352,459.061zM225.717,385.696c-88.366,0-160-71.634-160-160s71.634-160,160-160s160,71.634,160,160C385.623,314.022,314.044,385.602,225.717,385.696z"/></svg>,
-            "icon-no-results": props => <svg shapeRendering="geometricPrecision" viewBox="0 0 560 520" width="1.3em" {...props}><path fill="currentColor" d="M504.352,459.061l-99.435-99.477c74.402-99.427,54.115-240.344-45.312-314.746S119.261-9.277,44.859,90.15S-9.256,330.494,90.171,404.896c79.868,59.766,189.565,59.766,269.434,0l99.477,99.477c12.501,12.501,32.769,12.501,45.269,0c12.501-12.501,12.501-32.769,0-45.269L504.352,459.061zM225.717,385.696c-88.366,0-160-71.634-160-160s71.634-160,160-160s160,71.634,160,160C385.623,314.022,314.044,385.602,225.717,385.696z"/></svg>,
+            "icon-no-results": props => <svg shapeRendering="geometricPrecision" viewBox="-20 0 550 550" width="1.3em" {...props}><path fill="currentColor" d="M504.352,459.061l-99.435-99.477c74.402-99.427,54.115-240.344-45.312-314.746S119.261-9.277,44.859,90.15S-9.256,330.494,90.171,404.896c79.868,59.766,189.565,59.766,269.434,0l99.477,99.477c12.501,12.501,32.769,12.501,45.269,0c12.501-12.501,12.501-32.769,0-45.269L504.352,459.061zM225.717,385.696c-88.366,0-160-71.634-160-160s71.634-160,160-160s160,71.634,160,160C385.623,314.022,314.044,385.602,225.717,385.696z"/></svg>,
             "icon-chevron-left": props => <svg shapeRendering="geometricPrecision" viewBox="0 0 25 25" width="1.3em" {...props}><path fill="currentColor" d="M10.957,12.354a.5.5,0,0,1,0-.708l4.586-4.585a1.5,1.5,0,0,0-2.121-2.122L8.836,9.525a3.505,3.505,0,0,0,0,4.95l4.586,4.586a1.5,1.5,0,0,0,2.121-2.122Z"/></svg>,
             "icon-chevron-up": props => <svg shapeRendering="geometricPrecision" viewBox="0.2 1 24 24" width="1.3em" {...props}><path fill="currentColor" d="M18.061,9.525,14.475,5.939a3.585,3.585,0,0,0-4.95,0L5.939,9.525a1.5,1.5,0,0,0,2.122,2.121L10.5,9.207V19a1.5,1.5,0,0,0,3,0V9.207l2.439,2.439a1.5,1.5,0,0,0,2.122-2.121Z"/></svg>,
             "icon-circle-exclamation": props => <svg shapeRendering="geometricPrecision" viewBox="0 0 540 510" width="1em" {...props}><path fill="currentColor" d="M256,512c141.385,0,256-114.615,256-256S397.385,0,256,0S0,114.615,0,256C0.153,397.322,114.678,511.847,256,512zM234.667,128c0-11.782,9.551-21.333,21.333-21.333c11.782,0,21.333,9.551,21.333,21.333v170.667c0,11.782-9.551,21.333-21.333,21.333c-11.782,0-21.333-9.551-21.333-21.333V128zM256,384c11.782,0,21.333,9.551,21.333,21.333s-9.551,21.333-21.333,21.333c-11.782,0-21.333-9.551-21.333-21.333S244.218,384,256,384z"/></svg>,
@@ -540,105 +550,304 @@
             return null;
         };
 
-        const ICONS_LIST =[
+        const ICONS_LIST = [
             { url: "https://em-content.zobj.net/source/microsoft-teams/337/fire_1f525.png", name: "Fire" },
             { url: "https://em-content.zobj.net/source/microsoft-teams/337/star_2b50.png", name: "Star" },
             { url: "https://em-content.zobj.net/source/microsoft-teams/337/trophy_1f3c6.png", name: "Trophy" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/popcorn_1f37f.png", name: "Movies" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/television_1f4fa.png", name: "TV Shows" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/joystick_1f579-fe0f.png", name: "Video Games" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/game-die_1f3b2.png", name: "Board Games" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/popcorn_1f37f.png", name: "Popcorn" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/television_1f4fa.png", name: "TV" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/joystick_1f579-fe0f.png", name: "Joystick" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/game-die_1f3b2.png", name: "Dice" },
             { url: "https://em-content.zobj.net/source/microsoft-teams/337/musical-notes_1f3b6.png", name: "Music" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/364/artist-palette_1f3a8.png", name: "Art" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crown_1f451.png", name: "Royalty" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/money-bag_1f4b0.png", name: "Wealth" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/light-bulb_1f4a1.png", name: "Ideas" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/364/artist-palette_1f3a8.png", name: "Palette" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crown_1f451.png", name: "Crown" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/money-bag_1f4b0.png", name: "Money" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/light-bulb_1f4a1.png", name: "Lightbulb" },
             { url: "https://em-content.zobj.net/source/microsoft-teams/337/books_1f4da.png", name: "Books" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/globe-showing-americas_1f30e.png", name: "Geography" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rocket_1f680.png", name: "Space" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/microscope_1f52c.png", name: "Science" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hamburger_1f354.png", name: "Food" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hot-beverage_2615.png", name: "Drinks" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/red-apple_1f34e.png", name: "Fruits" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dog-face_1f436.png", name: "Animals" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/airplane_2708-fe0f.png", name: "Travel" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/automobile_1f697.png", name: "Vehicles" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/globe-showing-americas_1f30e.png", name: "Globe" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rocket_1f680.png", name: "Rocket" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/microscope_1f52c.png", name: "Microscope" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hamburger_1f354.png", name: "Hamburger" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hot-beverage_2615.png", name: "Coffee" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/red-apple_1f34e.png", name: "Apple" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dog-face_1f436.png", name: "Dog" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/airplane_2708-fe0f.png", name: "Airplane" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/automobile_1f697.png", name: "Car" },
             { url: "https://em-content.zobj.net/source/microsoft-teams/337/shopping-bags_1f6cd-fe0f.png", name: "Shopping" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/laptop_1f4bb.png", name: "Technology" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/gear_2699-fe0f.png", name: "Mechanics" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/magic-wand_1fa84.png", name: "Magic" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crossed-swords_2694-fe0f.png", name: "History" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/heart-suit_2665-fe0f.png", name: "Romance" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/camera_1f4f7.png", name: "Photography" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/speech-balloon_1f4ac.png", name: "Quotes" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/smiling-face-with-sunglasses_1f60e.png", name: "Pop Culture" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ghost_1f47b.png", name: "Spooky" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/jack-o-lantern_1f383.png", name: "Halloween" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/364/christmas-tree_1f384.png", name: "Christmas" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/laptop_1f4bb.png", name: "Laptop" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/gear_2699-fe0f.png", name: "Gear" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/magic-wand_1fa84.png", name: "Wand" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crossed-swords_2694-fe0f.png", name: "Swords" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/heart-suit_2665-fe0f.png", name: "Heart" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/camera_1f4f7.png", name: "Camera" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/speech-balloon_1f4ac.png", name: "Chat" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/smiling-face-with-sunglasses_1f60e.png", name: "Sunglasses" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ghost_1f47b.png", name: "Ghost" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/jack-o-lantern_1f383.png", name: "Pumpkin" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/364/christmas-tree_1f384.png", name: "Tree" },
             { url: "https://em-content.zobj.net/source/microsoft-teams/337/party-popper_1f389.png", name: "Party" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/lipstick_1f484.png", name: "Beauty" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/soccer-ball_26bd.png", name: "Sports" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/lipstick_1f484.png", name: "Lipstick" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/soccer-ball_26bd.png", name: "Soccer" },
             { url: "https://em-content.zobj.net/source/microsoft-teams/337/man-lifting-weights-light-skin-tone_1f3cb-1f3fb-200d-2642-fe0f.png", name: "Fitness" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/magnifying-glass-tilted-right_1f50e.png", name: "Investigation" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/gem-stone_1f48e.png", name: "Gems" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/alien_1f47d.png", name: "Aliens" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/robot_1f916.png", name: "Robots" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ninja_light-skin-tone_1f977-1f3fb_1f3fb.png", name: "Ninjas" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/skull_1f480.png", name: "Horror" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/detective_light-skin-tone_1f575-1f3fb_1f3fb.png", name: "Detectives" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cowboy-hat-face_1f920.png", name: "Western" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/clown-face_1f921.png", name: "Circus" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/brain_1f9e0.png", name: "Brains" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bone_1f9b4.png", name: "Bones" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dragon-face_1f432.png", name: "Dragons" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/unicorn_1f984.png", name: "Mythology" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/butterfly_1f98b.png", name: "Insects" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/snake_1f40d.png", name: "Reptiles" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/turtle_1f422.png", name: "Turtles" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/spouting-whale_1f433.png", name: "Marine Life" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/mushroom_1f344.png", name: "Mushrooms" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cherry-blossom_1f338.png", name: "Flowers" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/evergreen-tree_1f332.png", name: "Trees" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cactus_1f335.png", name: "Desert" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/magnifying-glass-tilted-right_1f50e.png", name: "Search" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/gem-stone_1f48e.png", name: "Diamond" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/alien_1f47d.png", name: "Alien" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/robot_1f916.png", name: "Robot" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ninja_light-skin-tone_1f977-1f3fb_1f3fb.png", name: "Ninja" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/skull_1f480.png", name: "Skull" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/detective_light-skin-tone_1f575-1f3fb_1f3fb.png", name: "Detective" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cowboy-hat-face_1f920.png", name: "Cowboy" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/clown-face_1f921.png", name: "Clown" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/brain_1f9e0.png", name: "Brain" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bone_1f9b4.png", name: "Bone" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dragon-face_1f432.png", name: "Dragon" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/unicorn_1f984.png", name: "Unicorn" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/butterfly_1f98b.png", name: "Butterfly" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/snake_1f40d.png", name: "Snake" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/turtle_1f422.png", name: "Turtle" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/spouting-whale_1f433.png", name: "Whale" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/mushroom_1f344.png", name: "Mushroom" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cherry-blossom_1f338.png", name: "Flower" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/evergreen-tree_1f332.png", name: "Pine" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cactus_1f335.png", name: "Cactus" },
             { url: "https://em-content.zobj.net/source/microsoft-teams/337/pizza_1f355.png", name: "Pizza" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/doughnut_1f369.png", name: "Desserts" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/taco_1f32e.png", name: "Mexican" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/doughnut_1f369.png", name: "Donut" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/taco_1f32e.png", name: "Taco" },
             { url: "https://em-content.zobj.net/source/microsoft-teams/337/sushi_1f363.png", name: "Sushi" },
             { url: "https://em-content.zobj.net/source/microsoft-teams/337/french-fries_1f35f.png", name: "Fries" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/stadium_1f3df-fe0f.png", name: "Stadiums" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ferris-wheel_1f3a1.png", name: "Theme Parks" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/roller-coaster_1f3a2.png", name: "Rides" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/363/tent_26fa.png", name: "Camping" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/classical-building_1f3db-fe0f.png", name: "Architecture" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/house_1f3e0.png", name: "Buildings" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hospital_1f3e5.png", name: "Medical" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/stadium_1f3df-fe0f.png", name: "Stadium" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ferris-wheel_1f3a1.png", name: "Ferris Wheel" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/roller-coaster_1f3a2.png", name: "Coaster" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/363/tent_26fa.png", name: "Tent" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/classical-building_1f3db-fe0f.png", name: "Museum" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/house_1f3e0.png", name: "House" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hospital_1f3e5.png", name: "Hospital" },
             { url: "https://em-content.zobj.net/source/microsoft-teams/337/police-car_1f693.png", name: "Police" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fire-engine_1f692.png", name: "Fire Dept" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/helicopter_1f681.png", name: "Aviation" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/364/speedboat_1f6a4.png", name: "Boats" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/anchor_2693.png", name: "Nautical" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/guitar_1f3b8.png", name: "Guitars" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/saxophone_1f3b7.png", name: "Jazz" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/trumpet_1f3ba.png", name: "Brass" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/violin_1f3bb.png", name: "Classical" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/drum_1f941.png", name: "Percussion" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/puzzle-piece_1f9e9.png", name: "Puzzles" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fire-engine_1f692.png", name: "Fire Truck" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/helicopter_1f681.png", name: "Helicopter" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/364/speedboat_1f6a4.png", name: "Boat" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/anchor_2693.png", name: "Anchor" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/guitar_1f3b8.png", name: "Guitar" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/saxophone_1f3b7.png", name: "Saxophone" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/trumpet_1f3ba.png", name: "Trumpet" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/violin_1f3bb.png", name: "Violin" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/drum_1f941.png", name: "Drums" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/puzzle-piece_1f9e9.png", name: "Puzzle" },
             { url: "https://em-content.zobj.net/source/microsoft-teams/337/bowling_1f3b3.png", name: "Bowling" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crystal-ball_1f52e.png", name: "Fortune" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ring_1f48d.png", name: "Jewelry" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/high-heeled-shoe_1f460.png", name: "Shoes" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/jeans_1f456.png", name: "Clothing" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/necktie_1f454.png", name: "Formal" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/glasses_1f453.png", name: "Eyewear" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/watch_231a.png", name: "Watches" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/mobile-phone_1f4f1.png", name: "Mobiles" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/telephone-receiver_1f4de.png", name: "Telephones" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/desktop-computer_1f5a5-fe0f.png", name: "Computers" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/video-camera_1f4f9.png", name: "Cameras" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/radio_1f4fb.png", name: "Radios" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/compass_1f9ed.png", name: "Navigation" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/stopwatch_23f1-fe0f.png", name: "Time" }
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crystal-ball_1f52e.png", name: "Magic Ball" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ring_1f48d.png", name: "Ring" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/high-heeled-shoe_1f460.png", name: "Heels" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/jeans_1f456.png", name: "Jeans" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/necktie_1f454.png", name: "Tie" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/glasses_1f453.png", name: "Glasses" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/watch_231a.png", name: "Watch" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/mobile-phone_1f4f1.png", name: "Phone" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/telephone-receiver_1f4de.png", name: "Telephone" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/desktop-computer_1f5a5-fe0f.png", name: "Computer" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/video-camera_1f4f9.png", name: "Video" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/radio_1f4fb.png", name: "Radio" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/compass_1f9ed.png", name: "Compass" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/stopwatch_23f1-fe0f.png", name: "Stopwatch" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hot-dog_1f32d.png", name: "Hot Dog" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sandwich_1f96a.png", name: "Sandwich" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pretzel_1f968.png", name: "Pretzel" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pancakes_1f95e.png", name: "Pancakes" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/waffle_1f9c7.png", name: "Waffle" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cheese-wedge_1f9c0.png", name: "Cheese" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/meat-on-bone_1f356.png", name: "Meat" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/poultry-leg_1f357.png", name: "Chicken Leg" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cut-of-meat_1f969.png", name: "Steak" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bacon_1f953.png", name: "Bacon" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/burrito_1f32f.png", name: "Burrito" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/stuffed-flatbread_1f959.png", name: "Flatbread" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/falafel_1f9c6.png", name: "Falafel" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/egg_1f95a.png", name: "Egg" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cooking_1f373.png", name: "Pan" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shallow-pan-of-food_1f958.png", name: "Paella" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pot-of-food_1f372.png", name: "Pot" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bowl-with-spoon_1f963.png", name: "Bowl" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/green-salad_1f957.png", name: "Salad" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/butter_1f9c8.png", name: "Butter" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/salt_1f9c2.png", name: "Salt" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/canned-food_1f96b.png", name: "Canned Food" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bento-box_1f371.png", name: "Bento" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rice-cracker_1f358.png", name: "Rice Cracker" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rice-ball_1f359.png", name: "Rice Ball" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cooked-rice_1f35a.png", name: "Rice" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/curry-rice_1f35b.png", name: "Curry" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/steaming-bowl_1f35c.png", name: "Noodles" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/spaghetti_1f35d.png", name: "Spaghetti" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/roasted-sweet-potato_1f360.png", name: "Sweet Potato" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/oden_1f362.png", name: "Oden" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fried-shrimp_1f364.png", name: "Shrimp" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fish-cake-with-swirl_1f365.png", name: "Fish Cake" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/moon-cake_1f96e.png", name: "Moon Cake" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dango_1f361.png", name: "Dango" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dumpling_1f95f.png", name: "Dumpling" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fortune-cookie_1f960.png", name: "Fortune Cookie" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/takeout-box_1f961.png", name: "Takeout" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crab_1f980.png", name: "Crab" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/364/lobster_1f99e.png", name: "Lobster" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shrimp_1f990.png", name: "Shrimp" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/squid_1f991.png", name: "Squid" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/oyster_1f9aa.png", name: "Oyster" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/soft-ice-cream_1f366.png", name: "Soft Ice Cream" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shaved-ice_1f367.png", name: "Shaved Ice" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ice-cream_1f368.png", name: "Ice Cream" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cookie_1f36a.png", name: "Cookie" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/birthday-cake_1f382.png", name: "Cake" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shortcake_1f370.png", name: "Shortcake" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cupcake_1f9c1.png", name: "Cupcake" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pie_1f967.png", name: "Pie" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/chocolate-bar_1f36b.png", name: "Chocolate" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/candy_1f36c.png", name: "Candy" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/lollipop_1f36d.png", name: "Lollipop" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/custard_1f36e.png", name: "Custard" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/honey-pot_1f36f.png", name: "Honey" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/baby-bottle_1f37c.png", name: "Baby Bottle" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/glass-of-milk_1f95b.png", name: "Milk" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/teacup-without-handle_1f375.png", name: "Tea" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sake_1f376.png", name: "Sake" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bottle-with-popping-cork_1f37e.png", name: "Champagne" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/wine-glass_1f377.png", name: "Wine" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cocktail-glass_1f378.png", name: "Cocktail" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/tropical-drink_1f379.png", name: "Tropical Drink" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/beer-mug_1f37a.png", name: "Beer" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/clinking-glasses_1f942.png", name: "Cheers" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/tumbler-glass_1f943.png", name: "Whiskey" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cup-with-straw_1f964.png", name: "Juice Box" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/mate_1f9c9.png", name: "Mate" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ice_1f9ca.png", name: "Ice" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/chopsticks_1f962.png", name: "Chopsticks" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fork-and-knife-with-plate_1f37d-fe0f.png", name: "Plate" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fork-and-knife_1f374.png", name: "Cutlery" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/spoon_1f944.png", name: "Spoon" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/363/kitchen-knife_1f52a.png", name: "Knife" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/amphora_1f3fa.png", name: "Amphora" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pill_1f48a.png", name: "Pill" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/syringe_1f489.png", name: "Syringe" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/microbe_1f9a0.png", name: "Microbe" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/telescope_1f52d.png", name: "Telescope" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/flying-saucer_1f6f8.png", name: "UFO" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ringed-planet_1fa90.png", name: "Planet" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/first-quarter-moon_1f313.png", name: "Moon" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sun-with-face_1f31e.png", name: "Sun" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/volcano_1f30b.png", name: "Volcano" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/basketball_1f3c0.png", name: "Basketball" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/american-football_1f3c8.png", name: "Football" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/tennis_1f3be.png", name: "Tennis" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/baseball_26be.png", name: "Baseball" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/volleyball_1f3d0.png", name: "Volleyball" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/364/pool-8-ball_1f3b1.png", name: "8-Ball" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/boxing-glove_1f94a.png", name: "Boxing" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/skis_1f3bf.png", name: "Skis" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ice-skate_26f8-fe0f.png", name: "Ice Skate" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bow-and-arrow_1f3f9.png", name: "Archery" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fishing-pole_1f3a3.png", name: "Fishing" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/direct-hit_1f3af.png", name: "Darts" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/video-game_1f3ae.png", name: "Controller" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/slot-machine_1f3b0.png", name: "Slot Machine" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pistol_1f52b.png", name: "Water Gun" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/microphone_1f3a4.png", name: "Microphone" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/headphone_1f3a7.png", name: "Headphones" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/clapper-board_1f3ac.png", name: "Clapper" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/movie-camera_1f3a5.png", name: "Camera" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ticket_1f3ab.png", name: "Ticket" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/paintbrush_1f58c-fe0f.png", name: "Brush" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crayon_1f58d-fe0f.png", name: "Crayon" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/thread_1f9f5.png", name: "Thread" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/yarn_1f9f6.png", name: "Yarn" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bear_1f43b.png", name: "Bear" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/363/tiger-face_1f42f.png", name: "Tiger" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fox_1f98a.png", name: "Fox" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/364/cat-face_1f431.png", name: "Cat" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/mouse-face_1f42d.png", name: "Mouse" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rabbit-face_1f430.png", name: "Rabbit" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/koala_1f428.png", name: "Koala" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/panda_1f43c.png", name: "Panda" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/frog_1f438.png", name: "Frog" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/monkey-face_1f435.png", name: "Monkey" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/penguin_1f427.png", name: "Penguin" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bird_1f426.png", name: "Bird" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/owl_1f989.png", name: "Owl" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bat_1f987.png", name: "Bat" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/horse-face_1f434.png", name: "Horse" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/spider_1f577-fe0f.png", name: "Spider" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/scorpion_1f982.png", name: "Scorpion" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/octopus_1f419.png", name: "Octopus" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fish_1f41f.png", name: "Fish" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/tropical-fish_1f420.png", name: "Tropical Fish" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shark_1f988.png", name: "Shark" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dolphin_1f42c.png", name: "Dolphin" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crocodile_1f40a.png", name: "Crocodile" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/leopard_1f406.png", name: "Leopard" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/zebra_1f993.png", name: "Zebra" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/gorilla_1f98d.png", name: "Gorilla" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/orangutan_1f9a7.png", name: "Orangutan" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/elephant_1f418.png", name: "Elephant" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rhinoceros_1f98f.png", name: "Rhino" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hippopotamus_1f99b.png", name: "Hippo" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/camel_1f42a.png", name: "Camel" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/giraffe_1f992.png", name: "Giraffe" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/kangaroo_1f998.png", name: "Kangaroo" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sloth_1f9a5.png", name: "Sloth" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/swan_1f9a2.png", name: "Swan" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/peacock_1f99a.png", name: "Peacock" }
         ];
+
+        const globalImageCache = new Set();
+        const LazyImage = ({ src, className, sizeClassName = "w-full h-full", spinnerSize = "w-7 h-7 sm:w-8 sm:h-8", alt = "" }) => {
+            const isCached = globalImageCache.has(src);
+            const [loaded, setLoaded] = React.useState(isCached);
+
+            React.useEffect(() => {
+                if (isCached) {
+                    setLoaded(true);
+                    return;
+                }
+                setLoaded(false);
+                const img = new Image();
+                img.src = src;
+                
+                img.decode()
+                    .then(() => {
+                        setTimeout(() => {
+                            globalImageCache.add(src);
+                            setLoaded(true);
+                        }, 250);
+                    })
+                    .catch(() => {
+                        img.onload = () => {
+                            setTimeout(() => {
+                                globalImageCache.add(src);
+                                setLoaded(true);
+                            }, 250);
+                        };
+                        img.onerror = () => {
+                            setLoaded(true);
+                        };
+                    });
+            }, [src]);
+
+            return (
+                <div className={`relative ${sizeClassName} flex items-center justify-center`}>
+                    {!loaded ? (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <svg className={`sleek-spinner ${spinnerSize} text-white/60 drop-shadow-sm`} viewBox="25 25 50 50">
+                                <circle cx="50" cy="50" r="20"></circle>
+                            </svg>
+                        </div>
+                    ) : (
+                        <img 
+                            src={src} 
+                            className={`${className} animate-fade-in`} 
+                            alt={alt} 
+                            draggable="false" 
+                        />
+                    )}
+                </div>
+            );
+        };
 
         const AlertModal = ({ title, message, type, onClose, playSound }) => {
             const icon = type === 'error' ? 'icon-circle-exclamation' : 'icon-check-circle';
@@ -753,12 +962,32 @@
         };
 
         const IconSelectionModal = ({ isOpen, onClose, onSelect, currentSelection, playSound }) => {
+            const [iconSearch, setIconSearch] = useState('');
+
+            useEffect(() => {
+                if (!isOpen) setIconSearch('');
+            }, [isOpen]);
+
             if (!isOpen) return null;
+
+            const queryTokens = iconSearch.toLowerCase().replace(/[-_]/g, ' ').split(/\s+/).filter(Boolean);
+
+            const filteredIcons = ICONS_LIST.filter(iconObj => {
+                if (queryTokens.length === 0) return true;
+                
+                const urlParts = iconObj.url.split('/');
+                const rawFilename = urlParts[urlParts.length - 1]; 
+                const cleanFilename = rawFilename.split('_')[0].replace(/[-_]/g, ' '); 
+                
+                const combinedText = `${iconObj.name.toLowerCase()} ${cleanFilename}`;
+                
+                return queryTokens.every(token => combinedText.includes(token));
+            });
 
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center sm:p-6 bg-slate-950/95 sm:bg-black/60 backdrop-blur-md animate-fadeIn">
                     <div className="absolute inset-0 hidden sm:block" onClick={() => { if(playSound) playSound('uiClick'); onClose(); }}></div>
-                    <div className="relative flex flex-col w-full h-full sm:h-auto sm:max-w-4xl sm:max-h-[90vh] bg-slate-950/95 sm:rounded-3xl sm:border sm:border-white/10 sm:shadow-2xl sm:animate-modal-show overflow-hidden z-10">
+                    <div className="relative flex flex-col w-full h-full sm:h-[90vh] sm:max-w-4xl bg-slate-950/95 sm:rounded-3xl sm:border sm:border-white/10 sm:shadow-2xl sm:animate-modal-show overflow-hidden z-10">
                         
                         <div className="flex-shrink-0 flex items-center justify-between p-6 pb-4 border-b border-white/5 bg-slate-900/50">
                             <div>
@@ -769,35 +998,74 @@
                                 <FaIcon name="icon-xmark" className="text-lg" />
                             </button>
                         </div>
+                        
+                        <div className="flex-1 flex flex-col overflow-hidden relative">
+                        
+                        <div className="w-full px-4 sm:px-6 py-4 border-b border-white/5 bg-[#020617] flex-shrink-0 z-10">
+                            <div className="relative rounded-xl">
+                                <div className="absolute left-5 top-1/2 -translate-y-1/2 text-white/30 text-lg flex items-center justify-center pointer-events-none">
+                                    <FaIcon name="icon-search" />
+                                </div>
+                                <input 
+                                    type="text" 
+                                    placeholder="Search icons..." 
+                                    value={iconSearch}
+                                    onChange={e => setIconSearch(e.target.value)}
+                                    className="w-full bg-[#0a1021] rounded-xl pl-14 pr-14 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none border border-white/5 focus:border-brand-500/50 transition-colors placeholder:text-white/20 font-display font-semibold text-lg text-white"
+                                />
+                                {iconSearch && (
+                                    <button 
+                                        onClick={() => { if(playSound) playSound('uiClick'); setIconSearch(''); }}
+                                        className="absolute right-5 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-white/30 hover:text-white hover:bg-white/10 rounded-full transition-all active:scale-90"
+                                        aria-label="Clear search"
+                                    >
+                                        <FaIcon name="icon-xmark" className="text-sm" />
+                                    </button>
+                                )}
+                            </div>
+                        </div>
 
-                        <div className="flex-1 overflow-y-auto p-4 sm:p-6 no-scrollbar relative">
-                            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4">
-                                {ICONS_LIST.map(iconObj => {
-                                    const isSelected = currentSelection === iconObj.url;
-                                    return (
-                                        <button
-                                            key={iconObj.url}
-                                            onClick={() => { if(playSound) playSound('selectCategory'); onSelect(iconObj.url); onClose(); }}
-                                            className={`relative overflow-hidden flex flex-col items-center rounded-[1.25rem] sm:rounded-[1.5rem] transition duration-300 group aspect-square ${isSelected ? 'bg-brand-500/10' : 'bg-slate-800/40 backdrop-blur-md'}`}
-                                        >
-                                            <div className="flex-1 flex items-center justify-center w-full relative z-0 mt-1">
-                                                <img 
-                                                    src={iconObj.url} 
-                                                    className={`w-[50%] h-[50%] sm:w-[55%] sm:h-[55%] object-contain transition-transform duration-300 drop-shadow-md ${isSelected ? 'scale-110 opacity-100' : 'opacity-60 group-hover:opacity-100 group-hover:scale-110'}`} 
-                                                    draggable="false" 
-                                                />
-                                            </div>
-                                            
-                                            <div className="w-full h-8 sm:h-9 flex items-center justify-center bg-black/50 border-t border-white/5 relative z-0">
-                                                <span className={`text-[9px] sm:text-[10px] font-bold tracking-wider uppercase leading-none mt-[1px] ${isSelected ? 'text-white' : 'text-slate-500 group-hover:text-slate-300'}`}>
-                                                    {iconObj.name}
-                                                </span>
-                                            </div>
+                        <div className={`flex-1 overflow-y-auto px-4 sm:px-6 py-6 no-scrollbar ${filteredIcons.length === 0 ? 'flex flex-col justify-center items-center h-full' : ''}`}>
+                            {filteredIcons.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center p-6 animate-fade-in text-center" data-nosnippet="true">
+                                    <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-5 ring-1 ring-white/10 shadow-[inset_0_0_20px_rgba(255,255,255,0.02)]">
+                                        <FaIcon name="icon-no-results" className="text-white/30 text-3xl" />
+                                    </div>
+                                    <h2 className="text-xl font-display font-bold mb-2 text-white tracking-tight">No icons found</h2>
+                                    <p className="text-white/50 text-sm font-medium leading-relaxed max-w-[240px] mx-auto">
+                                        We couldn't find any icons matching "{iconSearch}". Try a different keyword.
+                                    </p>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4 pb-4">
+                                        {filteredIcons.map(iconObj => {
+                                            const isSelected = currentSelection === iconObj.url;
+                                            return (
+                                                <button
+                                                    key={iconObj.url}
+                                                    onClick={() => { if(playSound) playSound('selectCategory'); onSelect(iconObj.url); onClose(); }}
+                                                    className={`relative overflow-hidden flex flex-col items-center rounded-[1.25rem] sm:rounded-[1.5rem] transition duration-300 group aspect-square ${isSelected ? 'bg-brand-500/10' : 'bg-slate-800/40 backdrop-blur-md'}`}
+                                                >
+                                                    <div className="flex-1 flex items-center justify-center w-full relative z-0 mt-1">
+                                                        <LazyImage 
+                                                            src={iconObj.url}
+                                                            sizeClassName="w-full h-full"
+                                                            spinnerSize="w-7 h-7 sm:w-8 sm:h-8"
+                                                            className={`w-[50%] h-[50%] sm:w-[55%] sm:h-[55%] object-contain transition-transform duration-300 drop-shadow-md ${isSelected ? 'scale-110' : 'opacity-60 group-hover:opacity-100 group-hover:scale-110'}`} 
+                                                        />
+                                                    </div>
+                                                    <div className="w-full h-8 sm:h-9 flex items-center justify-center bg-black/50 border-t border-white/5 relative z-0 px-2">
+                                                        <span className={`text-[9px] sm:text-[10px] font-display font-extrabold tracking-widest uppercase leading-none text-center truncate w-full ${isSelected ? 'text-white drop-shadow-md' : 'text-slate-500 group-hover:text-slate-300'}`}>
+                                                            {iconObj.name}
+                                                        </span>
+                                                    </div>
 
-                                            <div className={`absolute inset-0 rounded-[inherit] pointer-events-none border-[2px] transition-colors ${isSelected ? 'border-brand-500' : 'border-white/5 group-hover:border-white/10'}`}></div>
-                                        </button>
-                                    );
-                                })}
+                                                    <div className={`absolute inset-0 rounded-[inherit] pointer-events-none border-[2px] transition-colors ${isSelected ? 'border-brand-500' : 'border-white/5 group-hover:border-white/10'}`}></div>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -824,7 +1092,7 @@
                         
                         <div className="flex flex-col items-center text-center mb-6 mt-2">
                             <div className="w-24 h-24 rounded-full flex items-center justify-center mb-4 bg-brand-500/20 ring-1 ring-white/10">
-                                <img src={cat.icon} className="w-14 h-14 drop-shadow-md" />
+                                <img src={cat.icon} className="w-14 h-14 drop-shadow-md" draggable="false" />
                             </div>
                             <h2 className="text-2xl font-display font-bold text-white leading-tight line-clamp-3 px-2 break-words">{cat.name}</h2>
                             <div className="flex flex-col items-center justify-center gap-2 mt-3 text-[10px] font-bold uppercase tracking-widest text-white/60">
@@ -1565,10 +1833,10 @@
                                         <div className="p-4 flex flex-col gap-4">
                                             
                                             <div className="bg-black/20 border border-white/5 rounded-[1.5rem] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                                <div className="flex items-center gap-4 w-full sm:w-auto">
-                                                    <div className="w-14 h-14 rounded-[1rem] bg-black/20 border border-white/10 flex items-center justify-center flex-shrink-0">
-                                                        <img src={selectedIcon} className="w-8 h-8 object-contain drop-shadow-md" draggable="false" />
-                                                    </div>
+											<div className="flex items-center gap-4 w-full sm:w-auto">
+												<div className="w-14 h-14 rounded-[1rem] bg-black/20 border border-white/10 flex items-center justify-center flex-shrink-0">
+													<img src={selectedIcon} className="w-8 h-8 object-contain drop-shadow-md" draggable="false" />
+												</div>
                                                     <div>
                                                         <h3 className="font-bold text-white/90 text-sm">Category Icon</h3>
                                                         <p className="text-white/40 text-xs mt-1 leading-relaxed">The visual symbol for your category in the community feed.</p>
