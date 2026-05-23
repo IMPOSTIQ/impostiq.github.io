@@ -1363,6 +1363,24 @@
                             const docPromises = allRelevantIds.map(id => db.collection('communigories').doc(id).get());
                             const docSnaps = await Promise.all(docPromises);
                             
+                            const deletedIds = docSnaps.filter(snap => !snap.exists).map(snap => snap.id);
+                            
+                            if (deletedIds.length > 0) {
+                                const savedComms = JSON.parse(localStorage.getItem('saved_communigories') || '{}');
+                                let changed = false;
+                                deletedIds.forEach(id => {
+                                    if (savedComms[id]) {
+                                        delete savedComms[id];
+                                        changed = true;
+                                    }
+                                    removeMyId(id); 
+                                });
+                                if (changed) {
+                                    localStorage.setItem('saved_communigories', JSON.stringify(savedComms));
+                                    window.dispatchEvent(new Event('storage'));
+                                }
+                            }
+                            
                             const onlineData = docSnaps.filter(snap => snap.exists).map(doc => ({ id: doc.id, ...doc.data() }));
                             const onlineIds = onlineData.map(c => c.id);
                             
