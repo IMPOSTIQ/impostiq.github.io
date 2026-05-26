@@ -229,7 +229,7 @@
   
   <p>
     <picture>
-      <img draggable="false" src="https://i.ibb.co/1Gt7tWv5/fc6c8be464a4b798f0113f72eda132ff.png" alt="Developed by Jandré du Preez" height="22">
+      <img draggable="false" src="https://i.ibb.co/1Gt7tWv5/fc6c8be464a4b798f0113f72eda132ff.png" alt="Developed by Jandré du Preez" height="19">
     </picture>
   </p>
   
