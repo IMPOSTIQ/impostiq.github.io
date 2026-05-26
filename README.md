@@ -7,13 +7,7 @@
   
   <p align="center">
     <picture>
-      <img draggable="false" src="https://i.ibb.co/RGbQfQ3X/title.png" alt="Impostiq • Find the Spy" style="display: block; width: 90%; max-width: 700px; margin: 0 auto;">
-    </picture>
-  </p>
-  
-  <p align="center">
-    <picture>
-      <img draggable="false" src="https://i.ibb.co/Y7MG336C/desc.png" alt="A thrilling social deduction party game of deception, secrets, and strategy." style="display: block; width: 90%; max-width: 700px; margin: 0 auto;">
+      <img draggable="false" src="https://i.ibb.co/Wv7Xbs7s/4e28d0aa70ef65c463d920e411f483ef.png" alt="Impostiq • Find the Spy" style="display: block; width: 90%; max-width: 700px; margin: 0 auto;">
     </picture>
   </p>
 
@@ -28,7 +22,7 @@
 
 <p>
   <picture><img draggable="false" src="https://em-content.zobj.net/source/microsoft-teams/337/direct-hit_1f3af.png" width="32" align="absmiddle"></picture>&nbsp;
-  <picture><img draggable="false" src="https://i.ibb.co/Cpx3whHk/bd10956606b576670db9c84180eee406.png" alt="What is Impostiq?" height="22" align="middle" style="margin-top: 3px;"></picture>
+  <picture><img draggable="false" src="https://i.ibb.co/Kj29jfWb/c5e8a276347b4d6a53f2e186f5067218.png" alt="What is Impostiq?" height="22" align="middle" style="margin-top: 3px;"></picture>
 </p>
 
 <p align="center">
@@ -47,7 +41,7 @@
 
 <p>
   <picture><img draggable="false" src="https://em-content.zobj.net/source/microsoft-teams/337/joystick_1f579-fe0f.png" width="32" align="absmiddle"></picture>&nbsp;
-  <picture><img draggable="false" src="https://i.ibb.co/yF0ZCTdc/2e7c3c8105ab68640e2ac908e1cf8ff6.png" alt="Two Ways to Play" height="22" align="middle" style="margin-top: 3px;"></picture>
+  <picture><img draggable="false" src="https://i.ibb.co/rRdsnZcR/3c6201be79be2e668f3ccaa4b4cd8b87.png" alt="Two Ways to Play" height="22" align="middle" style="margin-top: 3px;"></picture>
 </p>
 
 <p align="center">
@@ -83,7 +77,7 @@
 
 <p>
   <picture><img draggable="false" src="https://em-content.zobj.net/source/microsoft-teams/337/open-file-folder_1f4c2.png" width="32" align="absmiddle"></picture>&nbsp;
-  <picture><img draggable="false" src="https://i.ibb.co/XkKrbkhn/a8f9cfc16ed508a2abb23432d383bf1d.png" alt="Communigories (Custom Category Packs)" height="22" align="middle" style="margin-top: 3px;"></picture>
+  <picture><img draggable="false" src="https://i.ibb.co/hFg11D3p/9ac9274d22018e4c89b83380a5876564.png" alt="Communigories" height="22" align="middle" style="margin-top: 3px;"></picture>
 </p>
 
 <p align="center">
@@ -106,7 +100,7 @@
 
 <p>
   <picture><img draggable="false" src="https://em-content.zobj.net/source/microsoft-teams/363/detective_light-skin-tone_1f575-1f3fb_1f3fb.png" width="32" align="absmiddle"></picture>&nbsp;
-  <picture><img draggable="false" src="https://i.ibb.co/ycffvjCy/4be7b906ec87077a7fea0076fb1ae792.png" alt="Game Settings & Customization" height="22" align="middle" style="margin-top: 3px;"></picture>
+  <picture><img draggable="false" src="https://i.ibb.co/zhWZN7bq/f6361883c1eb9d76066f16b3fc449432.png" alt="Game Settings" height="22" align="middle" style="margin-top: 3px;"></picture>
 </p>
 
 <p align="center">
@@ -130,7 +124,7 @@
 
 <p>
   <picture><img draggable="false" src="https://em-content.zobj.net/source/microsoft-teams/337/face-with-monocle_1f9d0.png" width="32" align="absmiddle"></picture>&nbsp;
-  <picture><img draggable="false" src="https://i.ibb.co/VYJpM3pg/e76ec06e8e6b19700dc8f1e3b32519ae.png" alt="The Word Check Mechanic" height="17" align="absmiddle" style="margin-top: 3px;"></picture>
+  <picture><img draggable="false" src="https://i.ibb.co/qF3m8Zwr/0b954bd83611d9e720b3b7078e2c76ff.png" alt="Word Check" height="17" align="absmiddle" style="margin-top: 3px;"></picture>
 </p>
 
 <p align="center">
@@ -152,7 +146,7 @@
 
 <p>
   <picture><img draggable="false" src="https://em-content.zobj.net/source/microsoft-teams/364/calendar_1f4c5.png" width="32" align="absmiddle"></picture>&nbsp;
-  <picture><img draggable="false" src="https://i.ibb.co/23JhwfYM/87b8a0e2d259ef62c43323161a7d72cb.png" alt="Seasonal Events" height="17" align="absmiddle" style="margin-top: 3px;"></picture>
+  <picture><img draggable="false" src="https://i.ibb.co/TB6MNHps/bc76c13153b209c06291f0967f25835f.png" alt="Seasonal Events" height="17" align="absmiddle" style="margin-top: 3px;"></picture>
 </p>
 
 <p align="center">
@@ -171,8 +165,8 @@
 <br>
 
 <p>
-  <picture><img draggable="false" src="https://em-content.zobj.net/source/microsoft-teams/337/light-bulb_1f4a1.png" width="32" align="absmiddle"></picture>&nbsp;
-  <picture><img draggable="false" src="https://i.ibb.co/WWW58tyx/03ce35d01ce5fb1e75391284096b82fb.png" alt="Strategy Guide & Scenarios" height="22" align="middle" style="margin-top: 3px;"></picture>
+  <picture><img draggable="false" src="https://em-content.zobj.net/source/microsoft-teams/337/thought-balloon_1f4ad.png" width="32" align="absmiddle"></picture>&nbsp;
+  <picture><img draggable="false" src="https://i.ibb.co/DHLcYRs1/a83146a256f12b34f1bd51ec876326ff.png" alt="Strats & Scenarios" height="18" align="absmiddle" style="margin-top: 3px;"></picture>
 </p>
 
 <p align="center">
@@ -204,7 +198,7 @@
 
 <p>
   <picture><img draggable="false" src="https://em-content.zobj.net/source/microsoft-teams/337/gear_2699-fe0f.png" width="32" align="absmiddle"></picture>&nbsp;
-  <picture><img draggable="false" src="https://i.ibb.co/GvZS8smR/731ada35d736be41d8279672fd7c3752.png" alt="Technical Details" height="17" align="absmiddle" style="margin-top: 3px;"></picture>
+  <picture><img draggable="false" src="https://i.ibb.co/pjnzvk3s/92c0b04bf1f957eb197579d2f79b69ab.png" alt="Technical Details" height="17" align="absmiddle" style="margin-top: 3px;"></picture>
 </p>
 
 <p align="center">
@@ -235,7 +229,7 @@
   
   <p>
     <picture>
-      <img draggable="false" src="https://i.ibb.co/whnvHRg6/developed.png" alt="Developed by Jandré du Preez" height="25">
+      <img draggable="false" src="https://i.ibb.co/whnvHRg6/developed.png" alt="Developed by Jandré du Preez" height="22">
     </picture>
   </p>
   
