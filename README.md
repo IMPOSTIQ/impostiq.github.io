@@ -52,7 +52,7 @@
 
 <h4>
   <picture><img draggable="false" src="https://em-content.zobj.net/source/microsoft-teams/337/globe-showing-americas_1f30e.png" width="24" align="absmiddle"></picture>&nbsp;
-  <strong>Play with Friends</strong>
+  <picture><img draggable="false" src="https://i.ibb.co/fd5MgSj8/78f69ae303089a7521fe46f7d78c8b96.png" alt="Play with Friends" height="17" align="absmiddle" style="margin-top: 3px;"></picture>
 </h4>
 <p>Play on separate devices over the internet with friends across the globe.</p>
 <ul>
@@ -64,7 +64,7 @@
 
 <h4>
   <picture><img draggable="false" src="http://em-content.zobj.net/source/microsoft-teams/337/mobile-phone_1f4f1.png" width="24" align="absmiddle"></picture>&nbsp;
-  <strong>Play on This Device</strong>
+  <picture><img draggable="false" src="https://i.ibb.co/spS2db4k/53dc9cd8753a1f87c7b0e3abb3f8f20b.png" alt="Play on This Device" height="17" align="absmiddle" style="margin-top: 3px;"></picture>
 </h4>
 <p>Hanging out in person? You only need <strong>one phone</strong> to play.</p>
 <ul>
@@ -226,6 +226,24 @@
     </picture>
   </p>
   <br>
+  
+  <p>
+    <picture>
+      <img draggable="false" src="https://i.ibb.co/1Gt7tWv5/fc6c8be464a4b798f0113f72eda132ff.png" alt="Developed by Jandré du Preez" height="22">
+    </picture>
+  </p>
+  
+  <p>
+    <a href="https://fillabrona.github.io"><img draggable="false" src="https://i.ibb.co/xq4QkDv7/impostiq-button-1775748206726-4x.png" alt="View Developer Portfolio" height="50"></a>
+  </p>
+</div>
+
+<div align="center">
+  <picture>
+    <img draggable="false" src="https://i.ibb.co/20wvZ5J0/image-4.png" style="border-radius: 25px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); max-width: 100%;">
+  </picture>
+</div>
+
   
   <p>
     <picture>
