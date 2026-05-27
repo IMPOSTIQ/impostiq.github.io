@@ -1934,7 +1934,7 @@
                                                 maxLength="25"
                                                 className="flex-1 bg-transparent px-5 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none placeholder:text-white/20 font-display font-semibold text-lg text-white min-w-0"
                                             />
-                                        {username.trim() && <PlayerAvatar name={username} className="w-8 h-8 rounded-full" />}
+                                        {username.trim() && <PlayerAvatar name={username} className="w-8 h-8" />}
                                     </div>
                                     {isJoining && (
                                         <>
@@ -2516,7 +2516,7 @@
                                 <div className="flex-1 p-4 overflow-y-auto no-scrollbar flex flex-col gap-3">
                                     {categoryVoters[viewingVotersFor]?.map(player => (
                                         <div key={player.id} className="flex items-center gap-3 bg-white/5 px-4 h-[58px] rounded-xl border border-transparent flex-shrink-0">
-                                            <PlayerAvatar name={player.name} className="w-7 h-7 rounded-full flex-shrink-0" />
+                                            <PlayerAvatar name={player.name} className="w-7 h-7 flex-shrink-0" />
                                             <div className="font-bold text-white/90 truncate text-base">{player.name}</div>
                                         </div>
                                     ))}
@@ -2853,7 +2853,7 @@
                                                             <FaIcon name={p.id === lobbyData.hostId ? 'icon-crown' : 'icon-user-secret'} className={p.id === lobbyData.hostId ? 'text-yellow-400 text-sm drop-shadow-md' : 'text-white/20 text-sm'} />
                                                         </div>
                                                     )}
-                                                    <PlayerAvatar name={p.name} className="w-7 h-7 rounded-full flex-shrink-0"/>
+                                                    <PlayerAvatar name={p.name} className="w-7 h-7 flex-shrink-0"/>
                                                     <span className={`font-bold truncate ${p.id === user.uid ? 'text-white' : 'text-white/80'}`}>{p.name}</span>
                                                     
                                                     {(lobbyData.gameState === 'reveal' || lobbyData.gameState === 'turnOrder') && (
@@ -4015,7 +4015,7 @@
                                     <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-brand-500/20 text-brand-400 font-display font-bold text-sm rounded-lg border border-brand-500/20">
                                         {index + 1}
                                     </div>
-                                    <PlayerAvatar name={player.name} className="w-7 h-7 rounded-full flex-shrink-0" />
+                                    <PlayerAvatar name={player.name} className="w-7 h-7 flex-shrink-0" />
                                     <div className="font-bold text-white/90 truncate">{player.name}</div>
                                 </div>
                             ))}
@@ -4461,7 +4461,7 @@
                                                     maxLength="25"
                                                     className="flex-1 bg-transparent px-5 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none placeholder:text-white/20 font-display font-semibold text-lg text-white min-w-0"
                                                 />
-                                                {newPlayerName.trim() && <PlayerAvatar name={newPlayerName.trim()} className="w-8 h-8 rounded-full" />}
+                                                {newPlayerName.trim() && <PlayerAvatar name={newPlayerName.trim()} className="w-8 h-8" />}
                                             </div>
                                             
                                             <div className={`grid transition-all duration-300 ease-in-out relative z-0 ${playerError ? 'grid-rows-[1fr] opacity-100 mt-2' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
@@ -4516,7 +4516,7 @@
                                             onTouchStart={() => handlePlayerPress(p)}
                                             onTouchEnd={handlePlayerRelease}
                                         >
-                                            <PlayerAvatar name={p.name} className="w-7 h-7 rounded-full flex-shrink-0" />
+                                            <PlayerAvatar name={p.name} className="w-7 h-7 flex-shrink-0" />
                                             <span className={`flex-1 min-w-0 truncate font-bold ${p.audioData ? 'text-brand-200' : 'text-white/80'}`}>
                                                 {p.name}
                                             </span>
@@ -4926,8 +4926,7 @@
 
                 return (
                     <div className="flex flex-col items-center justify-center h-full text-center p-8 animate-slide-up relative z-10">
-                        <div className="w-32 h-32 rounded-full flex items-center justify-center mb-10 relative">
-                            <div className="absolute inset-0 bg-brand-500/20 blur-2xl rounded-full animate-pulse-slow"></div>
+                        <div className="w-32 h-32 rounded-[2rem] flex items-center justify-center mb-10 relative">
                             <div className="glass-panel w-full h-full rounded-[2rem] flex items-center justify-center border border-white/10 overflow-hidden">
                                 <img 
                                     src={avatarUrl} 
@@ -5118,7 +5117,7 @@
                                             <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-brand-500/20 text-brand-400 font-display font-bold text-sm rounded-lg border border-brand-500/20">
                                                 {index + 1}
                                             </div>
-                                            <PlayerAvatar name={player.name} className="w-7 h-7 rounded-full flex-shrink-0" />
+                                            <PlayerAvatar name={player.name} className="w-7 h-7 flex-shrink-0" />
                                             <span className="font-bold text-white/80 truncate">{player.name}</span>
                                         </div>
                                     ))}
@@ -5528,7 +5527,7 @@
                 if (!player) return <span className="font-bold text-white truncate">Unknown</span>;
                 return (
                     <div className="flex items-center gap-3">
-                        <PlayerAvatar name={player.name} className="w-6 h-6 rounded-full" />
+                        <PlayerAvatar name={player.name} className="w-6 h-6" />
                         <span className="font-bold text-white truncate text-lg">{player.name}</span>
                     </div>
                 );
@@ -5588,7 +5587,7 @@
                                             {lobbyPlayers.map(player => (
                                                 <div key={player.id} className="flex items-center justify-between bg-white/5 px-4 py-3 rounded-xl border border-transparent flex-shrink-0">
                                                     <div className="flex items-center gap-3 truncate">
-                                                        <PlayerAvatar name={player.name} className="w-7 h-7 rounded-full flex-shrink-0"/>
+                                                        <PlayerAvatar name={player.name} className="w-7 h-7 flex-shrink-0"/>
                                                         <span className="font-bold text-white/80 truncate">{player.name}</span>
                                                     </div>
                                                     <div className="flex items-center justify-center flex-shrink-0">
@@ -5616,7 +5615,7 @@
                                                 <div className={`w-6 h-6 flex-shrink-0 rounded-full flex items-center justify-center border-2 transition-colors ${selectedVotes.includes(player.id) ? 'bg-brand-500 border-brand-500' : 'border-white/20'}`}>
                                                     {selectedVotes.includes(player.id) && <FaIcon name="icon-check" className=" text-xs text-white" />}
                                                 </div>
-                                                <PlayerAvatar name={player.name} className="w-8 h-8 rounded-full flex-shrink-0" />
+                                                <PlayerAvatar name={player.name} className="w-8 h-8 flex-shrink-0" />
                                                 <span className={`font-bold text-lg truncate ${selectedVotes.includes(player.id) ? 'text-white' : 'text-white/80'}`}>{player.name}</span>
                                             </button>
                                         ))}
@@ -5783,7 +5782,7 @@
                                                 {lobbyData.votingRecord.map((record, index) => (
                                                     <div key={index} className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent flex-shrink-0">
                                                         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                                                            <PlayerAvatar name={record.voterName} className="w-7 h-7 rounded-full flex-shrink-0" />
+                                                            <PlayerAvatar name={record.voterName} className="w-7 h-7 flex-shrink-0" />
                                                             <span className="font-bold text-white/80 truncate text-sm">{record.voterName}</span>
                                                         </div>
                                                         <div className="text-white/30 text-sm flex-shrink-0 flex items-center justify-center px-1">
@@ -5791,7 +5790,7 @@
                                                         </div>
                                                         <div className="flex items-center justify-end gap-2 sm:gap-3 min-w-0">
                                                             <span className={`font-bold truncate text-sm text-right ${record.votedForName === 'No Vote' ? 'text-white/40' : 'text-white'}`}>{record.votedForName}</span>
-                                                            {record.votedForName !== 'No Vote' && <PlayerAvatar name={record.votedForName} className="w-7 h-7 rounded-full flex-shrink-0" />}
+                                                            {record.votedForName !== 'No Vote' && <PlayerAvatar name={record.votedForName} className="w-7 h-7 flex-shrink-0" />}
                                                         </div>
                                                     </div>
                                                 ))}
