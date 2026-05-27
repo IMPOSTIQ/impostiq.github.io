@@ -83,7 +83,6 @@
         .blob {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
             opacity: 0.4;
             z-index: 0;
             animation: blob-bounce 10s infinite ease-in-out;
@@ -171,17 +170,16 @@
 
                         <div style="position: fixed; inset: 0; background-color: #020617; z-index: 9999999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; font-family: 'Inter', sans-serif; color: #f8fafc; user-select: none;">
                             
-                            <div style="position: absolute; inset: 0; pointer-events: none; z-index: 0;">
-                                <div style="position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; background-color: rgba(124, 58, 237, 0.3); top: -20%; left: -20%; width: 60%; height: 60%; animation: uf-blob 10s infinite ease-in-out;"></div>
-                                <div style="position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; background-color: rgba(8, 145, 178, 0.3); bottom: -20%; right: -20%; width: 60%; height: 60%; animation: uf-blob 10s infinite ease-in-out; animation-delay: 2s;"></div>
+                            <div style="position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;">
+                                <div style="position: absolute; border-radius: 50%; opacity: 0.4; background-color: rgba(124, 58, 237, 0.3); top: -20%; left: -20%; width: 60%; height: 60%; animation: uf-blob 10s infinite ease-in-out;"></div>
+                                <div style="position: absolute; border-radius: 50%; opacity: 0.4; background-color: rgba(8, 145, 178, 0.3); bottom: -20%; right: -20%; width: 60%; height: 60%; animation: uf-blob 10s infinite ease-in-out; animation-delay: 2s;"></div>
+                                <div style="position: absolute; inset: 0; backdrop-filter: blur(80px); -webkit-backdrop-filter: blur(80px); transform: translateZ(0);"></div>
                             </div>
 
                             <div style="position: relative; z-index: 10; width: 100%; max-width: 24rem; display: flex; flex-direction: column; align-items: center; animation: uf-fade 0.5s ease-out forwards;">
                                 
-                                <div style="position: relative; width: 10rem; height: 10rem; display: flex; justify-content: center; z-index: 20; margin-bottom: -0.625rem;">
-                                    <div style="position: absolute; inset: 0; background-color: rgba(139, 92, 246, 0.2); filter: blur(40px); border-radius: 50%; animation: uf-pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;"></div>
-                                    
-                                    <img src="https://em-content.zobj.net/source/microsoft-teams/364/detective_medium-skin-tone_1f575-1f3fd_1f3fd.png" 
+                                <div style="position: relative; width: 10rem; height: 10rem; display: flex; justify-content: center; z-index: 20; margin-bottom: -0.625rem;">                                    
+                                    <img src="https://em-content.zobj.net/source/microsoft-teams/363/detective_light-skin-tone_1f575-1f3fb_1f3fb.png" 
                                          class="uf-fade-emoji" style="position: absolute; bottom: 0; width: 10rem; height: 10rem; object-fit: contain; object-position: bottom; filter: drop-shadow(0 25px 25px rgba(0,0,0,0.5)); transition: opacity 1s; opacity: 1;" 
                                          draggable="false" alt="Detective">
                                          
@@ -205,7 +203,7 @@
                                     </h1>
                                     
                                     <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem; font-weight: 500; line-height: 1.625; margin-bottom: 1rem;">
-                                        You are currently accessing a cloned or unauthorized version of Impostiq. To ensure security, access to the latest features, and to support the original creators, please play on the official platform by <strong style="color: white; font-weight: 700;">Fillabrona</strong>.
+                                        You are currently accessing a cloned or unauthorized version of Impostiq. To ensure security, access to the latest features, and to support the original creator, please play on the official platform by <strong style="color: white; font-weight: 700;">Fillabrona</strong>.
                                     </p>
 
                                     <p style="color: rgba(255,255,255,0.4); font-size: 0.75rem; font-weight: 500; line-height: 1.625; margin-bottom: 2rem;">
@@ -242,17 +240,16 @@
 </head>
 <body class="min-h-[100dvh] flex flex-col items-center justify-center p-6 relative">
 
-    <div class="fixed inset-0 bg-[#020617] -z-10"></div>
-    <div class="absolute inset-0 pointer-events-none z-0">
+    <div class="fixed inset-0 bg-[#020617] z-0"></div>
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div class="blob bg-brand-600/30 top-[-20%] left-[-20%] w-[60%] h-[60%]"></div>
         <div class="blob bg-cyan-600/30 bottom-[-20%] right-[-20%] w-[60%] h-[60%]" style="animation-delay: 2s;"></div>
+        <div class="absolute inset-0 backdrop-blur-[80px] transform-gpu"></div>
     </div>
 
     <div class="relative z-10 w-full max-w-sm flex flex-col items-center animate-fadeIn">
         
         <div class="relative w-40 h-40 flex justify-center z-20 -mb-2.5">
-            <div class="absolute inset-0 bg-brand-500/20 blur-2xl rounded-full animate-pulse-slow"></div>
-            
             <img src="https://em-content.zobj.net/source/microsoft-teams/363/man-construction-worker-medium-dark-skin-tone_1f477-1f3fe-200d-2642-fe0f.png" 
                  class="fade-emoji absolute bottom-0 w-40 h-40 object-contain object-bottom drop-shadow-2xl transition-opacity duration-1000 opacity-100" 
                  draggable="false" alt="Worker">
