@@ -323,7 +323,6 @@
 		.blob {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
             opacity: 0.4;
             z-index: 0;
             animation: blob-bounce 10s infinite ease-in-out;
@@ -357,6 +356,15 @@
             33% { transform: translate(10%, 15%) scale(0.95) rotate(90deg); border-radius: 60% 40% 70% 30% / 40% 70% 30% 60%; }
             66% { transform: translate(-15%, -10%) scale(1) rotate(180deg); border-radius: 40% 60% 30% 70% / 70% 40% 60% 30%; }
             100% { transform: translate(0%, 0%) scale(1.05) rotate(360deg); border-radius: 30% 70% 40% 60% / 60% 30% 70% 40%; }
+        }
+
+        .noise-overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.05;
+            z-index: 0;
         }
         
         .subtle-shine-container {
@@ -529,16 +537,15 @@
 
                         <div style="position: fixed; inset: 0; background-color: #020617; z-index: 9999999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; font-family: 'Inter', sans-serif; color: #f8fafc; user-select: none;">
                             
-                            <div style="position: absolute; inset: 0; pointer-events: none; z-index: 0;">
-                                <div style="position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; background-color: rgba(124, 58, 237, 0.3); top: -20%; left: -20%; width: 60%; height: 60%; animation: uf-blob 10s infinite ease-in-out;"></div>
-                                <div style="position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; background-color: rgba(8, 145, 178, 0.3); bottom: -20%; right: -20%; width: 60%; height: 60%; animation: uf-blob 10s infinite ease-in-out; animation-delay: 2s;"></div>
+                            <div style="position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;">
+                                <div style="position: absolute; border-radius: 50%; opacity: 0.4; background-color: rgba(124, 58, 237, 0.3); top: -20%; left: -20%; width: 60%; height: 60%; animation: uf-blob 10s infinite ease-in-out;"></div>
+                                <div style="position: absolute; border-radius: 50%; opacity: 0.4; background-color: rgba(8, 145, 178, 0.3); bottom: -20%; right: -20%; width: 60%; height: 60%; animation: uf-blob 10s infinite ease-in-out; animation-delay: 2s;"></div>
+                                <div style="position: absolute; inset: 0; backdrop-filter: blur(80px); -webkit-backdrop-filter: blur(80px); transform: translateZ(0);"></div>
                             </div>
 
                             <div style="position: relative; z-index: 10; width: 100%; max-width: 24rem; display: flex; flex-direction: column; align-items: center; animation: uf-fade 0.5s ease-out forwards;">
                                 
-                                <div style="position: relative; width: 10rem; height: 10rem; display: flex; justify-content: center; z-index: 20; margin-bottom: -0.625rem;">
-                                    <div style="position: absolute; inset: 0; background-color: rgba(139, 92, 246, 0.2); filter: blur(40px); border-radius: 50%; animation: uf-pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;"></div>
-                                    
+                                <div style="position: relative; width: 10rem; height: 10rem; display: flex; justify-content: center; z-index: 20; margin-bottom: -0.625rem;">                                    
                                     <img src="https://em-content.zobj.net/source/microsoft-teams/363/detective_light-skin-tone_1f575-1f3fb_1f3fb.png" 
                                          class="uf-fade-emoji" style="position: absolute; bottom: 0; width: 10rem; height: 10rem; object-fit: contain; object-position: bottom; filter: drop-shadow(0 25px 25px rgba(0,0,0,0.5)); transition: opacity 1s; opacity: 1;" 
                                          draggable="false" alt="Detective">
@@ -1039,9 +1046,10 @@
         
         const OfflineScreen = () => (
             <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-6 bg-slate-950 text-center animate-fadeIn select-none overflow-hidden">
-                <div className="absolute inset-0 pointer-events-none">
-                     <div className="blob bg-red-600/10 top-[-20%] left-[-20%] w-[80%] h-[80%] blur-[100px]"></div>
-                     <div className="blob bg-orange-600/10 bottom-[-20%] right-[-20%] w-[80%] h-[80%] blur-[100px] animation-delay-2000"></div>
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                     <div className="blob bg-red-600/10 top-[-20%] left-[-20%] w-[80%] h-[80%]"></div>
+                     <div className="blob bg-orange-600/10 bottom-[-20%] right-[-20%] w-[80%] h-[80%] animation-delay-2000"></div>
+                     <div className="absolute inset-0 backdrop-blur-[100px] transform-gpu"></div>
                 </div>
 
                 <div className="relative z-10 w-full max-w-sm glass-panel p-8 rounded-[2.5rem] border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-slide-up">
@@ -1567,11 +1575,9 @@
                     <div className="relative w-full max-w-sm rounded-[2rem] border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-slide-up flex flex-col overflow-hidden bg-[#040716]">
                         
                         <div className="absolute top-0 left-0 w-full h-[70%] z-0 pointer-events-none" style={{
-                            backgroundImage: "url('https://i.ibb.co/JwRBsVbQ/sponsor-backg.png')",
+                            backgroundImage: "linear-gradient(to bottom, rgba(4, 7, 22, 0) 0%, rgba(4, 7, 22, 0) 30%, #040716 95%), url('https://i.ibb.co/JwRBsVbQ/sponsor-backg.png')",
                             backgroundSize: "cover",
                             backgroundPosition: "top center",
-                            maskImage: "linear-gradient(to bottom, #000 0%, #000 20%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.4) 75%, rgba(0,0,0,0) 100%)",
-                            WebkitMaskImage: "linear-gradient(to bottom, #000 0%, #000 20%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.4) 75%, rgba(0,0,0,0) 100%)",
                             opacity: 0.95
                         }}></div>
 
@@ -3259,9 +3265,8 @@
                     
                     <div className="relative z-10 flex flex-col items-center w-full max-w-sm">
                         <div className="w-28 h-28 mb-8 relative flex items-center justify-center">
-                            <div className="absolute inset-0 bg-brand-500/20 rounded-full animate-pulse-slow blur-xl"></div>
                             <div 
-								className="w-24 h-24 animate-float bg-contain bg-center bg-no-repeat" 
+								className="w-24 h-24 bg-contain bg-center bg-no-repeat" 
 								style={{ backgroundImage: "url('https://em-content.zobj.net/source/microsoft-teams/400/disguised-face_1f978.png')" }}
 							></div>
                         </div>
@@ -7387,11 +7392,11 @@
             return (
                 <div className="w-full h-full text-slate-200 font-sans selection:bg-brand-500/30">
                     {!isOnlineStatus && <OfflineScreen />} 
-                    
-                    <div className="fixed inset-0 bg-[#020617] -z-10"></div>
-                    <div className="absolute inset-0 pointer-events-none">
+                    <div className="fixed inset-0 bg-[#020617] -z-20"></div>
+                    <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
                         <div className="blob bg-brand-600/30 top-[-20%] left-[-20%] w-[60%] h-[60%]"></div>
                         <div className="blob bg-cyan-600/30 bottom-[-20%] right-[-20%] w-[60%] h-[60%] animation-delay-2000"></div>
+                        <div className="absolute inset-0 backdrop-blur-[80px] transform-gpu"></div>
                     </div>
                     {showHowToPlay && <HowToPlayModal onClose={() => setShowHowToPlay(false)} />}
                     {showSponsorModal && <SponsorModal onClose={() => setShowSponsorModal(false)} audioManager={audioManagerRef.current} />}
