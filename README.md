@@ -70,7 +70,16 @@
 <ul>
   <li><strong>Pass and Play:</strong> The screen will tell you who to pass the phone to. They tap "Verify Identity" to secretly check their role.</li>
   <li><strong>Adjustable Timers:</strong> Set the timer anywhere from 1 to 15 minutes, or turn it off entirely for "Untimed Mode".</li>
-  <li><strong>Custom Voice Notes:</strong> When setting up players, the host can tap the <picture><img draggable="false" src="https://em-content.zobj.net/source/microsoft-teams/337/studio-microphone_1f399-fe0f.png" width="20" align="absmiddle"></picture> microphone icon to record custom <em>"Hey, it's your turn!"</em> voice notes that play automatically when the phone is passed.</li>
+  <li>
+  <strong>Custom Voice Notes:</strong> When setting up players, the host can tap the 
+  <picture>
+    <img draggable="false" 
+         src="https://i.ibb.co/sJ1YnH5n/micon.png" 
+         width="13" 
+         style="vertical-align: middle;">
+  </picture> 
+  microphone icon to record custom <em>"Hey, it's your turn!"</em> voice notes that play automatically when the phone is passed.
+</li>
 </ul>
 
 <br>
