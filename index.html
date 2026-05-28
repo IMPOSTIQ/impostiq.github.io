@@ -1779,9 +1779,9 @@
                             <button 
                                 onClick={handleDownloadApk} 
                                 disabled={isDownloading}
-                                className="relative w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 active:scale-90 transition-transform group disabled:cursor-wait"
+                                className="relative w-12 h-12 flex items-center justify-center bg-white/5 rounded-full hover:bg-white/10 active:scale-90 transition-all group disabled:cursor-wait"
                             >
-                                <FaIcon name="icon-android" className=" text-lg" />
+                                <FaIcon name="icon-android" className="text-white opacity-50 group-hover:opacity-100 transition-opacity text-lg" />
                                 <div className={`absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-800 text-white text-xs rounded-md px-3 py-2 shadow-lg z-20 pointer-events-none transition-opacity duration-300 ease-in-out ${isDownloading ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
                                     {isDownloading ? "Downloading APK..." : "Download App"}
                                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-b-4 border-b-slate-800"></div>
@@ -3695,10 +3695,19 @@
                 </svg>
             ),
             "icon-android": (props) => (
-                <svg shapeRendering="geometricPrecision" viewBox="0 0 25 25" width="1.1em" {...props}>
-                    <path fill="currentColor" d="M17.523,15.342c-0.552,0-1-0.447-1-0.999s0.447-1,0.999-1c0.552,0,1,0.447,1,0.999C18.522,14.894,18.075,15.341,17.523,15.342M6.477,15.342c-0.552,0-1-0.447-1-0.999c0-0.552,0.447-1,0.999-1c0.552,0,1,0.447,1,0.999C7.476,14.894,7.029,15.341,6.477,15.342M17.881,9.322l1.997-3.459c0.115-0.199,0.047-0.453-0.152-0.568c-0.199-0.115-0.453-0.047-0.568,0.152l0,0l-2.022,3.503C15.59,8.244,13.853,7.851,12,7.851S8.41,8.244,6.863,8.949L4.841,5.447C4.726,5.248,4.472,5.18,4.273,5.294C4.075,5.409,4.006,5.663,4.121,5.862l0,0l1.997,3.46c-3.43,1.865-5.775,5.337-6.119,9.44h24C23.656,14.659,21.311,11.187,17.881,9.322" />
+                <svg shapeRendering="geometricPrecision" viewBox="0 0 512 512" width="1.4em" {...props}>
+                    <g 
+                        transform="translate(0,512) scale(0.1,-0.1)" 
+                        fill="currentColor" 
+                        stroke="currentColor" 
+                        strokeWidth="115" 
+                        strokeLinejoin="round" 
+                        strokeLinecap="round"
+                    >
+                        <path d="M765 4033c-103-54-151-171-111-267 8-19 131-198 273-398 142-199 262-368 266-375 5-8-34-55-110-130-188-188-328-385-439-618-138-291-221-651-212-928 3-105 5-117 30-153 15-21 44-50 65-64l37-25 1996 0 1996 0 37 25c21 14 50 43 65 64 27 39 27 40 26 205-4 546-243 1094-656 1504-70 69-106 112-101 120 4 6 124 176 266 375 142 200 265 379 273 398 40 95-9 214-107 265-74 37-193 17-245-42-12-13-139-190-284-394-144-203-263-371-264-372-1-2-31 13-67 32-164 87-425 169-639 202-157 23-445 23-599-1-222-34-469-112-640-202-36-18-66-33-67-31-1 1-120 169-264 372-145 204-272 381-284 394-50 56-175 79-241 44zm2022-998c262-37 525-142 736-292 94-68 277-240 346-328 131-164 236-358 300-550 39-118 81-298 81-349l0-26-1690 0-1690 0 0 26c0 44 39 222 72 323 92 288 239 523 460 736 134 129 238 206 380 280 184 96 352 151 543 180 122 18 338 18 462 0zM1852 2417c-154-56-192-261-67-365 138-113 345-16 345 163 0 145-144 250-278 202zM3132 2417c-154-56-192-261-67-365 138-113 345-16 345 163 0 145-144 250-278 202z" />
+                    </g>
                 </svg>
-            ), 
+            ),
             "icon-list-ul": (props) => (
                 <svg shapeRendering="geometricPrecision" viewBox="0 0 24 24" width="1em" {...props}>
                     <path fill="currentColor" d="M24,3.5c0,.83-.67,1.5-1.5,1.5H1.5c-.83,0-1.5-.67-1.5-1.5s.67-1.5,1.5-1.5H22.5c.83,0,1.5,.67,1.5,1.5ZM6.5,20H1.5c-.83,0-1.5,.67-1.5,1.5s.67,1.5,1.5,1.5H6.5c.83,0,1.5-.67,1.5-1.5s-.67-1.5-1.5-1.5ZM14.5,11H1.5c-.83,0-1.5,.67-1.5,1.5s.67,1.5,1.5,1.5H14.5c.83,0,1.5-.67,1.5-1.5s-.67-1.5-1.5-1.5Z" />
