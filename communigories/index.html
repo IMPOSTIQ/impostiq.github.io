@@ -545,7 +545,7 @@
 
         const FaIcon = ({ name, className = "" }) => {
             const SvgComponent = FLATICONS[name];
-            if (SvgComponent) return <SvgComponent className={`fill-current inline-block shrink-0 antialiased ${className}`.trim()}  />;
+            if (SvgComponent) return <SvgComponent className={`fill-current inline-block shrink-0 antialiased transform-gpu ${className}`.trim()}  />;
             return null;
         };
 
