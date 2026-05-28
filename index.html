@@ -3775,7 +3775,9 @@
             
             if (SvgComponent) {
                 const residualClasses = (typeof name === 'string' ? name.replace(/icon-(solid|brands|regular)|fab/g, '').replace(iconKey, '') : '').trim();
-                return <SvgComponent className={`fill-current inline-block shrink-0 antialiased ${residualClasses} ${sizeClass} ${className}`.trim()} />;
+                return <SvgComponent 
+					className={`fill-current inline-block shrink-0 antialiased transform-gpu ${residualClasses} ${sizeClass} ${className}`.trim()} 
+				/>;
             }
 
             return <i className={`icon-solid ${name} ${sizeClass} ${className}`}></i>;
