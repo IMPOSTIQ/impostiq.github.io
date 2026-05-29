@@ -633,7 +633,7 @@
             <li><strong>Main Menu Flow & Buttons:</strong> 
                 <ul>
                     <li>Top-Right: Volume/Mute toggle (custom SVG of a speaker with/without soundwaves). State saves permanently to localStorage.</li>
-                    <li>Top-Left: Discord logo button, a Donate button (SVG of two hands holding a heart, tooltip: "Support Impostiq"), and a Communigories button (SVG of 4 blobs/blocks, usually associated with apps, tooltip: "Discover Custom Categories").</li>
+                    <li>Top-Left: Discord logo button, a Donate button (SVG of two hands holding a heart, tooltip: "Support Impostiq"), and a Communigories button (SVG of 4 blobs/blocks, usually associated with apps, tooltip: "Discover & Create Categories").</li>
                     <li>Top-Left (Conditional): Android logo button. This *only* appears if the user is on an Android device but NOT inside a WebView or standalone PWA. Tooltip: "Download App". Clicking it downloads the APK.</li>
                     <li>Center Buttons: "PLAY WITH FRIENDS" (SVG of a globe/internet with a search magnifying glass) and "PLAY ON THIS DEVICE" (SVG of a mobile smartphone screen).</li>
                     <li>Below Center: "How to Play" text button (accompanied by a circular question mark SVG icon).</li>
@@ -1771,7 +1771,7 @@
                         <button onClick={() => { audioManager.playSound('uiClick'); audioManager.playMusic('communigoriesMusic'); onShowCommunigories(); }} className="relative w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all group">
                             <FaIcon name="icon-communigories" className="" />
                             <div className="absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-800 text-white text-xs rounded-md px-3 py-2 shadow-lg z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
-                                Discover Custom Categories
+                                Discover & Create Categories
                                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-b-4 border-b-slate-800"></div>
                             </div>
                         </button>
@@ -3397,11 +3397,181 @@
                     <path fill="currentColor" d="m11.57 20.99c-4.119-.193-7.465-3.124-8.34-6.99h3.42c.134.979.352 1.969.678 2.966.255.795 1.125 1.217 1.892.96.787-.257 1.217-1.104.96-1.892-.224-.686-.392-1.365-.506-2.034h.326c.828 0 1.5-.671 1.5-1.5s-.672-1.5-1.5-1.5h-.454c.249-2.842 1.497-5.346 2.454-6.894.712 1.149 1.583 2.82 2.085 4.768.203.809 1.046 1.286 1.827 1.078.802-.207 1.284-1.025 1.077-1.827-.453-1.758-1.148-3.306-1.823-4.543 2.991 1.136 5.27 3.828 5.741 7.13.114.824.894 1.392 1.697 1.272.82-.117 1.391-.877 1.273-1.697-.837-5.864-5.943-10.287-11.877-10.287-6.603.014-12.004 5.374-12 12 .003 6.355 5.043 11.756 11.501 11.988.796 0 1.46-.626 1.497-1.43.039-.828-.601-1.53-1.428-1.569zm-2.74-17.402c-1.023 1.875-2.084 4.469-2.289 7.412h-3.482c.379-3.408 2.669-6.239 5.771-7.412zm14.731 17.852-2.145-2.145c.361-.691.584-1.463.584-2.295 0-2.757-2.243-5-5-5s-5 2.243-5 5 2.243 5 5 5c.831 0 1.604-.223 2.295-.584l2.145 2.145c.293.293.677.439 1.061.439s.768-.146 1.061-.439c.586-.585.586-1.536 0-2.121zm-6.561-2.439c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2z" />
                 </svg>
             ), 
-            "icon-communigories": (props) => (
-                <svg viewBox="0 0 512 512" width="1em" {...props}>
-                    <path fill="currentColor" d="M85.333,0h64c47.128,0,85.333,38.205,85.333,85.333v64c0,47.128-38.205,85.333-85.333,85.333h-64 C38.205,234.667,0,196.462,0,149.333v-64C0,38.205,38.205,0,85.333,0z M85.333,277.333h64c47.128,0,85.333,38.205,85.333,85.333v64c0,47.128-38.205,85.333-85.333,85.333h-64 C38.205,512,0,473.795,0,426.667v-64C0,315.538,38.205,277.333,85.333,277.333z M362.667,277.333h64c47.128,0,85.333,38.205,85.333,85.333v64C512,473.795,473.795,512,426.667,512h-64 c-47.128,0-85.333-38.205-85.333-85.333v-64C277.333,315.538,315.538,277.333,362.667,277.333z M298.667,149.333h64v64c0,11.782,9.551,21.333,21.333,21.333c11.782,0,21.333-9.551,21.333-21.333v-64h64 c11.782,0,21.333-9.551,21.333-21.333s-9.551-21.333-21.333-21.333h-64v-64c0-11.782-9.551-21.333-21.333-21.333 c-11.782,0-21.333,9.551-21.333,21.333v64h-64c-11.782,0-21.333,9.551-21.333,21.333S286.885,149.333,298.667,149.333z" />
-                </svg>
-            ),
+			"icon-communigories": (props) => {
+                const [activeCorner, setActiveCorner] = useState('tr');
+                const [isPlusActive, setIsPlusActive] = useState(false);
+                const [pulseTrigger, setPulseTrigger] = useState(false);
+                const maskId = React.useId();
+
+                useEffect(() => {
+					const corners = ['tl', 'tr', 'bl', 'br'];
+					
+					const interval = setInterval(() => {
+						setIsPlusActive(prev => {
+							const nextPlusActive = !prev;
+							
+							if (!nextPlusActive) {
+								setActiveCorner(current => {
+									const filtered = corners.filter(c => c !== current);
+									return filtered[Math.floor(Math.random() * filtered.length)];
+								});
+							}
+							
+							setPulseTrigger(true);
+							const t = setTimeout(() => setPulseTrigger(false), 600);
+							return nextPlusActive;
+						});
+					}, 2500); 
+
+					return () => clearInterval(interval);
+				}, []);
+
+				return (
+					<svg viewBox="0 0 512 512" width="1em" style={{ overflow: 'visible' }} {...props}>
+						<style dangerouslySetInnerHTML={{__html: `
+							svg {
+								overflow: visible !important;
+							}
+							
+							@keyframes tlBounce {
+								0%, 100% { transform: translate(0, 0); }
+								45% { transform: translate(6px, 6px); }
+								80% { transform: translate(-0.5px, -0.5px); }
+							}
+							@keyframes trBounce {
+								0%, 100% { transform: translate(0, 0); }
+								45% { transform: translate(-6px, 6px); }
+								80% { transform: translate(0.5px, -0.5px); }
+							}
+							@keyframes blBounce {
+								0%, 100% { transform: translate(0, 0); }
+								45% { transform: translate(6px, -6px); }
+								80% { transform: translate(-0.5px, 0.5px); }
+							}
+							@keyframes brBounce {
+								0%, 100% { transform: translate(0, 0); }
+								45% { transform: translate(-6px, -6px); }
+								80% { transform: translate(0.5px, 0.5px); }
+							}
+							
+							.bounce-tl { animation: tlBounce 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+							.bounce-tr { animation: trBounce 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+							.bounce-bl { animation: blBounce 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+							.bounce-br { animation: brBounce 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+							
+							.square-transition {
+								transform-origin: 0 0;
+								transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1) 120ms, opacity 0.28s ease-out 120ms;
+							}
+							
+							.plus-transition {
+								transform-origin: 0 0;
+								transition: transform 0.38s cubic-bezier(0.34, 1.3, 0.64, 1) 120ms, opacity 0.28s ease-out 120ms;
+							}
+						`}} />
+						
+						<g className={pulseTrigger ? "bounce-tl" : ""}>
+							<g transform="translate(117.33, 117.33)">
+								<g 
+									className="square-transition" 
+									style={{ 
+										transform: (activeCorner === 'tl' && isPlusActive) ? 'scale(0)' : 'scale(1)',
+										opacity: (activeCorner === 'tl' && isPlusActive) ? 0 : 1
+									}}
+								>
+									<path transform="translate(-117.33, -117.33)" fill="currentColor" d="M85.333,0h64c47.128,0,85.333,38.205,85.333,85.333v64c0,47.128-38.205,85.333-85.333,85.333h-64 c-47.128,0-85.333-38.205-85.333-85.333v-64C0,38.205,38.205,0,85.333,0z" />
+								</g>
+							</g>
+							<g transform="translate(117.33, 117.33)">
+								<g 
+									className="plus-transition" 
+									style={{ 
+										transform: (activeCorner === 'tl' && isPlusActive) ? 'scale(1)' : 'scale(0)',
+										opacity: (activeCorner === 'tl' && isPlusActive) ? 1 : 0
+									}}
+								>
+									<path fill="currentColor" d="M -28,-89 a 28,28 0 0 1 56,0 v 51 a 10,10 0 0 0 10,10 h 51 a 28,28 0 0 1 0,56 h -51 a 10,10 0 0 0 -10,10 v 51 a 28,28 0 0 1 -56,0 v -51 a 10,10 0 0 0 -10,-10 h -51 a 28,28 0 0 1 0,-56 h 51 a 10,10 0 0 0 10,-10 v -51 Z" />
+								</g>
+							</g>
+						</g>
+						
+						<g className={pulseTrigger ? "bounce-tr" : ""}>
+							<g transform="translate(394.67, 117.33)">
+								<g 
+									className="square-transition" 
+									style={{ 
+										transform: (activeCorner === 'tr' && isPlusActive) ? 'scale(0)' : 'scale(1)',
+										opacity: (activeCorner === 'tr' && isPlusActive) ? 0 : 1
+									}}
+								>
+									<path transform="translate(-394.67, -117.33)" fill="currentColor" d="M362.667,0h64c47.128,0,85.333,38.205,85.333,85.333v64c0,47.128-38.205,85.333-85.333,85.333h-64 c-47.128,0-85.333-38.205-85.333-85.333v-64C277.333,38.205,315.538,0,362.667,0z" />
+								</g>
+							</g>
+							<g transform="translate(394.67, 117.33)">
+								<g 
+									className="plus-transition" 
+									style={{ 
+										transform: (activeCorner === 'tr' && isPlusActive) ? 'scale(1)' : 'scale(0)',
+										opacity: (activeCorner === 'tr' && isPlusActive) ? 1 : 0
+									}}
+								>
+									<path fill="currentColor" d="M -28,-89 a 28,28 0 0 1 56,0 v 51 a 10,10 0 0 0 10,10 h 51 a 28,28 0 0 1 0,56 h -51 a 10,10 0 0 0 -10,10 v 51 a 28,28 0 0 1 -56,0 v -51 a 10,10 0 0 0 -10,-10 h -51 a 28,28 0 0 1 0,-56 h 51 a 10,10 0 0 0 10,-10 v -51 Z" />
+								</g>
+							</g>
+						</g>
+						
+						<g className={pulseTrigger ? "bounce-bl" : ""}>
+							<g transform="translate(117.33, 394.67)">
+								<g 
+									className="square-transition" 
+									style={{ 
+										transform: (activeCorner === 'bl' && isPlusActive) ? 'scale(0)' : 'scale(1)',
+										opacity: (activeCorner === 'bl' && isPlusActive) ? 0 : 1
+									}}
+								>
+									<path transform="translate(-117.33, -394.67)" fill="currentColor" d="M85.333,277.333h64c47.128,0,85.333,38.205,85.333,85.333v64c0,47.128-38.205,85.333-85.333,85.333h-64 C38.205,512,0,473.795,0,426.667v-64C0,315.538,38.205,277.333,85.333,277.333z" />
+								</g>
+							</g>
+							<g transform="translate(117.33, 394.67)">
+								<g 
+									className="plus-transition" 
+									style={{ 
+										transform: (activeCorner === 'bl' && isPlusActive) ? 'scale(1)' : 'scale(0)',
+										opacity: (activeCorner === 'bl' && isPlusActive) ? 1 : 0
+									}}
+								>
+									<path fill="currentColor" d="M -28,-89 a 28,28 0 0 1 56,0 v 51 a 10,10 0 0 0 10,10 h 51 a 28,28 0 0 1 0,56 h -51 a 10,10 0 0 0 -10,10 v 51 a 28,28 0 0 1 -56,0 v -51 a 10,10 0 0 0 -10,-10 h -51 a 28,28 0 0 1 0,-56 h 51 a 10,10 0 0 0 10,-10 v -51 Z" />
+								</g>
+							</g>
+						</g>
+						
+						<g className={pulseTrigger ? "bounce-br" : ""}>
+							<g transform="translate(394.67, 394.67)">
+								<g 
+									className="square-transition" 
+									style={{ 
+										transform: (activeCorner === 'br' && isPlusActive) ? 'scale(0)' : 'scale(1)',
+										opacity: (activeCorner === 'br' && isPlusActive) ? 0 : 1
+									}}
+								>
+									<path transform="translate(-394.67, -394.67)" fill="currentColor" d="M362.667,277.333h64c47.128,0,85.333,38.205,85.333,85.333v64C512,473.795,473.795,512,426.667,512h-64 c-47.128,0-85.333-38.205-85.333-85.333v-64C277.333,315.538,315.538,277.333,362.667,277.333z" />
+								</g>
+							</g>
+							<g transform="translate(394.67, 394.67)">
+								<g 
+									className="plus-transition" 
+									style={{ 
+										transform: (activeCorner === 'br' && isPlusActive) ? 'scale(1)' : 'scale(0)',
+										opacity: (activeCorner === 'br' && isPlusActive) ? 1 : 0
+									}}
+								>
+									<path fill="currentColor" d="M -28,-89 a 28,28 0 0 1 56,0 v 51 a 10,10 0 0 0 10,10 h 51 a 28,28 0 0 1 0,56 h -51 a 10,10 0 0 0 -10,10 v 51 a 28,28 0 0 1 -56,0 v -51 a 10,10 0 0 0 -10,-10 h -51 a 28,28 0 0 1 0,-56 h 51 a 10,10 0 0 0 10,-10 v -51 Z" />
+								</g>
+							</g>
+						</g>
+					</svg>
+				);
+			},
             "icon-mobile-screen": (props) => (
                 <svg viewBox="0 0 25 25" width="1em" {...props}>
                     <path fill="currentColor" d="M12,16.5v5c0,.83-.67,1.5-1.5,1.5H6.5c-.83,0-1.5-.67-1.5-1.5s.67-1.5,1.5-1.5h2.5v-2h-3.5c-3.03,0-5.5-2.47-5.5-5.5V6.5C0,3.47,2.47,1,5.5,1h11c2.51,0,4.7,1.7,5.33,4.13,.21,.8-.28,1.62-1.08,1.83-.8,.2-1.62-.28-1.83-1.08-.28-1.1-1.28-1.87-2.42-1.87H5.5c-1.38,0-2.5,1.12-2.5,2.5v6c0,1.38,1.12,2.5,2.5,2.5h5c.83,0,1.5,.67,1.5,1.5Zm12-3.5v7c0,2.21-1.79,4-4,4h-2c-2.21,0-4-1.79-4-4v-7c0-2.21,1.79-4,4-4h2c2.21,0,4,1.79,4,4Zm-3,0c0-.55-.45-1-1-1h-2c-.55,0-1,.45-1,1v7c0,.55,.45,1,1,1h2c.55,0,1-.45,1-1v-7Z" />
