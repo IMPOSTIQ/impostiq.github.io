@@ -1745,7 +1745,7 @@
                 <div className="h-[100dvh] flex flex-col items-center justify-center p-6 text-center relative overflow-hidden animate-fadeIn">
 
                     <div className="absolute top-6 right-6 z-20">
-                         <button id="mute-button" onClick={onMuteToggle} className="w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-md rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all">
+                         <button id="mute-button" onClick={onMuteToggle} className="w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all">
                             {isMuted ? (
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" className="w-5 h-5 fill-current">
                                     <path d="m23.707,22.293c.391.391.391,1.023,0,1.414-.195.195-.451.293-.707.293s-.512-.098-.707-.293L.293,1.707C-.098,1.316-.098.684.293.293S1.316-.098,1.707.293l4.628,4.628C8.142,2.461,10.839.757,13.828.207c.288-.056.593.025.82.215.229.19.36.472.36.769v12.404l1.688,1.688c1.806-1.817,1.803-4.763-.01-6.576-.391-.391-.391-1.023,0-1.414.391-.391,1.023-.391,1.414,0,2.592,2.592,2.596,6.808.01,9.404l1.44,1.44c3.316-3.481,3.266-9.011-.152-12.43-.391-.391-.391-1.023,0-1.414s1.023-.391,1.414,0c4.198,4.198,4.249,10.997.152,15.258l2.742,2.742ZM.009,10v4c0,2.757,2.243,5,5,5h1.269c1.807,2.502,4.53,4.237,7.551,4.793.06.011.12.017.181.017.232,0,.459-.081.64-.231.229-.19.36-.472.36-.769v-3.579L1.881,6.103C.74,7.02.009,8.426.009,10Z"/>
@@ -1757,18 +1757,18 @@
                             )}
                         </button>
                     </div>
-                    <div className="absolute top-6 left-6 z-20 flex gap-3">
-                        <button onClick={() => window.open("https://discord.gg/m9WrJxGKtr", "_blank")} className="w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-md rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all">
+                     <div className="absolute top-6 left-6 z-20 flex gap-3">
+                        <button onClick={() => window.open("https://discord.gg/m9WrJxGKtr", "_blank")} className="w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all">
                             <FaIcon name="icon-discord" className="" />
                         </button>
-                        <button onClick={() => { audioManager.playSound('uiClick'); onShowSponsor(); }} className="relative w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-md rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all group">
+                        <button onClick={() => { audioManager.playSound('uiClick'); onShowSponsor(); }} className="relative w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all group">
                             <FaIcon name="icon-donate" className="" />
                             <div className="absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-800 text-white text-xs rounded-md px-3 py-2 shadow-lg z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
                                 Support Impostiq
                                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-b-4 border-b-slate-800"></div>
                             </div>
                         </button>
-                        <button onClick={() => { audioManager.playSound('uiClick'); audioManager.playMusic('communigoriesMusic'); onShowCommunigories(); }} className="relative w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-md rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all group">
+                        <button onClick={() => { audioManager.playSound('uiClick'); audioManager.playMusic('communigoriesMusic'); onShowCommunigories(); }} className="relative w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all group">
                             <FaIcon name="icon-communigories" className="" />
                             <div className="absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-800 text-white text-xs rounded-md px-3 py-2 shadow-lg z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
                                 Discover & Create Categories
@@ -1779,7 +1779,7 @@
                             <button 
                                 onClick={handleDownloadApk} 
                                 disabled={isDownloading}
-                                className="relative w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-md rounded-full hover:bg-white/10 active:scale-90 transition-all group disabled:cursor-wait"
+                                className="relative w-12 h-12 flex items-center justify-center bg-white/5 rounded-full hover:bg-white/10 active:scale-90 transition-all group disabled:cursor-wait"
                             >
                                 <FaIcon name="icon-android" className="text-white opacity-50 group-hover:opacity-100 transition-opacity text-lg" />
                                 <div className={`absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-800 text-white text-xs rounded-md px-3 py-2 shadow-lg z-20 pointer-events-none transition-opacity duration-300 ease-in-out ${isDownloading ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
@@ -1903,7 +1903,7 @@
             return (
                 <div className="flex flex-col h-[100dvh] relative z-10">
                     <div className="absolute top-6 left-6 z-20">
-                         <button onClick={onBack} className="w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-md rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all">
+                         <button onClick={onBack} className="w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all">
                             <FaIcon name="icon-chevron-left" className="" />
                         </button>
                     </div>
@@ -2755,9 +2755,9 @@
                         {lobbyData.gameState === 'waiting' && (
                             <button 
                                 onClick={onLeaveLobby} 
-                                className={`h-12 flex items-center justify-center backdrop-blur-md rounded-full px-4 active:scale-90 transition-all text-sm font-bold ${
+                                className={`h-12 flex items-center justify-center rounded-full px-4 active:scale-90 transition-all text-sm font-bold ${
                                     isHost 
-                                    ? 'bg-red-500/10 text-red-400/90 hover:bg-red-500/20 hover:text-red-400' 
+                                    ? 'bg-red-500/10 text-red-400/80 hover:bg-red-500/20 hover:text-red-400' 
                                     : 'bg-white/5 text-white/50 hover:bg-white/10 hover:text-white/80'
                                 }`}
                             >
@@ -4585,7 +4585,7 @@
                 <div className="flex flex-col h-[100dvh] relative z-10">
                     {showMicPermissionModal && <MicPermissionModal onClose={() => setShowMicPermissionModal(false)} />}
                     <div className="absolute top-6 left-6 z-20">
-                         <button onClick={onBack} className="w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-md rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all">
+                         <button onClick={onBack} className="w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all">
                             <FaIcon name="icon-chevron-left" className="" />
                         </button>
                     </div>
