@@ -1688,11 +1688,12 @@
 						ref={popupRef} 
 						className="relative pointer-events-auto w-full max-w-[320px] rounded-t-[1.5rem] rounded-b-none overflow-hidden border border-b-0 border-white/10 z-10 bg-[#040716] shadow-2xl [backface-visibility:hidden] [-webkit-font-smoothing:subpixel-antialiased]"
 						style={{ 
-							transition: isVisible 
-								? 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)'  
-								: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',  
-							transform: isVisible ? 'translateY(0)' : 'translateY(120%)'
-						}}
+                            transition: isVisible 
+                                ? 'transform 0.7s cubic-bezier(0.2, 1, 0.3, 1)'  
+                                : 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',  
+                            transform: isVisible ? 'translateY(0)' : 'translateY(105%)',
+                            willChange: 'transform'
+                        }}
 					>
                         
                         <div className="absolute inset-0 z-0 pointer-events-none mix-blend-lighten" style={{
