@@ -1043,6 +1043,77 @@
         };
         
         const { season: currentSeason, categories: seasonalCategories } = getSeasonalInfo();
+
+        const globalModalStack = [];
+
+        if (typeof window !== 'undefined') {
+            window.addEventListener('popstate', (e) => {
+                if (globalModalStack.length > 0) {
+                    const topModal = globalModalStack[globalModalStack.length - 1];
+                    if (e.state?.modalId !== topModal.id) {
+                        topModal.onClose(true);
+                    }
+                }
+            });
+
+            const killEscapeBeep = (e) => {
+                if (e.key === 'Escape') {
+                    const isInputFocused = document.activeElement && ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName);
+                    if (!isInputFocused) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                }
+            };
+
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const isInputFocused = document.activeElement && ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName);
+                    if (!isInputFocused) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (globalModalStack.length > 0) {
+                            window.history.back();
+                        } else {
+                            window.dispatchEvent(new Event('appEscapeKey'));
+                        }
+                    }
+                }
+            }, { capture: true });
+
+            window.addEventListener('keyup', killEscapeBeep, { capture: true });
+            window.addEventListener('keypress', killEscapeBeep, { capture: true });
+        }
+
+        const useModalManager = (isOpen, onClose) => {
+            const onCloseRef = useRef(onClose);
+            
+            useEffect(() => {
+                onCloseRef.current = onClose;
+            }, [onClose]);
+
+            useEffect(() => {
+                if (!isOpen) return;
+
+                const modalId = Math.random().toString(36).substring(2, 11);
+                const handleClose = (...args) => {
+                    if (onCloseRef.current) onCloseRef.current(...args);
+                };
+
+                globalModalStack.push({ id: modalId, onClose: handleClose });
+                window.history.pushState({ modalId }, '');
+
+                return () => {
+                    const idx = globalModalStack.findIndex(m => m.id === modalId);
+                    if (idx > -1) {
+                        globalModalStack.splice(idx, 1);
+                    }
+                    if (window.history.state && window.history.state.modalId === modalId) {
+                        window.history.back();
+                    }
+                };
+            }, [isOpen]);
+        };
         
         const OfflineScreen = () => (
             <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-6 bg-slate-950 text-center animate-fadeIn select-none overflow-hidden">
@@ -1187,6 +1258,7 @@
         };
 
         const HowToPlayModal = ({ onClose }) => {
+            useModalManager(true, onClose);
             const scenarios = {
                 imposter: [
                     {
@@ -1568,6 +1640,7 @@
         };
 
         const SponsorModal = ({ onClose, audioManager }) => {
+            useModalManager(true, onClose);
             return (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose}></div>
@@ -1617,6 +1690,7 @@
         };
 
         const SponsorPopup = ({ onIgnore, onLater, onReadMore }) => {
+            useModalManager(true, () => onLater(true));
             const popupRef = useRef(null);
             const [isVisible, setIsVisible] = useState(false);
             const [isExiting, setIsExiting] = useState(false);
@@ -1837,7 +1911,7 @@
             );
         };
         
-        const OnlineLobbyScreen = ({ user, onJoin, onCreate, audioManager, onBack, initialParams }) => {
+        const OnlineLobbyScreen = ({ user, onJoin, onCreate, audioManager, onBack, initialParams, onPendingChange }) => {
             const [isJoining, setIsJoining] = useState(true);
             const [lobbyId, setLobbyId] = useState('');
             const [password, setPassword] = useState('');
@@ -1854,6 +1928,10 @@
             if (error) errorRef.current = error;
             
             const [isLoading, setIsLoading] = useState(false);
+
+            useEffect(() => {
+                if (onPendingChange) onPendingChange(isLoading);
+            }, [isLoading, onPendingChange]);
 
             useEffect(() => {
                 if (error) {
@@ -1903,7 +1981,7 @@
             return (
                 <div className="flex flex-col h-[100dvh] relative z-10">
                     <div className="absolute top-6 left-6 z-20">
-                         <button onClick={onBack} className="w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all">
+                         <button onClick={onBack} disabled={isLoading} className="w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                             <FaIcon name="icon-chevron-left" className="" />
                         </button>
                     </div>
@@ -2038,6 +2116,7 @@
         };
         
         const ImposterVoteNotificationModal = ({ onClose }) => {
+            useModalManager(true, () => onClose(true));
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose}></div>
@@ -2083,6 +2162,7 @@
         };
 
         const CustomShareModal = ({ shareData, onClose, season }) => {
+            useModalManager(true, onClose);
             const [copied, setCopied] = useState(false);
 
             const handleCopy = () => {
@@ -2197,6 +2277,7 @@
         };
 
         const QRCodeModal = ({ lobbyId, password, onClose, audioManager, season }) => {
+            useModalManager(true, onClose);
             const [qrImageUrl, setQrImageUrl] = useState(null);
 
             const inviteCode = encodeInviteCode(lobbyId, password);
@@ -2326,11 +2407,14 @@
         };
 
         const CategorySelectionModal = ({ isOpen, onClose, isOnline, displayCategories, onSelect, currentSelection, voteCounts, categoryVoters = {}, onInspect, audioManager, season, customCategoryNames = {} }) => {
-            if (!isOpen) return null;
+            useModalManager(isOpen, onClose);
+            const [viewingVotersFor, setViewingVotersFor] = useState(null);
+            useModalManager(!!viewingVotersFor, () => setViewingVotersFor(null));
 
             const categoryLongPressTimerRef = useRef(null);
             const isLongPressRef = useRef(false);
-            const [viewingVotersFor, setViewingVotersFor] = useState(null);
+            
+            if (!isOpen) return null;
 
             const officialOptions = ['Mystery Mode', ...displayCategories.filter(cat => AUDIO_URLS.categories[cat])];
             const customOptions = displayCategories.filter(cat => !AUDIO_URLS.categories[cat]);
@@ -2572,9 +2656,11 @@
             const showConfusionPoll = lobbyData.gameState === 'reveal' && pollIsActive && !isMyRoleImposter && !me?.status;
             const showImposterVoteNotification = lobbyData.gameState === 'reveal' && pollIsActive && isMyRoleImposter && lobbyData.notifyImposterOnVote && !me?.status;
 
-            const handleImposterDismiss = () => {
-                if (navigator.vibrate) navigator.vibrate(20);
-                audioManager.playSound('uiClick');
+            const handleImposterDismiss = (silent = false) => {
+                if (silent !== true) {
+                    if (navigator.vibrate) navigator.vibrate(20);
+                    audioManager.playSound('uiClick');
+                }
                 const targetDb = window.db || db;
                 targetDb.collection('lobbies').doc(lobbyId).collection('players').doc(user.uid).update({ status: 'dismissed' });
             };
@@ -4086,6 +4172,7 @@
         };
         
         const CategoryInfoModal = ({ category, onClose, wordBank, customCategoryNames = {} }) => {
+            useModalManager(!!category, onClose);
             if (!category || !wordBank) return null;
             
             const categoryWords = wordBank[category];
@@ -4126,6 +4213,7 @@
         };
         
         const RemovedModal = ({ onClose }) => {
+            useModalManager(true, onClose);
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md"></div>
@@ -4148,6 +4236,7 @@
         };
         
         const LobbyClosedModal = ({ hostName, onClose }) => {
+            useModalManager(true, onClose);
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md"></div>
@@ -4170,6 +4259,7 @@
         };
 
         const TurnOrderReviewModal = ({ players, onClose, timeLeft, duration }) => {
+            useModalManager(true, onClose);
             if (!players || players.length === 0) return null;
             
             const progress = duration ? (timeLeft / duration) * 100 : 0;
@@ -4226,6 +4316,7 @@
         };
         
         const ExitLobbyConfirmModal = ({ onConfirm, onCancel }) => {
+            useModalManager(true, onCancel);
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md"></div>
@@ -4256,6 +4347,7 @@
         };
 		
 		const MicPermissionModal = ({ onClose }) => {
+            useModalManager(true, onClose);
 			return (
 				<div className="fixed inset-0 z-[200] flex items-center justify-center p-6 animate-fadeIn">
 					<div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose}></div>
@@ -6288,8 +6380,52 @@
             const [user, setUser] = useState(null);
             const [gameMode, setGameMode] = useState('select');
             const [showHowToPlay, setShowHowToPlay] = useState(false);
+
+            const gameModeRef = useRef(gameMode);
+            const handleScreenBackRef = useRef(null);
+            const isLobbyActionPendingRef = useRef(false);
+            const isPopStateNavigationRef = useRef(false);
+
+            useEffect(() => {
+                if (gameMode !== 'select' && gameModeRef.current === 'select') {
+                    window.history.pushState({ appScreen: gameMode }, '');
+                } else if (gameMode === 'select' && gameModeRef.current !== 'select') {
+                    if (!isPopStateNavigationRef.current && window.history.state && window.history.state.appScreen) {
+                        window.history.back();
+                    }
+                }
+                isPopStateNavigationRef.current = false;
+                gameModeRef.current = gameMode;
+            }, [gameMode]);
+
+            useEffect(() => {
+                const handlePopState = (e) => {
+                    if (!e.state?.modalId && !e.state?.appScreen && gameModeRef.current !== 'select') {
+                        isPopStateNavigationRef.current = true;
+                        if (handleScreenBackRef.current) handleScreenBackRef.current(true);
+                    }
+                };
+                const handleAppEscape = () => {
+                    if (gameModeRef.current !== 'select') {
+                        if (handleScreenBackRef.current) handleScreenBackRef.current(true);
+                    }
+                };
+                window.addEventListener('popstate', handlePopState);
+                window.addEventListener('appEscapeKey', handleAppEscape);
+                return () => {
+                    window.removeEventListener('popstate', handlePopState);
+                    window.removeEventListener('appEscapeKey', handleAppEscape);
+                };
+            }, []);
             const [showCommunigories, setShowCommunigories] = useState(false);
             const [showSponsorModal, setShowSponsorModal] = useState(false);
+
+            useModalManager(showCommunigories, () => {
+                setShowCommunigories(false);
+                if (audioManagerRef.current) {
+                    audioManagerRef.current.playMusic(currentSeason === 'christmas' ? 'christmasMainMenuMusic' : (currentSeason === 'halloween' ? 'halloweenMainMenuMusic' : 'mainMenuMusic'));
+                }
+            });
             const [initialLobbyParams, setInitialLobbyParams] = useState(null);
 			const [showSponsorPopup, setShowSponsorPopup] = useState(false);
 
@@ -6569,6 +6705,7 @@
                         if (track) {
                             this.currentMusicTrack = name;
                             track.muted = this.isMuted;
+                            track.currentTime = 0;
                             track.play().catch(() => {});
                         }
                     },
@@ -6578,7 +6715,6 @@
                             const track = this.music[this.currentMusicTrack];
                             if (!track.paused) {
                                 track.pause();
-                                track.currentTime = 0;
                             }
                         }
                         this.currentMusicTrack = null;
@@ -6589,7 +6725,6 @@
                         const sound = this.sounds[name];
                         if (sound && !sound.paused) {
                             sound.pause();
-                            sound.currentTime = 0;
                         }
                     },
             
@@ -7052,8 +7187,26 @@
                 }
             };
             
+            useEffect(() => {
+                handleScreenBackRef.current = (silent = false) => {
+                    if (gameMode === 'online' && !lobbyId && isLobbyActionPendingRef.current) {
+                        window.history.pushState({ appScreen: gameMode }, '');
+                        return;
+                    }
+                    if (gameMode === 'online' && lobbyId) {
+                        window.history.pushState({ appScreen: gameMode }, '');
+                        return;
+                    }
+                    if (gameMode === 'local' && localGameState !== 'setup') {
+                        window.history.pushState({ appScreen: gameMode }, '');
+                        return;
+                    }
+                    handleBackToHome(silent);
+                };
+            });
+
             const handleBackToHome = async (silent = false) => {
-                if (!silent && audioManagerRef.current.isUnlocked) {
+                if (silent !== true && audioManagerRef.current.isUnlocked) {
                     audioManagerRef.current.playSound('uiClick');
                 }
 
@@ -7515,7 +7668,7 @@
                 
                 if (gameMode === 'online') {
                     if (!lobbyId || !lobbyData) {
-                        return <OnlineLobbyScreen user={user} onCreate={handleCreateLobby} onJoin={handleJoinLobby} audioManager={audioManagerRef.current} onBack={handleBackToHome} initialParams={initialLobbyParams} />;
+                        return <OnlineLobbyScreen user={user} onCreate={handleCreateLobby} onJoin={handleJoinLobby} audioManager={audioManagerRef.current} onBack={handleBackToHome} initialParams={initialLobbyParams} onPendingChange={(pending) => { isLobbyActionPendingRef.current = pending; }} />;
                     }
                     
                     const meAsPlayer = lobbyPlayers.find(p => p.id === user.uid);
