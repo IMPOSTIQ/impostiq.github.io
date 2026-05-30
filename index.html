@@ -2755,9 +2755,9 @@
                         {lobbyData.gameState === 'waiting' && (
                             <button 
                                 onClick={onLeaveLobby} 
-                                className={`h-12 flex items-center justify-center backdrop-blur-md rounded-full px-4 active:scale-90 transition-all text-sm font-bold overflow-hidden transform-gpu [-webkit-backface-visibility:hidden] [-webkit-mask-image:-webkit-radial-gradient(white,black)] ${
+                                className={`h-12 flex items-center justify-center backdrop-blur-md rounded-full px-4 active:scale-90 transition-all text-sm font-bold overflow-hidden outline-none transform-gpu [-webkit-backface-visibility:hidden] [-webkit-mask-image:-webkit-radial-gradient(white,black)] ${
                                     isHost 
-                                    ? 'bg-red-500/20 text-red-200 hover:bg-red-500/30 hover:text-white' 
+                                    ? 'bg-red-500/10 text-red-400/90 hover:bg-red-500/20 hover:text-red-400' 
                                     : 'bg-white/5 text-white/50 hover:bg-white/10 hover:text-white/80'
                                 }`}
                             >
