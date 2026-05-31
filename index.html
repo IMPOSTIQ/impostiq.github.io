@@ -1329,27 +1329,16 @@
                 ],
             };
 
-            const [currentImposterScenario, setCurrentImposterScenario] = React.useState(0);
-            const [currentFakeWordScenario, setCurrentFakeWordScenario] = React.useState(0);
+            const [currentImposterScenario, setCurrentImposterScenario] = useState(0);
+            const [currentFakeWordScenario, setCurrentFakeWordScenario] = useState(0);
 
-            const nextImposterScenario = () => {
-                setCurrentImposterScenario((prev) => Math.min(prev + 1, scenarios.imposter.length - 1));
-            };
-
-            const prevImposterScenario = () => {
-                setCurrentImposterScenario((prev) => Math.max(prev - 1, 0));
-            };
-
-            const nextFakeWordScenario = () => {
-                setCurrentFakeWordScenario((prev) => Math.min(prev + 1, scenarios.fakeWord.length - 1));
-            };
-
-            const prevFakeWordScenario = () => {
-                setCurrentFakeWordScenario((prev) => Math.max(prev - 1, 0));
-            };
+            const nextImposterScenario = () => setCurrentImposterScenario((prev) => Math.min(prev + 1, scenarios.imposter.length - 1));
+            const prevImposterScenario = () => setCurrentImposterScenario((prev) => Math.max(prev - 1, 0));
+            const nextFakeWordScenario = () => setCurrentFakeWordScenario((prev) => Math.min(prev + 1, scenarios.fakeWord.length - 1));
+            const prevFakeWordScenario = () => setCurrentFakeWordScenario((prev) => Math.max(prev - 1, 0));
             
             const useSwipe = (onSwipeLeft, onSwipeRight) => {
-                const [touchStartCoords, setTouchStartCoords] = React.useState(null);
+                const [touchStartCoords, setTouchStartCoords] = useState(null);
 
                 const handleTouchStart = (e) => {
                     setTouchStartCoords({
@@ -1377,16 +1366,54 @@
                     }
                 };
                 
-                const handleTouchEnd = () => {
-                    setTouchStartCoords(null);
-                };
-
+                const handleTouchEnd = () => setTouchStartCoords(null);
                 return { onTouchStart: handleTouchStart, onTouchMove: handleTouchMove, onTouchEnd: handleTouchEnd };
             };
             
             const imposterSwipeHandlers = useSwipe(nextImposterScenario, prevImposterScenario);
             const fakeWordSwipeHandlers = useSwipe(nextFakeWordScenario, prevFakeWordScenario);
 
+            // --- DYNAMIC SLIDER HEIGHT LOGIC WITH SUBPIXEL FIX ---
+            const [imposterSliderHeight, setImposterSliderHeight] = useState(260);
+            const [fakeWordSliderHeight, setFakeWordSliderHeight] = useState(260);
+            const imposterContentRefs = useRef([]);
+            const fakeWordContentRefs = useRef([]);
+
+            useEffect(() => {
+                const calculateHeights = () => {
+                    try {
+                        // Calculate minimum height for Imposter scenarios
+                        const impHeights = imposterContentRefs.current
+                            .filter(el => el !== null)
+                            .map(el => el.getBoundingClientRect().height);
+                        if (impHeights.length > 0) {
+                            // Math.ceil() + 2px completely eliminates fractional 1px scrolling on perfect-fit slides
+                            setImposterSliderHeight(Math.ceil(Math.min(...impHeights)) + 2);
+                        }
+
+                        // Calculate minimum height for Fake Word scenarios
+                        const fakeHeights = fakeWordContentRefs.current
+                            .filter(el => el !== null)
+                            .map(el => el.getBoundingClientRect().height);
+                        if (fakeHeights.length > 0) {
+                            setFakeWordSliderHeight(Math.ceil(Math.min(...fakeHeights)) + 2);
+                        }
+                    } catch (e) {
+                        console.warn("Failed to calculate heights safely.", e);
+                    }
+                };
+
+                // Double timeout catches layout shifts (like custom fonts loading instantly vs delayed)
+                const timer1 = setTimeout(calculateHeights, 50);
+                const timer2 = setTimeout(calculateHeights, 400); 
+                window.addEventListener('resize', calculateHeights);
+
+                return () => {
+                    clearTimeout(timer1);
+                    clearTimeout(timer2);
+                    window.removeEventListener('resize', calculateHeights);
+                };
+            }, []);
 
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center sm:p-6 bg-slate-950/90 sm:bg-black/60 backdrop-blur-md animate-fadeIn">
@@ -1473,38 +1500,40 @@
                                         <button onClick={prevImposterScenario} disabled={currentImposterScenario === 0} className="hidden md:flex flex-shrink-0 w-8 h-8 items-center justify-center bg-white/10 rounded-full text-white/50 hover:bg-white/20 active:scale-90 transition disabled:opacity-30 disabled:cursor-not-allowed">
                                             <FaIcon name="icon-chevron-left" className="" />
                                         </button>
-                                        <div className="flex-1 bg-white/5 rounded-xl border border-white/10 relative overflow-hidden h-[260px]" {...imposterSwipeHandlers}>
+                                        <div className="flex-1 bg-white/5 rounded-xl border border-white/10 relative overflow-hidden transition-[height] duration-300 ease-in-out" style={{ height: `${imposterSliderHeight}px` }} {...imposterSwipeHandlers}>
                                             <div className="flex h-full transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentImposterScenario * 100}%)` }}>
                                                 {scenarios.imposter.map((scenario, index) => (
-                                                    <div key={index} className="w-full h-full flex-shrink-0 p-4 overflow-y-auto no-scrollbar">
-                                                        <h4 className="font-bold text-base text-white/90 mb-2">{scenario.title}</h4>
-                                                        <div className="text-sm space-y-3">
-                                                            <div className="flex gap-2.5 text-center mb-1.5">
-                                                                <div className="flex-1 bg-slate-950/80 rounded-xl p-2 border border-white/5 shadow-inner">
-                                                                    <div className="text-white/40 text-[9px] uppercase font-bold tracking-widest mb-0.5">Agents' Word</div>
-                                                                    <div className="font-display text-sm font-bold text-white truncate">{scenario.agentWord}</div>
-                                                                </div>
-                                                                <div className="flex-1 bg-slate-950/80 rounded-xl p-2 border border-white/5 shadow-inner">
-                                                                    <div className="text-white/40 text-[9px] uppercase font-bold tracking-widest mb-0.5">Imposter's Word</div>
-                                                                    <div className="font-display text-sm font-bold text-white truncate">{scenario.imposterWord}</div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="space-y-2">
-                                                                {scenario.clues.map((clue, clueIndex) => (
-                                                                    <div key={clueIndex} className="flex items-start gap-2.5 text-xs">
-                                                                        <svg className="w-4 h-4 text-white/20 shrink-0 mt-[1px]" viewBox="0 0 24 24" fill="currentColor">
-                                                                            <path d="m17 12c0 3.411-1.589 5-5 5s-5-1.589-5-5 1.589-5 5-5 5 1.589 5 5z"/>
-                                                                        </svg>
-                                                                        <p className="text-white/70 leading-normal">
-                                                                            <strong className="text-white">{clue.player}:</strong> "{clue.clue}"
-                                                                        </p>
+                                                    <div key={index} className="w-full h-full flex-shrink-0 overflow-y-auto no-scrollbar">
+                                                        <div ref={el => imposterContentRefs.current[index] = el} className="p-4 flex flex-col h-max">
+                                                            <h4 className="font-bold text-base text-white/90 mb-2">{scenario.title}</h4>
+                                                            <div className="text-sm space-y-3">
+                                                                <div className="flex gap-2.5 text-center mb-1.5">
+                                                                    <div className="flex-1 bg-slate-950/80 rounded-xl p-2 border border-white/5 shadow-inner">
+                                                                        <div className="text-white/40 text-[9px] uppercase font-bold tracking-widest mb-0.5">Agents' Word</div>
+                                                                        <div className="font-display text-sm font-bold text-white truncate">{scenario.agentWord}</div>
                                                                     </div>
-                                                                ))}
+                                                                    <div className="flex-1 bg-slate-950/80 rounded-xl p-2 border border-white/5 shadow-inner">
+                                                                        <div className="text-white/40 text-[9px] uppercase font-bold tracking-widest mb-0.5">Imposter's Word</div>
+                                                                        <div className="font-display text-sm font-bold text-white truncate">{scenario.imposterWord}</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="space-y-2">
+                                                                    {scenario.clues.map((clue, clueIndex) => (
+                                                                        <div key={clueIndex} className="flex items-start gap-2.5 text-xs">
+                                                                            <svg className="w-4 h-4 text-white/20 shrink-0 mt-[1px]" viewBox="0 0 24 24" fill="currentColor">
+                                                                                <path d="m17 12c0 3.411-1.589 5-5 5s-5-1.589-5-5 1.589-5 5-5 5 1.589 5 5z"/>
+                                                                            </svg>
+                                                                            <p className="text-white/70 leading-normal">
+                                                                                <strong className="text-white">{clue.player}:</strong> "{clue.clue}"
+                                                                            </p>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
                                                             </div>
+                                                            <p className="mt-3 text-xs text-white/60">
+                                                                {scenario.explanation}
+                                                            </p>
                                                         </div>
-                                                        <p className="mt-3 text-xs text-white/60">
-                                                            {scenario.explanation}
-                                                        </p>
                                                     </div>
                                                 ))}
                                             </div>
@@ -1536,38 +1565,40 @@
                                         <button onClick={prevFakeWordScenario} disabled={currentFakeWordScenario === 0} className="hidden md:flex flex-shrink-0 w-8 h-8 items-center justify-center bg-white/10 rounded-full text-white/50 hover:bg-white/20 active:scale-90 transition disabled:opacity-30 disabled:cursor-not-allowed">
                                             <FaIcon name="icon-chevron-left" className="" />
                                         </button>
-                                        <div className="flex-1 bg-white/5 rounded-xl border border-white/10 relative overflow-hidden h-[260px]" {...fakeWordSwipeHandlers}>
+                                        <div className="flex-1 bg-white/5 rounded-xl border border-white/10 relative overflow-hidden transition-[height] duration-300 ease-in-out" style={{ height: `${fakeWordSliderHeight}px` }} {...fakeWordSwipeHandlers}>
                                             <div className="flex h-full transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentFakeWordScenario * 100}%)` }}>
                                                 {scenarios.fakeWord.map((scenario, index) => (
-                                                    <div key={index} className="w-full h-full flex-shrink-0 p-4 overflow-y-auto no-scrollbar">
-                                                        <h4 className="font-bold text-base text-white/90 mb-2">{scenario.title}</h4>
-                                                        <div className="text-sm space-y-3">
-                                                            <div className="flex gap-2.5 text-center mb-1.5">
-                                                                <div className="flex-1 bg-slate-950/80 rounded-xl p-2 border border-white/5 shadow-inner">
-                                                                    <div className="text-white/40 text-[9px] uppercase font-bold tracking-widest mb-0.5">Agents' Word</div>
-                                                                    <div className="font-display text-sm font-bold text-white truncate">{scenario.agentWord}</div>
-                                                                </div>
-                                                                <div className="flex-1 bg-slate-950/80 rounded-xl p-2 border border-white/5 shadow-inner">
-                                                                    <div className="text-white/40 text-[9px] uppercase font-bold tracking-widest mb-0.5">{scenario.fakeWordPlayer}'s Word</div>
-                                                                    <div className="font-display text-sm font-bold text-white truncate">{scenario.fakeWord}</div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="space-y-2">
-                                                                {scenario.clues.map((clue, clueIndex) => (
-                                                                    <div key={clueIndex} className="flex items-start gap-2.5 text-xs">
-                                                                        <svg className="w-4 h-4 text-white/20 shrink-0 mt-[1px]" viewBox="0 0 24 24" fill="currentColor">
-                                                                            <path d="m17 12c0 3.411-1.589 5-5 5s-5-1.589-5-5 1.589-5 5-5 5 1.589 5 5z"/>
-                                                                        </svg>
-                                                                        <p className="text-white/70 leading-normal">
-                                                                            <strong className="text-white">{clue.player}:</strong> "{clue.clue}"
-                                                                        </p>
+                                                    <div key={index} className="w-full h-full flex-shrink-0 overflow-y-auto no-scrollbar">
+                                                        <div ref={el => fakeWordContentRefs.current[index] = el} className="p-4 flex flex-col h-max">
+                                                            <h4 className="font-bold text-base text-white/90 mb-2">{scenario.title}</h4>
+                                                            <div className="text-sm space-y-3">
+                                                                <div className="flex gap-2.5 text-center mb-1.5">
+                                                                    <div className="flex-1 bg-slate-950/80 rounded-xl p-2 border border-white/5 shadow-inner">
+                                                                        <div className="text-white/40 text-[9px] uppercase font-bold tracking-widest mb-0.5">Agents' Word</div>
+                                                                        <div className="font-display text-sm font-bold text-white truncate">{scenario.agentWord}</div>
                                                                     </div>
-                                                                ))}
+                                                                    <div className="flex-1 bg-slate-950/80 rounded-xl p-2 border border-white/5 shadow-inner">
+                                                                        <div className="text-white/40 text-[9px] uppercase font-bold tracking-widest mb-0.5">{scenario.fakeWordPlayer}'s Word</div>
+                                                                        <div className="font-display text-sm font-bold text-white truncate">{scenario.fakeWord}</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="space-y-2">
+                                                                    {scenario.clues.map((clue, clueIndex) => (
+                                                                        <div key={clueIndex} className="flex items-start gap-2.5 text-xs">
+                                                                            <svg className="w-4 h-4 text-white/20 shrink-0 mt-[1px]" viewBox="0 0 24 24" fill="currentColor">
+                                                                                <path d="m17 12c0 3.411-1.589 5-5 5s-5-1.589-5-5 1.589-5 5-5 5 1.589 5 5z"/>
+                                                                            </svg>
+                                                                            <p className="text-white/70 leading-normal">
+                                                                                <strong className="text-white">{clue.player}:</strong> "{clue.clue}"
+                                                                            </p>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
                                                             </div>
+                                                            <p className="mt-3 text-xs text-white/60">
+                                                                {scenario.explanation}
+                                                            </p>
                                                         </div>
-                                                        <p className="mt-3 text-xs text-white/60">
-                                                            {scenario.explanation}
-                                                        </p>
                                                     </div>
                                                 ))}
                                             </div>
@@ -1591,8 +1622,7 @@
 
                             <section>
                                 <h3 className="font-bold text-lg text-brand-400 mb-2 flex items-center gap-2">
-                                    <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current shrink-0"><path d="M18.052,9.137h0c.215-.509,.802-.746,1.311-.531h0c.508,.216,.746,.802,.531,1.311h0c-.215,.509-.802,.747-1.311,.531h0c-.508-.216-.746-.802-.531-1.311Zm4.811-6.495c-.75-.578-1.698-.776-2.607-.538-.906,.237-1.664,.891-2.028,1.75-.216,.508,.021,1.096,.53,1.311,.508,.216,1.095-.021,1.311-.53,.124-.292,.383-.515,.693-.596,.177-.048,.527-.083,.878,.187,.273,.211,.416,.6,.347,.947-.104,.525-.529,.792-.903,.824-.397,.033-.912,.11-1.378,.412-.463,.301-.596,.92-.295,1.383,.192,.295,.513,.456,.84,.456,.187,0,.375-.052,.543-.161,.039-.025,.15-.072,.457-.097,1.348-.114,2.433-1.089,2.698-2.428,.218-1.096-.209-2.242-1.087-2.919ZM4.611,8.69h0c-.508,.216-.746,.802-.531,1.311,.215,.508,.802,.746,1.311,.531h0c.509-.216,.746-.802,.531-1.311-.215-.508-.802-.746-1.311-.531Zm-.8-4.273c.305,.44,.201,.932-.037,1.223-.294,.361-.64,.857-.693,1.503-.046,.55,.363,1.034,.914,1.08,.028,.002,.056,.003,.084,.003,.515,0,.952-.395,.996-.917,.001-.019,.021-.125,.249-.404,.856-1.048,.91-2.506,.132-3.627-.636-.918-1.753-1.407-2.853-1.249-.938,.136-1.74,.683-2.2,1.5C-.059,4.345-.116,5.344,.248,6.203c.215,.508,.801,.747,1.311,.531,.509-.216,.746-.803,.531-1.311-.124-.292-.104-.633,.054-.912,.09-.16,.307-.438,.745-.501,.34-.053,.72,.119,.921,.408Zm8.19,2.592h0c-.552,0-1,.448-1,1h0c0,.552,.448,1,1,1h0c.552,0,1-.448,1-1h0c0-.552-.448-1-1-1Zm-2-2.974c.552,0,1-.448,1-1,0-.317,.151-.623,.405-.819,.146-.112,.455-.283,.881-.171,.334,.087,.618,.39,.689,.736,.109,.524-.178,.937-.51,1.111-.476,.25-1.068,.562-1.364,1.167-.243,.496-.051,1.118,.445,1.36,.147,.072,.302,.106,.454,.106,.359,0,.699-.194,.87-.542,.072-.083,.367-.238,.527-.322,1.197-.631,1.814-1.953,1.537-3.289-.228-1.093-1.067-1.981-2.14-2.263-.917-.242-1.869-.05-2.611,.522-.741,.572-1.184,1.47-1.184,2.402,0,.552,.448,1,1,1Zm11,12.737c0,2.331-1.896,4.228-4.228,4.228h-3.772v1.5c0,.828-.671,1.5-1.5,1.5s-1.5-.672-1.5-1.5v-.53c-.74,.638-1.698,1.03-2.75,1.03-2.331,0-4.228-1.896-4.228-4.228,0-1.293,.683-2.445,1.497-3.195,.201-2.142,1.908-3.852,4.048-4.057,.876-.965,2.11-1.521,3.441-1.521,1.258,0,2.448,.504,3.319,1.38,1.014,.094,1.941,.576,2.613,1.35,1.785,.51,3.059,2.14,3.059,4.042Zm-3,0c0-.613-.469-1.128-1.091-1.198-.462-.052-.875-.315-1.115-.714-.07-.164-.506-.597-.961-.477-.556,.071-1.113-.177-1.431-.645-.315-.463-.835-.739-1.393-.739-.582,0-1.115,.304-1.424,.812-.299,.491-.853,.77-1.424,.712-.871-.148-1.665,.597-1.66,1.477,0,.195-.028,.356-.062,.489-.039,.462-.29,.889-.693,1.144-.398,.252-.722,.763-.722,1.14,0,.677,.551,1.228,1.228,1.228s1.227-.551,1.227-1.228c0-.119-.017-.236-.05-.349-.234-.794,.22-1.628,1.015-1.862,.795-.237,1.628,.22,1.863,1.015,.041,.14,.075,.281,.101,.424h5.366c.677,0,1.228-.551,1.228-1.228Z"/>
-                                    </svg>
+                                    <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current shrink-0"><path d="m23.87 11.912c-.215 1.066-1.549 1.448-2.332.695l-3.044-2.98-1.934 1.934c-.586.586-1.535.586-2.121 0s-.586-1.535 0-2.121l1.912-1.912-2.364-2.315c-.809-.778-.82-2.068-.024-2.859l.775-.771c.758-.754 1.974-.779 2.762-.057l4.22 4.023c2.328 2.381 2.478 4.738 2.15 6.363zm-16.221-4.384 2.364-2.315c.809-.778.82-2.068.024-2.859l-.775-.771c-.758-.754-1.974-.779-2.762-.057l-4.22 4.023c-2.328 2.381-2.478 4.737-2.15 6.363.215 1.066 1.549 1.448 2.332.695l3.044-2.98 12.934 12.934c.586.586 1.535.586 2.121 0s.586-1.535 0-2.121zm-.209 8.912-4 4c-.586.586-.586 1.535 0 2.121s1.535.586 2.121 0l4-4c.586-.586.586-1.535 0-2.121s-1.535-.586-2.121 0z"/></svg>
                                     What if I Don't Know the Word?
                                 </h3>
                                 <p>It happens! If you're an Agent and receive a secret word you don't recognize, you'll see a special button during the card reveal (Play with Friends mode only).</p>
