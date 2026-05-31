@@ -1102,14 +1102,14 @@
             if (season === 'christmas') {
                 return (
                     <h1 className={`${baseWrapperClass} flex items-center justify-center`}>
-                        <span className={textGradientClass}>IMPOS</span>
+                        <span className={`${textGradientClass} pl-2`}>IMPOS</span>
                         <img 
                             src="https://em-content.zobj.net/source/microsoft-teams/364/christmas-tree_1f384.png" 
                             alt="T" 
                             className="inline-block w-[1em] h-[1em] mx-[-0.1em] -mb-[0.0em] drop-shadow-lg"
                             draggable="false"
                         />
-                        <span className={textGradientClass}>IQ</span>
+                        <span className={`${textGradientClass} pr-2`}>IQ</span>
                         <span className="sr-only"> • Find the Spy</span>
                     </h1>
                 );
@@ -1118,20 +1118,20 @@
             if (season === 'halloween') {
                  return (
                     <h1 className={`${baseWrapperClass} flex items-center justify-center`}>
-                        <span className={textGradientClass}>IMP</span>
+                        <span className={`${textGradientClass} pl-2`}>IMP</span>
                         <img 
                             src="https://em-content.zobj.net/source/microsoft-teams/337/jack-o-lantern_1f383.png" 
                             alt="O" 
                             className="inline-block w-[1em] h-[1em] mx-[0.0em] mb-[0.05em] drop-shadow-lg"
                             draggable="false"
                         />
-                        <span className={textGradientClass}>STIQ</span>
+                        <span className={`${textGradientClass} pr-2`}>STIQ</span>
                         <span className="sr-only"> • Find the Spy</span>
                     </h1>
                 );
             }
 
-            return <h1 className={`${baseWrapperClass} ${textGradientClass}`}>IMPOSTIQ<span className="sr-only"> • Find the Spy</span></h1>;
+            return <h1 className={`${baseWrapperClass} ${textGradientClass} px-2`}>IMPOSTIQ<span className="sr-only"> • Find the Spy</span></h1>;
         };
 
         const globalAvatarCache = new Set();
