@@ -1473,7 +1473,7 @@
                                         <button onClick={prevImposterScenario} disabled={currentImposterScenario === 0} className="hidden md:flex flex-shrink-0 w-8 h-8 items-center justify-center bg-white/10 rounded-full text-white/50 hover:bg-white/20 active:scale-90 transition disabled:opacity-30 disabled:cursor-not-allowed">
                                             <FaIcon name="icon-chevron-left" className="" />
                                         </button>
-                                        <div className="flex-1 bg-white/5 rounded-xl border border-white/10 relative overflow-hidden h-[260px]" {...imposterSwipeHandlers}>
+                                        <div className="flex-1 bg-white/5 rounded-xl border border-white/10 relative overflow-hidden h-[230px]" {...imposterSwipeHandlers}>
                                             <div className="flex h-full transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentImposterScenario * 100}%)` }}>
                                                 {scenarios.imposter.map((scenario, index) => (
                                                     <div key={index} className="w-full h-full flex-shrink-0 p-4 overflow-y-auto no-scrollbar">
@@ -1536,7 +1536,7 @@
                                         <button onClick={prevFakeWordScenario} disabled={currentFakeWordScenario === 0} className="hidden md:flex flex-shrink-0 w-8 h-8 items-center justify-center bg-white/10 rounded-full text-white/50 hover:bg-white/20 active:scale-90 transition disabled:opacity-30 disabled:cursor-not-allowed">
                                             <FaIcon name="icon-chevron-left" className="" />
                                         </button>
-                                        <div className="flex-1 bg-white/5 rounded-xl border border-white/10 relative overflow-hidden h-[260px]" {...fakeWordSwipeHandlers}>
+                                        <div className="flex-1 bg-white/5 rounded-xl border border-white/10 relative overflow-hidden h-[230px]" {...fakeWordSwipeHandlers}>
                                             <div className="flex h-full transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentFakeWordScenario * 100}%)` }}>
                                                 {scenarios.fakeWord.map((scenario, index) => (
                                                     <div key={index} className="w-full h-full flex-shrink-0 p-4 overflow-y-auto no-scrollbar">
