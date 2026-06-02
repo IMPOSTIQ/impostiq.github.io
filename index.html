@@ -668,10 +668,10 @@
         </ul>
 
         <h2>3. Network & Backend Architecture</h2>
-        <ul>
-            <li><strong>Database:</strong> Firebase Firestore.</li>
-            <li><strong>Load Balancing:</strong> The game uses a time-based load balancer. It checks the Pacific Time Zone (PT). From 00:00 to 11:59 PT, it uses Firebase "APP1". From 12:00 to 23:59 PT, it uses Firebase "APP2".</li>
-            <li><strong>Communigories Backend:</strong> Community Categories are hosted on a dedicated, separate Firebase Firestore instance to safely handle public uploads, votes, and downloads without congesting active game servers. Utilizes heavily optimized IndexedDB offline persistence to eliminate loading screens when swapping tabs.</li>
+		<ul>
+			<li><strong>Database:</strong> Firebase Firestore.</li>
+			<li><strong>Load Balancing & Cross-Database Fallback:</strong> The game uses a time-based load balancer. It checks the Pacific Time Zone (PT). From 00:00 to 11:59 PT, it uses Firebase "APP1". From 12:00 to 23:59 PT, it uses Firebase "APP2". If a player attempts to join a lobby created right before the database switch (e.g., created at 11:57 PT on APP1, joined at 12:03 PT on APP2), a fallback script automatically catches the missing lobby, searches the alternate database, and connects them seamlessly without errors.</li>
+			<li><strong>Communigories Backend:</strong> Community Categories are hosted on a dedicated, separate Firebase Firestore instance to safely handle public uploads, votes, and downloads without congesting active game servers. Utilizes heavily optimized IndexedDB offline persistence to eliminate loading screens when swapping tabs.</li>
             <li><strong>Offline Mode:</strong> If `navigator.onLine` is false, a red "Connection Lost" screen overlays the app. It features a standard Wi-Fi signal SVG icon. Text: "Oops! We can't reach the servers. Please check your internet connection." with a "TRY AGAIN" button (circular reload arrow SVG).</li>
         </ul>
 
