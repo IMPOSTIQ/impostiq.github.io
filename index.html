@@ -748,6 +748,8 @@
             A: When a host creates an online lobby, the game reads their locally saved Communigories and uploads a temporary reference to the Firebase lobby document. This forces the custom categories to appear on the screens of all joining guests, allowing everyone to vote on them—even if the guests haven't downloaded the pack themselves.</li>
             <li><strong>Q: Can I turn off a custom category without deleting it?</strong><br>
             A: Yes! In the Communigories vault, clicking on a saved category reveals toggles for "Local Games" and "Online Lobbies". Disabling these prevents them from showing up in the game menus while preserving the pack on your device.</li>
+            <li><strong>Q: If I delete my custom category globally, does it stay on other players' devices who saved it?</strong><br>
+            A: No. When other players open their "Library" tab in the vault, the application cross-references their saved categories with the database. If your category is no longer found in the database, the system will automatically purge it from their local storage to keep their library clean and synchronized.</li>
         </ul>
 
         <h2>9. Advanced Strategy Scenarios (From the 'How to Play' Modal)</h2>
