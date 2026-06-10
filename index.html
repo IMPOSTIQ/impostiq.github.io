@@ -1083,7 +1083,7 @@
                      <div className="absolute inset-0 backdrop-blur-[100px] transform-gpu"></div>
                 </div>
 
-                <div className="relative z-10 w-full max-w-sm glass-panel p-8 rounded-[2.5rem] border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-slide-up">
+                <div className="relative z-10 w-full max-w-sm glass-panel p-8 rounded-[2.5rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-slide-up">
                     
                     <div className="w-24 h-24 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 ring-1 ring-red-500/30 animate-pulse">
                         <FaIcon name="icon-wifi" className=" text-4xl text-red-500" />
@@ -1402,7 +1402,7 @@
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center sm:p-6 bg-slate-950/90 sm:bg-black/60 backdrop-blur-md animate-fadeIn">
                     <div className="absolute inset-0 hidden sm:block" onClick={onClose}></div>
-                    <div className="relative flex flex-col w-full h-full sm:h-[90vh] sm:max-w-2xl bg-slate-950 sm:rounded-3xl sm:border sm:border-white/10 sm:shadow-2xl sm:animate-slide-up overflow-hidden z-10">
+                    <div className="relative flex flex-col w-full h-full sm:h-[90vh] sm:max-w-2xl bg-slate-950 sm:rounded-3xl sm:border sm:border-white/5 sm:shadow-2xl sm:animate-slide-up overflow-hidden z-10">
                         <div className="flex-shrink-0 flex items-center justify-between p-6 pb-4 border-b border-white/5 bg-slate-900/50">
                             <div>
                                 <h2 className="text-2xl font-display font-bold text-white">How to Play</h2>
@@ -1484,7 +1484,7 @@
                                         <button onClick={prevImposterScenario} disabled={currentImposterScenario === 0} className="hidden md:flex flex-shrink-0 w-8 h-8 items-center justify-center bg-white/10 rounded-full text-white/50 hover:bg-white/20 active:scale-90 transition disabled:opacity-30 disabled:cursor-not-allowed">
                                             <FaIcon name="icon-chevron-left" className="" />
                                         </button>
-                                        <div className="flex-1 bg-white/5 rounded-xl border border-white/10 relative overflow-hidden h-[260px]" {...imposterSwipeHandlers}>
+                                        <div className="flex-1 bg-white/5 rounded-xl border border-white/5 relative overflow-hidden h-[260px]" {...imposterSwipeHandlers}>
                                             <div className="flex h-full transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentImposterScenario * 100}%)` }}>
                                                 {scenarios.imposter.map((scenario, index) => (
                                                     <div key={index} className="w-full h-full flex-shrink-0 px-4 py-2 overflow-y-auto no-scrollbar">
@@ -1547,7 +1547,7 @@
                                         <button onClick={prevFakeWordScenario} disabled={currentFakeWordScenario === 0} className="hidden md:flex flex-shrink-0 w-8 h-8 items-center justify-center bg-white/10 rounded-full text-white/50 hover:bg-white/20 active:scale-90 transition disabled:opacity-30 disabled:cursor-not-allowed">
                                             <FaIcon name="icon-chevron-left" className="" />
                                         </button>
-                                        <div className="flex-1 bg-white/5 rounded-xl border border-white/10 relative overflow-hidden h-[260px]" {...fakeWordSwipeHandlers}>
+                                        <div className="flex-1 bg-white/5 rounded-xl border border-white/5 relative overflow-hidden h-[260px]" {...fakeWordSwipeHandlers}>
                                             <div className="flex h-full transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentFakeWordScenario * 100}%)` }}>
                                                 {scenarios.fakeWord.map((scenario, index) => (
                                                     <div key={index} className="w-full h-full flex-shrink-0 px-4 py-2 overflow-y-auto no-scrollbar">
@@ -1758,7 +1758,7 @@
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose}></div>
                     
-                    <div className="relative w-full max-w-sm rounded-[2rem] border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-slide-up flex flex-col overflow-hidden bg-[#040716]">
+                    <div className="relative w-full max-w-sm rounded-[2rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-slide-up flex flex-col overflow-hidden bg-[#040716]">
                         
                         <div className="absolute top-0 left-0 w-full h-[70%] z-0 pointer-events-none" style={{
                             backgroundImage: "linear-gradient(to bottom, rgba(4, 7, 22, 0) 0%, rgba(4, 7, 22, 0) 30%, #040716 95%), url('https://i.ibb.co/JwRBsVbQ/sponsor-backg.png')",
@@ -1852,7 +1852,7 @@
 				<div className="fixed bottom-0 left-0 w-full z-[200] pointer-events-none flex flex-col justify-end items-center px-4 sm:px-6 overflow-hidden">
 					<div 
 						ref={popupRef} 
-						className="relative pointer-events-auto w-full max-w-[320px] rounded-t-[1.5rem] rounded-b-none overflow-hidden border border-b-0 border-white/10 z-10 bg-[#040716] shadow-2xl [backface-visibility:hidden] [-webkit-font-smoothing:subpixel-antialiased]"
+						className="relative pointer-events-auto w-full max-w-[320px] rounded-t-[1.5rem] rounded-b-none overflow-hidden border border-b-0 border-white/5 z-10 bg-[#040716] shadow-2xl [backface-visibility:hidden] [-webkit-font-smoothing:subpixel-antialiased]"
 						style={{ 
                             transition: isVisible 
                                 ? 'transform 0.7s cubic-bezier(0.2, 1, 0.3, 1)'  
@@ -1980,12 +1980,12 @@
                     <div className="relative z-10 flex flex-col items-center w-full max-w-lg mx-auto">
                          <div className="mb-10 text-center">
                             <SeasonalTitle season={currentSeason} className="text-6xl font-display font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 mb-2 drop-shadow-lg tracking-tight" />
-                            <div className="subtle-shine-container inline-flex items-center gap-2 px-3 py-1 rounded-[0.5rem] bg-white/5 border border-white/10 backdrop-blur-md">
+                            <div className="subtle-shine-container inline-flex items-center gap-2 px-3 py-1 rounded-[0.5rem] bg-white/5 border border-white/5 backdrop-blur-md">
                                 <span className="text-white/50 text-[11px] font-display font-semibold tracking-widest uppercase">Trust No One • {roundedWordCount > 0 ? `${roundedWordCount.toLocaleString()}+ Words` : 'Loading...'}</span>
                             </div>
                         </div>
 
-                        <section className="w-full glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg mt-8">
+                        <section className="w-full glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg mt-8">
                             <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                 <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
                                     <FaIcon name="icon-mode" className=" text-brand-400 mr-1" /> Choose a Mode
@@ -2000,7 +2000,7 @@
                                 </button>
                                  <button
                                     onClick={() => { onSelectMode('local'); audioManager.playSound('uiClick'); }}
-                                    className="w-full glass-panel-lighter border-white/10 text-white/70 font-display font-bold text-lg py-5 rounded-[1.5rem] transition-all active:scale-98 flex items-center justify-center gap-3 hover:bg-white/5 hover:text-white"
+                                    className="w-full glass-panel-lighter border-white/5 text-white/70 font-display font-bold text-lg py-5 rounded-[1.5rem] transition-all active:scale-98 flex items-center justify-center gap-3 hover:bg-white/5 hover:text-white"
                                 >
                                     <FaIcon name="icon-mobile-screen" className="" /> PLAY ON THIS DEVICE
                                 </button>
@@ -2018,7 +2018,7 @@
                         </section>
                     </div>
                     <div className="absolute bottom-6 left-0 right-0 px-4 text-center text-xs text-white/30 z-20 pb-[env(safe-area-inset-bottom)]">
-                        &copy; {new Date().getFullYear()} Impostiq • Game by <button onClick={() => window.open("https://fillabrona.github.io", "_blank")} className="font-bold text-white/50 hover:text-white/80 transition">Jandré du Preez</button>
+                        &copy; {new Date().getFullYear()} Impostiq • Game by <button onClick={() => window.open("https://fillabrona.github.io", "_blank")} className="font-bold text-white/50 hover:text-white/80 transition">Fillabrona</button>
                     </div>
                 </div>
             );
@@ -2105,7 +2105,7 @@
                                 </p>
                             </div>
 
-                            <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                            <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                 <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                     <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
                                         <FaIcon name={isJoining ? 'icon-join' : 'icon-plus'} className="text-brand-400 mr-1" /> {isJoining ? 'Join Details' : 'Creation Details'}
@@ -2199,7 +2199,7 @@
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md"></div>
-                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-8 border border-white/10 shadow-2xl animate-slide-up text-center">
+                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-8 border border-white/5 shadow-2xl animate-slide-up text-center">
                         <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6 bg-yellow-500/20 ring-1 ring-white/10 mx-auto">
                             <FaIcon name="icon-circle-question-modal" className=" text-4xl text-yellow-400" />
                         </div>
@@ -2228,7 +2228,7 @@
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose}></div>
-                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-8 border border-white/10 shadow-2xl animate-slide-up text-center">
+                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-8 border border-white/5 shadow-2xl animate-slide-up text-center">
                         <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6 bg-red-500/20 ring-1 ring-white/10 mx-auto">
                             <FaIcon name="icon-triangle-exclamation" className=" text-4xl text-red-400 animate-pulse" />
                         </div>
@@ -2249,7 +2249,7 @@
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose}></div>
-                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-8 border border-white/10 shadow-2xl animate-slide-up text-center">
+                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-8 border border-white/5 shadow-2xl animate-slide-up text-center">
                         <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6 bg-sky-500/20 ring-1 ring-white/10 mx-auto">
                             <FaIcon name="icon-rotate-modal" className=" text-4xl text-sky-400" />
                         </div>
@@ -2328,7 +2328,7 @@
                 {
                     name: 'Email',
                     icon: 'icon-solid icon-envelope',
-                    color: 'bg-slate-700 text-white border-white/10',
+                    color: 'bg-slate-700 text-white border-white/5',
                     url: `mailto:?subject=${encodeURIComponent(shareData.title)}&body=${encodedText}`
                 }
             );
@@ -2336,7 +2336,7 @@
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose}></div>
-                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-5 border border-white/10 animate-slide-up flex flex-col">
+                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-5 border border-white/5 animate-slide-up flex flex-col">
                         
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-xl font-display font-bold text-white">Share Invite</h2>
@@ -2346,7 +2346,7 @@
                         </div>
 
                         {/* Minimal Preview Box */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-3 mb-5 flex gap-3 items-center">
+                        <div className="bg-white/5 border border-white/5 rounded-xl p-3 mb-5 flex gap-3 items-center">
                             <img src={"https://impostiq.github.io/images/displayimage512.png"} alt="Icon" className="w-10 h-10 rounded-lg flex-shrink-0 bg-black/20" />
                             <div className="flex flex-col min-w-0">
                                 <h3 className="text-white font-bold text-sm truncate">{shareData.title}</h3>
@@ -2457,7 +2457,7 @@
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose}></div>
-                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-5 sm:p-6 border border-white/10 shadow-2xl animate-slide-up transform transition-all max-h-[90vh] overflow-y-auto no-scrollbar flex flex-col">
+                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-5 sm:p-6 border border-white/5 shadow-2xl animate-slide-up transform transition-all max-h-[90vh] overflow-y-auto no-scrollbar flex flex-col">
                         <button onClick={onClose} className="absolute top-3 right-3 sm:top-4 sm:right-4 w-10 h-10 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 active:scale-90 transition z-20 flex-shrink-0">
                             <FaIcon name="icon-xmark" className="" />
                         </button>
@@ -2466,44 +2466,35 @@
                             <h2 className="text-2xl font-display font-bold text-white mb-2">Scan to Join</h2>
                             <p className="text-white/50 mb-4 sm:mb-6">Scan with a phone to instantly join the lobby.</p>
 
-                            {/* Responsive container: Scales down gracefully, stays square, never breaks out */}
-                            <div className="relative w-full max-w-[17.5rem] aspect-square flex items-center justify-center pointer-events-none select-none flex-shrink-0">
-                                {/* Loading Spinner */}
-                                {!qrImageUrl && (
-                                    <div className="absolute inset-0 flex items-center justify-center z-0">
-                                        <svg className="sleek-spinner w-10 h-10 text-brand-500 drop-shadow-sm" viewBox="25 25 50 50">
-                                            <circle cx="50" cy="50" r="20"></circle>
-                                        </svg>
-                                    </div>
-                                )}
+                            {/* Full-width 1:1 Aspect Ratio Block Container */}
+                            <div className="w-full aspect-square bg-black/20 p-3 rounded-lg border border-white/5 overflow-hidden flex items-center justify-center flex-shrink-0">
+                                {/* Maximized QR Code wrapper scaled to 96% */}
+                                <div className="relative w-[96%] h-[96%] flex items-center justify-center pointer-events-none select-none flex-shrink-0">
+                                    {/* Loading Spinner */}
+                                    {!qrImageUrl && (
+                                        <div className="absolute inset-0 flex items-center justify-center z-0">
+                                            <svg className="sleek-spinner w-10 h-10 text-brand-500 drop-shadow-sm" viewBox="25 25 50 50">
+                                                <circle cx="50" cy="50" r="20"></circle>
+                                            </svg>
+                                        </div>
+                                    )}
 
-                                {/* Extracted PNG QR Code - Strictly bound to absolute inset-0 to prevent overflowing */}
-                                {qrImageUrl && (
-                                    <img 
-                                        src={qrImageUrl} 
-                                        alt="Lobby Invite QR Code" 
-                                        draggable="false"
-                                        className="absolute inset-0 w-full h-full object-contain z-10 pointer-events-none select-none" 
-                                    />
-                                )}
+                                    {/* Extracted PNG QR Code */}
+                                    {qrImageUrl && (
+                                        <img 
+                                            src={qrImageUrl} 
+                                            alt="Lobby Invite QR Code" 
+                                            draggable="false"
+                                            className="absolute inset-0 w-full h-full object-contain z-10 pointer-events-none select-none" 
+                                        />
+                                    )}
 
-                                {/* Center Logo Overlay - A clean, solid circle for a sleeker look */}
-                                <div className={`absolute inset-0 flex items-center justify-center z-20 ${qrImageUrl ? 'opacity-100' : 'opacity-0'}`}>
-                                    {/* This version uses a solid background, a clean border, and a shadow to create depth. */}
-                                    <div className="w-[22%] h-[22%] min-w-[48px] min-h-[48px] rounded-[1.5rem]  bg-slate-900 border-2 border-white/10 p-2 flex items-center justify-center shadow-2xl shadow-black/50">
-                                        <img src={logoUrl} alt="Logo" className="w-full h-full object-contain pointer-events-none select-none" draggable="false" />
+                                    {/* Center Logo Overlay */}
+                                    <div className={`absolute inset-0 flex items-center justify-center z-20 ${qrImageUrl ? 'opacity-100' : 'opacity-0'}`}>
+                                        <div className="w-[22%] h-[22%] min-w-[48px] min-h-[48px] rounded-[1.5rem] bg-slate-900 border-2 border-white/5 p-2 flex items-center justify-center shadow-2xl shadow-black/50">
+                                            <img src={logoUrl} alt="Logo" className="w-full h-full object-contain pointer-events-none select-none" draggable="false" />
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            
-                            <div className="w-full mt-6 flex gap-3 sm:gap-4 flex-shrink-0">
-                                <div className="flex-1 bg-black/20 p-3 rounded-lg border border-white/5 overflow-hidden">
-                                    <div className="text-white/40 text-[10px] uppercase font-bold tracking-widest mb-1 truncate">Lobby ID</div>
-                                    <div className="font-display text-lg sm:text-xl font-bold tracking-widest text-white truncate">{lobbyId}</div>
-                                </div>
-                                <div className="flex-1 bg-black/20 p-3 rounded-lg border border-white/5 overflow-hidden">
-                                    <div className="text-white/40 text-[10px] uppercase font-bold tracking-widest mb-1 truncate">Password</div>
-                                    <div className="font-display text-lg sm:text-xl font-bold tracking-widest text-white truncate">{password}</div>
                                 </div>
                             </div>
                         </div>
@@ -2627,7 +2618,7 @@
                         {isOnline && votes > 0 && (
                             <button 
                                 onClick={(e) => { e.stopPropagation(); e.preventDefault(); setViewingVotersFor(cat); }}
-                                className="absolute top-3 left-3 bg-black/60 hover:bg-black/80 active:scale-95 backdrop-blur-sm px-2 py-1 rounded-md text-[10px] font-bold text-white flex items-center gap-1.5 shadow-sm border border-white/10 z-30 transition-all cursor-pointer"
+                                className="absolute top-3 left-3 bg-black/60 hover:bg-black/80 active:scale-95 backdrop-blur-sm px-2 py-1 rounded-md text-[10px] font-bold text-white flex items-center gap-1.5 shadow-sm border border-white/5 z-30 transition-all cursor-pointer"
                             >
                                 <FaIcon name="icon-fire" className=" text-orange-400" /> {votes}
                             </button>
@@ -2653,7 +2644,7 @@
                 <div className="fixed inset-0 z-[55] flex items-center justify-center sm:p-6 bg-slate-950/95 sm:bg-black/60 backdrop-blur-xl sm:backdrop-blur-md animate-fadeIn">
                     <div className="absolute inset-0 hidden sm:block" onClick={onClose}></div>
                     
-                    <div className="relative flex flex-col w-full h-full sm:h-auto sm:max-w-4xl sm:max-h-[90vh] bg-slate-950/95 sm:rounded-3xl sm:border sm:border-white/10 sm:shadow-2xl sm:animate-slide-up overflow-hidden z-10">
+                    <div className="relative flex flex-col w-full h-full sm:h-auto sm:max-w-4xl sm:max-h-[90vh] bg-slate-950/95 sm:rounded-3xl sm:border sm:border-white/5 sm:shadow-2xl sm:animate-slide-up overflow-hidden z-10">
                         <div className="flex-shrink-0 flex items-center justify-between p-6 pb-4 border-b border-white/5 bg-slate-900/50">
                             <div>
                                 <h2 className="text-2xl font-display font-bold text-white">Select Category</h2>
@@ -2692,7 +2683,7 @@
                     {viewingVotersFor && (
                         <div className="fixed inset-0 z-[70] flex items-center justify-center p-6 animate-fadeIn">
                             <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={() => setViewingVotersFor(null)}></div>
-                            <div className="relative w-full max-w-sm glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl animate-slide-up flex flex-col max-h-[60vh]">
+                            <div className="relative w-full max-w-sm glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl animate-slide-up flex flex-col max-h-[60vh]">
                                 
                                 <div className="flex-shrink-0 text-center py-3 bg-black/50 border-b border-white/5">
                                     <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
@@ -3016,7 +3007,7 @@
                             </div>
 
                             {lobbyData.gameState === 'waiting' && (
-                                <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                                <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                     <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                         <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
                                             <FaIcon name="icon-users-rectangle" className=" text-brand-400 mr-1" /> Lobby Details
@@ -3047,7 +3038,7 @@
                                 </section>
                             )}
 
-                            <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                            <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                 <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                     <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
                                         <FaIcon name={lobbyData.gameState === 'reveal' ? 'icon-list-ol' : 'icon-users'} className="text-brand-400 mr-1" /> 
@@ -3127,7 +3118,7 @@
                             </section>
                             
                             {lobbyData.gameState === 'waiting' && (
-                                <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                                <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                 <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                     <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
                                         <FaIcon name="icon-gear" className=" text-brand-400 mr-1" /> Game Settings
@@ -4392,7 +4383,7 @@
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose}></div>
-                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-6 border border-white/10 shadow-2xl animate-slide-up transform transition-all">
+                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-6 border border-white/5 shadow-2xl animate-slide-up transform transition-all">
                         <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10">
                             <FaIcon name="icon-xmark" className="" />
                         </button>
@@ -4422,7 +4413,7 @@
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md"></div>
-                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-6 border border-white/10 shadow-2xl animate-slide-up text-center">
+                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-6 border border-white/5 shadow-2xl animate-slide-up text-center">
                         <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 bg-red-500/20 ring-1 ring-white/10 mx-auto">
                             <FaIcon name="icon-user-slash-modal" className=" text-3xl text-red-400" />
                         </div>
@@ -4444,7 +4435,7 @@
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md"></div>
-                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-6 border border-white/10 shadow-2xl animate-slide-up text-center">
+                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-6 border border-white/5 shadow-2xl animate-slide-up text-center">
                         <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 bg-yellow-500/20 ring-1 ring-white/10 mx-auto">
                             <FaIcon name="icon-door-open-modal" className=" text-3xl text-yellow-400" />
                         </div>
@@ -4470,7 +4461,7 @@
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose}></div>
-                    <div className="relative w-full max-w-sm glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl animate-slide-up flex flex-col max-h-[60vh]">
+                    <div className="relative w-full max-w-sm glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl animate-slide-up flex flex-col max-h-[60vh]">
                         
                         <div className="flex-shrink-0 text-center py-3 bg-black/50 border-b border-white/5">
                             <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
@@ -4522,7 +4513,7 @@
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md"></div>
-                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-6 border border-white/10 shadow-2xl animate-slide-up text-center">
+                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-6 border border-white/5 shadow-2xl animate-slide-up text-center">
                         <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 bg-yellow-500/20 ring-1 ring-white/10 mx-auto">
                             <FaIcon name="icon-door-open-modal" className=" text-3xl text-yellow-400" />
                         </div>
@@ -4552,7 +4543,7 @@
 			return (
 				<div className="fixed inset-0 z-[200] flex items-center justify-center p-6 animate-fadeIn">
 					<div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose}></div>
-					<div className="relative w-full max-w-sm glass-panel rounded-3xl p-8 border border-white/10 shadow-2xl animate-slide-up text-center">
+					<div className="relative w-full max-w-sm glass-panel rounded-3xl p-8 border border-white/5 shadow-2xl animate-slide-up text-center">
 						<div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 bg-red-500/20 ring-1 ring-white/10 mx-auto">
 							<FaIcon name="icon-no-microphone-modal" className=" text-3xl text-red-400" />
 						</div>
@@ -4902,12 +4893,12 @@
                         <div className="max-w-lg mx-auto p-6 pt-28">
                             <div class="mb-10 text-center">
                                 <SeasonalTitle season={currentSeason} className="text-5xl font-display font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 mb-2 drop-shadow-lg tracking-tight" />
-                                <div className="subtle-shine-container inline-flex items-center gap-2 px-3 py-1 rounded-[0.5rem] bg-white/5 border border-white/10 backdrop-blur-md">
+                                <div className="subtle-shine-container inline-flex items-center gap-2 px-3 py-1 rounded-[0.5rem] bg-white/5 border border-white/5 backdrop-blur-md">
                                     <span className="text-white/50 text-[11px] font-display font-semibold tracking-widest uppercase">Local Game</span>
                                 </div>
                             </div>
 
-                            <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                            <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                 <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                     <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
                                         <FaIcon name="icon-user-plus" className=" text-brand-400 mr-1" /> Add Players
@@ -4950,7 +4941,7 @@
 											onMouseLeave={handleMicRelease}
 											onTouchStart={handleMicPress}
 											onTouchEnd={handleMicRelease}
-											className={`flex-1 flex items-center justify-center rounded-xl font-bold transition-all shadow-lg active:scale-95 border border-white/10 h-14 ${isMicPermissionDenied ? 'bg-red-500/20' : isRecording ? 'bg-red-500 animate-pulse' : (recordedAudioData ? 'bg-green-500' : 'bg-white/10 hover:bg-white/20')}`}
+											className={`flex-1 flex items-center justify-center rounded-xl font-bold transition-all shadow-lg active:scale-95 border border-white/5 h-14 ${isMicPermissionDenied ? 'bg-red-500/20' : isRecording ? 'bg-red-500 animate-pulse' : (recordedAudioData ? 'bg-green-500' : 'bg-white/10 hover:bg-white/20')}`}
 										>
 											<FaIcon name={isMicPermissionDenied ? 'icon-no-microphone' : (recordedAudioData && !isRecording ? 'icon-check' : 'icon-microphone')} className={`text-white text-lg ${isMicPermissionDenied ? 'text-red-400/70' : (isRecording ? '' : 'opacity-70')}`} />
 										</button>
@@ -4962,7 +4953,7 @@
                                         
                                         <button 
                                             onClick={addPlayer}
-                                            className="bg-brand-600 hover:bg-brand-500 flex-1 flex items-center justify-center rounded-xl font-bold transition shadow-lg shadow-brand-900/20 active:scale-95 border border-white/10 h-14"
+                                            className="bg-brand-600 hover:bg-brand-500 flex-1 flex items-center justify-center rounded-xl font-bold transition shadow-lg shadow-brand-900/20 active:scale-95 border border-white/5 h-14"
                                         >
                                             <FaIcon name="icon-plus-button" className=" text-white text-lg" />
                                         </button>
@@ -5007,7 +4998,7 @@
                               </div>
                             </section>
 
-                            <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                            <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                 <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                     <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
                                         <FaIcon name="icon-gear" className=" text-brand-400 mr-1" /> Game Settings
@@ -5396,7 +5387,7 @@
                 return (
                     <div className="flex flex-col items-center justify-center h-full text-center p-8 animate-slide-up relative z-10">
                         <div className="w-32 h-32 rounded-[2rem] flex items-center justify-center mb-10 relative">
-                            <div className="glass-panel w-full h-full rounded-[2rem] flex items-center justify-center border border-white/10 overflow-hidden">
+                            <div className="glass-panel w-full h-full rounded-[2rem] flex items-center justify-center border border-white/5 overflow-hidden">
                                 <img 
                                     src={avatarUrl} 
                                     alt={`${player.name}'s avatar`} 
@@ -5420,7 +5411,7 @@
                                     setStep('reveal');
                                     if (navigator.vibrate) navigator.vibrate(20);
                                 }}
-                                className="w-full glass-panel hover:bg-white/5 border border-white/10 text-white font-display font-bold text-lg py-5 rounded-[1.5rem] transition-all active:scale-95 flex items-center justify-center gap-3"
+                                className="w-full glass-panel hover:bg-white/5 border border-white/5 text-white font-display font-bold text-lg py-5 rounded-[1.5rem] transition-all active:scale-95 flex items-center justify-center gap-3"
                             >
                                 <FaIcon name="icon-fingerprint" className=" text-brand-400" /> Verify Identity
                             </button>
@@ -5452,7 +5443,7 @@
                             ))}
 
                             {/* Front (TOP SECRET) */}
-                            <div className="absolute inset-0 backface-hidden rounded-[2rem] bg-slate-900 border border-white/10 flex flex-col items-center justify-center p-8 overflow-hidden" 
+                            <div className="absolute inset-0 backface-hidden rounded-[2rem] bg-slate-900 border border-white/5 flex flex-col items-center justify-center p-8 overflow-hidden" 
                                  style={{ transform: isWebView ? 'translateZ(0px)' : 'translateZ(1px)', WebkitBackfaceVisibility: 'hidden' }}>
                                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
 
@@ -5573,7 +5564,7 @@
                                 </p>
                             </div>
 
-                            <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                            <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                 <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                     <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
                                         <FaIcon name="icon-list-ol" className=" text-brand-400 mr-1" /> Mission Sequence
@@ -5609,7 +5600,7 @@
                                     <FaIcon name="icon-play" className=" text-sm" /> START ROUND
                                 </button>
                             ) : (
-                                <div className="w-full bg-white/5 backdrop-blur-md text-white/50 py-5 rounded-[1.5rem] font-display font-bold text-lg border border-white/10 flex items-center justify-center gap-3">
+                                <div className="w-full bg-white/5 backdrop-blur-md text-white/50 py-5 rounded-[1.5rem] font-display font-bold text-lg border border-white/5 flex items-center justify-center gap-3">
                                     WAITING FOR HOST...
                                 </div>
                             )}
@@ -5735,7 +5726,7 @@
                                 </p>
                             </div>
 
-                            <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                            <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                 <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                     <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
                                         <FaIcon name="icon-stopwatch" className=" text-brand-400 mr-1" /> {duration ? 'Mission Timer' : 'Mission Status'}
@@ -5792,7 +5783,7 @@
                         <div className="max-w-lg mx-auto pb-[env(safe-area-inset-bottom)]">
                             {isOnline ? (
                                 hasVotedToEnd ? (
-                                    <div className="w-full h-[68px] bg-white/5 backdrop-blur-md text-white/50 py-5 rounded-[1.5rem] font-display font-bold text-lg border border-white/10 flex items-center justify-center gap-3">
+                                    <div className="w-full h-[68px] bg-white/5 backdrop-blur-md text-white/50 py-5 rounded-[1.5rem] font-display font-bold text-lg border border-white/5 flex items-center justify-center gap-3">
                                         WAITING FOR OTHERS ({endVotes}/{duration && timeLeft === 0 ? 1 : requiredVotes})
                                     </div>
                                 ) : (
@@ -5893,7 +5884,7 @@
 
                             {isImposter ? (
                                 hasAlreadyGuessed ? (
-                                    <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg animate-fadeIn">
+                                    <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg animate-fadeIn">
                                         <div className="text-center py-10 bg-black/40 flex flex-col items-center justify-center px-4">
                                             <div className="w-24 h-24 bg-red-500/10 rounded-full flex items-center justify-center mb-6 ring-1 ring-red-500/30 overflow-hidden">
                                                 <FaIcon name="icon-xmark" className="text-4xl text-red-400" />
@@ -5907,7 +5898,7 @@
                                         </div>
                                     </section>
                                 ) : (
-                                    <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                                    <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                         <div className="text-center py-8 bg-black/40 border-b border-white/5 flex flex-col items-center justify-center px-4">
                                             <div className="w-20 h-20 bg-teal-500/10 rounded-full flex items-center justify-center mb-4 ring-1 ring-white/5 overflow-hidden">
                                                 <FaIcon name="icon-guess" className="text-4xl text-teal-400" />
@@ -5942,7 +5933,7 @@
                                     </section>
                                 )
                             ) : (
-                                <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                                <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                     <div className="text-center py-10 bg-black/40 flex flex-col items-center justify-center px-4">
                                         <div className="w-24 h-24 bg-teal-500/10 rounded-full flex items-center justify-center mb-6 ring-1 ring-teal-500/30 overflow-hidden">
                                             <FaIcon name="icon-guess" className="text-4xl text-teal-400" />
@@ -6023,7 +6014,7 @@
 
                             {me?.votedFor && me.votedFor.length > 0 ? (
                                 <>
-                                    <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                                    <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                         <div className="text-center py-6 bg-black/40 border-b border-white/5 flex flex-col items-center justify-center">
                                             <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mb-3">
                                                 <FaIcon name="icon-check-modal" className=" text-2xl text-green-400" />
@@ -6045,7 +6036,7 @@
                                         </div>
                                     </section>
 
-                                    <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                                    <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                         <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                             <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
                                                 <FaIcon name="icon-users" className=" text-brand-400 mr-1" /> Voting Status
@@ -6067,7 +6058,7 @@
                                     </section>
                                 </>
                             ) : (
-                                <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                                <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                     <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                         <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
                                             <FaIcon name="icon-crosshairs" className=" text-brand-400 mr-1" /> Select Suspects
@@ -6203,7 +6194,7 @@
                                 <p className="text-center text-white/60">Calculating results...</p>
                             ) : (
                                 <>
-                                    <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                                    <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                         <div className="text-center py-8 bg-black/40 border-b border-white/5 flex flex-col items-center justify-center px-4">
                                             <div className={`w-24 h-24 ${titleBg} rounded-full flex items-center justify-center mb-4 ring-1 ring-white/5 overflow-hidden`}>
                                                 <img src={titleImg} alt="Result Icon" className="w-22 h-22 drop-shadow-lg relative top-2" draggable="false" />
@@ -6217,7 +6208,7 @@
                                         </div>
                                     </section>
 
-                                    <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
+                                    <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                         <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                             <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
                                                 <FaIcon name="icon-key" className=" text-brand-400 mr-1" /> Classified Intel
@@ -6240,7 +6231,7 @@
                                     </section>
 
                                     {!isLocal && lobbyData.votingRecord && (
-                                        <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/10 shadow-lg animate-fadeIn">
+                                        <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg animate-fadeIn">
                                             <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                                 <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
                                                     <FaIcon name="icon-check-to-slot" className=" text-brand-400 mr-1" /> Voting Record
