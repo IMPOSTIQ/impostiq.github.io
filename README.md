@@ -59,7 +59,7 @@
   <li><strong>Easy Invites:</strong> Share a dynamic 10-character deep-link or a custom QR code. Joining is instant.</li>
   <li><strong>Category Voting:</strong> The host doesn't dictate the theme; all players vote for the category they want. Ties are resolved randomly.</li>
   <li><strong>Mission Sequence:</strong> To prevent chaotic talking, the game generates a randomized Turn Order list so everyone is forced to interrogate and be interrogated.</li>
-  <li><strong>Interactive Voting & Records:</strong> When the 3-minute hardcoded timer ends (or a majority votes to end early), players use a secret interactive UI to lock in their suspects. At the end of the match, an intricate voting record shows exactly who betrayed whom.</li>
+  <li><strong>Interactive Voting & Records:</strong> When the countdown timer ends (or a majority votes to end early), players use a secret interactive UI to lock in their suspects. At the end of the match, an intricate voting record shows exactly who betrayed whom.</li>
 </ul>
 
 <h4>
@@ -126,7 +126,7 @@
 | **Imposter Word Guess** | <picture><img draggable="false" src="https://i.ibb.co/DPL3CtKF/guess.png" width="24"></picture> | **Play with Friends** | If the Agents correctly catch the Imposter, the Imposter is given one final chance to type a guess for the secret word. If correct, they steal the win! |
 | **Second Imposter** | <picture><img draggable="false" src="https://i.ibb.co/nMgdLLR5/second.png" width="24"></picture> | **Both Modes** | Have a massive group? Lobbies with **10 or more players** unlock the ability to add a second Imposter (or a second Fake Card) to the mission. |
 | **Speak Category** | <picture><img draggable="false" src="https://i.ibb.co/d4F73hwV/speak.png" width="24"></picture> | **Both Modes** | When the round begins, text-to-speech automatically announces the chosen category aloud so everyone is on the same page. *(Auto-disabled for Custom Categories)*. |
-| **Countdown Timer** | <picture><img draggable="false" src="https://i.ibb.co/1tPRHmC3/time.png" width="24"></picture> | **Play on This Device** | Adjust the discussion timer from 1 to 15 minutes, or turn it off entirely for a relaxed, **Untimed Mode**. *(Play with Friends missions are hardcoded to a fast-paced 3 minutes).* |
+| **Countdown Timer** | <picture><img draggable="false" src="https://i.ibb.co/1tPRHmC3/time.png" width="24"></picture> | **Both Modes** | Adjust the discussion timer from 1 to 15 minutes, or turn it off entirely for a relaxed, **Untimed Mode**. |
 | **Notify Imposter** | <picture><img draggable="false" src="https://i.ibb.co/B2fxJRNH/bell.png" width="24"></picture> | **Play with Friends** | If an Agent is confused by a word, they can trigger a secret poll. This setting gives the Imposter a secret red popup warning so they aren't caught off-guard. |
 
 <br>
