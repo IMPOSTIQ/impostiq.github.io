@@ -1170,7 +1170,6 @@
             const [isLoaded, setIsLoaded] = useState(isAlreadyCached);
             const imgRef = useRef(null);
 
-            // Sync state if the URL changes
             useEffect(() => {
                 if (globalAvatarCache.has(avatarUrl)) {
                     setIsLoaded(true);
@@ -1190,20 +1189,20 @@
 
             const handleError = (e) => {
                 e.target.style.display = 'none';
-                globalAvatarCache.add(avatarUrl); // Count as resolved so it stops spinning
+                globalAvatarCache.add(avatarUrl);
                 setIsLoaded(true);
             };
 
             return (
                 <div className={`flex-shrink-0 flex items-center justify-center bg-white/5 border border-white/5 overflow-hidden w-4 h-4 rounded-[0.5rem] relative ${className}`}>
-                    {/* Loading Spinner */}
+                    {}
                     <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out ${(!isLoaded && !isAlreadyCached) ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                         <svg className="sleek-spinner w-[60%] h-[60%] text-white/60 drop-shadow-sm" viewBox="25 25 50 50">
 							<circle cx="50" cy="50" r="20" fill="none" strokeWidth="6" stroke="currentColor" strokeLinecap="round"></circle>
 						</svg>
                     </div>
 										
-                    {/* Avatar Image */}
+                    {}
                     <img
                         ref={imgRef}
                         src={avatarUrl}
@@ -2279,7 +2278,6 @@
                 });
             };
 
-            // Detect if the user is on an iOS device (iPhone, iPad, iPod)
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
 
             const encodedText = encodeURIComponent(shareData.text + ' ' + shareData.url);
@@ -2290,34 +2288,32 @@
                     name: 'WhatsApp',
                     icon: 'icon-brands icon-whatsapp',
                     color: 'bg-[#25D366] text-white border-transparent',
-                    url: `whatsapp://send?text=${encodedText}` // Bypasses browser, opens app directly
+                    url: `whatsapp://send?text=${encodedText}`
                 }
             ];
 
-            // Add iOS-specific iMessage, or Android generic Messages
             if (isIOS) {
                 shareLinks.push({
                     name: 'iMessage',
                     icon: 'icon-solid icon-comment',
-                    color: 'bg-[#34C759] text-white border-transparent', // Apple Green
-                    url: `sms:&body=${encodedText}` // iOS requires &body= instead of ?body=
+                    color: 'bg-[#34C759] text-white border-transparent',
+                    url: `sms:&body=${encodedText}`
                 });
             } else {
                 shareLinks.push({
                     name: 'Messages',
                     icon: 'icon-solid icon-comment-sms',
-                    color: 'bg-[#007AFF] text-white border-transparent', // Generic Blue
+                    color: 'bg-[#007AFF] text-white border-transparent',
                     url: `sms:?body=${encodedText}`
                 });
             }
 
-            // Push the rest of the direct-app links
             shareLinks.push(
                 {
                     name: 'Telegram',
                     icon: 'icon-brands icon-telegram',
                     color: 'bg-[#229ED9] text-white border-transparent',
-                    url: `tg://msg?text=${encodedText}` // Bypasses browser
+                    url: `tg://msg?text=${encodedText}`
                 },
                 {
                     name: 'Messenger',
@@ -2345,7 +2341,7 @@
                             </button>
                         </div>
 
-                        {/* Minimal Preview Box */}
+                        {}
                         <div className="bg-white/5 border border-white/5 rounded-xl p-3 mb-5 flex gap-3 items-center">
                             <img src={"https://impostiq.github.io/images/displayimage512.png"} alt="Icon" className="w-10 h-10 rounded-lg flex-shrink-0 bg-black/20" />
                             <div className="flex flex-col min-w-0">
@@ -2354,7 +2350,7 @@
                             </div>
                         </div>
 
-                        {/* App List - Mobile Horizontal Scroll, Desktop Grid */}
+                        {}
                         <div className="flex overflow-x-auto snap-x no-scrollbar gap-4 mb-5 pb-2 sm:pb-0 sm:grid sm:grid-cols-5 sm:gap-3 sm:overflow-visible relative">
                             {shareLinks.map(link => (
                                 <button key={link.name} onClick={() => window.open(link.url, "_blank")} className="flex flex-col items-center gap-2 flex-shrink-0 snap-start group w-14 sm:w-auto outline-none">
@@ -2366,7 +2362,7 @@
                             ))}
                         </div>
 
-                        {/* Minimal Copy Link Section */}
+                        {}
                         <div className="flex items-center gap-2 bg-black/40 rounded-xl p-1.5 border border-white/5">
                             <div className="flex-1 overflow-hidden px-3">
                                 <p className="text-white/40 text-[10px] truncate font-display select-all">{shareData.url}</p>
@@ -2466,11 +2462,11 @@
                             <h2 className="text-2xl font-display font-bold text-white mb-2">Scan to Join</h2>
                             <p className="text-white/50 mb-4 sm:mb-6">Scan with a phone to instantly join the lobby.</p>
 
-                            {/* Full-width 1:1 Aspect Ratio Block Container */}
+                            {}
                             <div className="w-full aspect-square bg-black/20 p-3 rounded-lg border border-white/5 overflow-hidden flex items-center justify-center flex-shrink-0">
-                                {/* Maximized QR Code wrapper scaled to 96% */}
+                                {}
                                 <div className="relative w-[96%] h-[96%] flex items-center justify-center pointer-events-none select-none flex-shrink-0">
-                                    {/* Loading Spinner */}
+                                    {}
                                     {!qrImageUrl && (
                                         <div className="absolute inset-0 flex items-center justify-center z-0">
                                             <svg className="sleek-spinner w-10 h-10 text-brand-500 drop-shadow-sm" viewBox="25 25 50 50">
@@ -2479,7 +2475,7 @@
                                         </div>
                                     )}
 
-                                    {/* Extracted PNG QR Code */}
+                                    {}
                                     {qrImageUrl && (
                                         <img 
                                             src={qrImageUrl} 
@@ -2489,7 +2485,7 @@
                                         />
                                     )}
 
-                                    {/* Center Logo Overlay */}
+                                    {}
                                     <div className={`absolute inset-0 flex items-center justify-center z-20 ${qrImageUrl ? 'opacity-100' : 'opacity-0'}`}>
                                         <div className="w-[22%] h-[22%] min-w-[48px] min-h-[48px] rounded-[1.5rem] bg-slate-900 border-2 border-white/5 p-2 flex items-center justify-center shadow-2xl shadow-black/50">
                                             <img src={logoUrl} alt="Logo" className="w-full h-full object-contain pointer-events-none select-none" draggable="false" />
@@ -3564,7 +3560,7 @@
 
                         <div className="w-full min-h-[160px] flex flex-col items-center justify-start">
                             
-                            {/* The Morphing Container */}
+                            {}
                             <button
                                 onClick={isFullyReady ? onStart : (showRestartBtn ? () => window.location.reload() : undefined)}
                                 disabled={!isFullyReady && !showRestartBtn}
@@ -3574,13 +3570,13 @@
                                         : 'h-4 bg-slate-800/50 rounded-[16px] border-white/5 cursor-default shadow-none'
                                     }`}
                             >
-                                {/* The Inner Progress Bar */}
+                                {}
                                 <div 
 									className={`absolute inset-y-0 left-0 bg-gradient-to-r from-brand-400 to-brand-500 transition-all duration-[500ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden
 										${(isFullyReady || showRestartBtn) ? 'opacity-0 rounded-[24px]' : 'opacity-100 rounded-[16px]'}`} 
 									style={{ width: `${isFullyReady ? 100 : visualProgress}%` }}
 								>
-                                    {/* The Original Shimmer */}
+                                    {}
                                     <div 
                                         className="absolute top-0 bottom-0 w-[150%] -skew-x-12" 
                                         style={{ 
@@ -4268,7 +4264,6 @@
 
             const updatePosition = () => {
                 if (containerRef.current) {
-                    // Find the main scrolling area so we can attach the tooltip to it
                     const scrollContainer = containerRef.current.closest('.overflow-y-auto');
                     if (scrollContainer) {
                         if (window.getComputedStyle(scrollContainer).position === 'static') {
@@ -4276,7 +4271,6 @@
                         }
                         setScrollNode(scrollContainer);
 
-                        // Calculate position relative to the scroll container
                         const containerRect = containerRef.current.getBoundingClientRect();
                         const scrollRect = scrollContainer.getBoundingClientRect();
                         
@@ -4290,7 +4284,6 @@
 
             const show = (e) => {
                 const button = e.target.closest('button');
-                // ONLY trigger if the user clicked the actual toggle button AND it's disabled
                 if (!isDisabled || !text || !button || !button.disabled) {
                     return;
                 }
@@ -4324,7 +4317,7 @@
                 if (!isRendered) return;
 
                 const handleScroll = () => {
-                    if (isVisible) hide(); // Fade out when the user scrolls
+                    if (isVisible) hide();
                 };
                 
                 const scrollContainer = containerRef.current?.closest('.overflow-y-auto');
@@ -4363,7 +4356,7 @@
                             {text}
                             <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"></div>
                         </div>,
-                        scrollNode // Portal it into the scroll container to escape the parent's opacity
+                        scrollNode
                     )}
                 </div>
             );
@@ -4492,7 +4485,6 @@
                                         }`}
                                         initial={{ width: `${progress}%` }}
                                         animate={{ width: `${progress}%` }}
-                                        // Smoother spring animation
                                         transition={{ type: "spring", stiffness: 40, damping: 20 }}
                                     />
                                 </div>
@@ -4710,7 +4702,6 @@
 
                             result.onchange = () => updateUI(result.state);
                         } catch (e) {
-                            // Fallback for browsers that don't support mic queries
                             if (localStorage.getItem('imposter_mic_denied') === 'true') {
                                 setIsMicPermissionDenied(true);
                             }
@@ -5084,7 +5075,7 @@
                                             </div>
                                             <button 
                                                 onClick={() => {
-                                                    stopTimerHold(); // Kill any stuck timer holds
+                                                    stopTimerHold();
                                                     setTimerEnabled(!timerEnabled);
                                                     audioManager.playSound(!timerEnabled ? 'switchOn' : 'switchOff');
                                                     if(navigator.vibrate) navigator.vibrate(10);
@@ -5204,10 +5195,8 @@
             const [step, setStep] = useState(isOnline ? 'reveal' : 'handover'); 
             const [isFlipped, setIsFlipped] = useState(false);
             
-            // 1. Detect Touch Device (for physics)
             const [isTouchDevice] = useState(() => typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
 
-            // --- EASTER EGG: DIZZY IMPOSTER ---
             const [isDizzy, setIsDizzy] = useState(false);
 
             useEffect(() => {
@@ -5230,9 +5219,7 @@
 
                         const magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
 
-                        // If spike in magnitude breaches threshold
                         if (magnitude > 22) {
-                            // Ensure enough time between tracked shakes so 1 shake isn't counted as 5
                             if (currentTime - lastShakeTime > 150) {
                                 shakeCount++;
                                 lastShakeTime = currentTime;
@@ -5264,23 +5251,18 @@
                 return () => window.removeEventListener('devicemotion', handleMotion);
             }, [isTouchDevice, isDizzy, word, audioManager]);
             
-            // 2. FOOLPROOF MEDIAN.CO / APK DETECTION
             const [isWebView] = useState(() => {
                 if (typeof window === 'undefined') return false;
                 
-                // Median.co / GoNative injects these objects directly into the app wrapper. 
-                // If these exist, we are 100% inside your APK.
                 if (window.median || window.gonative) return true;
                 
                 const ua = navigator.userAgent.toLowerCase();
-                // Standard WebView fallbacks just in case
                 if (ua.includes('median') || ua.includes('gonative') || ua.includes('wv')) return true;
                 if (/iphone|ipod|ipad/.test(ua) && !ua.includes('safari')) return true;
                 
                 return false;
             });
 
-            // Framer Motion Physics
             const targetRotX = useMotionValue(0);
             const targetRotY = useMotionValue(0);
             
@@ -5438,12 +5420,12 @@
                             whileHover={{ scale: isFlipped ? 1 : (isTouchDevice ? 1 : 1.02) }} 
                             whileTap={{ scale: isFlipped ? 1 : 0.98 }}
                         >
-                            {/* 3D Depth edges - Safely DISABLED for Median APKs to prevent glitching */}
+                            {}
                             {!isWebView && [...Array(6)].map((_, i) => (
                                 <div key={i} className="absolute inset-0 rounded-[2rem] bg-slate-800 border border-slate-700/20 backface-hidden" style={{ transform: `translateZ(${-i}px)`, WebkitBackfaceVisibility: 'hidden' }} />
                             ))}
 
-                            {/* Front (TOP SECRET) */}
+                            {}
                             <div className="absolute inset-0 backface-hidden rounded-[2rem] bg-slate-900 border border-white/5 flex flex-col items-center justify-center p-8 overflow-hidden" 
                                  style={{ transform: isWebView ? 'translateZ(0px)' : 'translateZ(1px)', WebkitBackfaceVisibility: 'hidden' }}>
                                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
@@ -5455,7 +5437,7 @@
                                 <p className="text-white/40 font-medium text-sm text-center tracking-wide">Tap to turn</p>
                             </div>
 
-                            {/* Back (REVEAL) */}
+                            {}
                             <div className={`absolute inset-0 backface-hidden rounded-[2rem] flex flex-col items-center justify-center p-8 text-center overflow-hidden border ${
                                  word === "IMPOSTER" 
                                     ? 'bg-gradient-to-br from-red-950 to-slate-950 border-[#020617]' 
@@ -5623,7 +5605,6 @@
 			const hasVotedToEnd = isOnline ? !!(lobbyPlayers || []).find(p => p.id === user?.uid)?.votedToEnd : false;
 
 			useEffect(() => {
-				// If the timer is at 0, only 1 vote is needed. Otherwise, require a majority.
 				const activeRequiredVotes = (duration && timeLeft <= 0) ? 1 : requiredVotes;
 
 				if (isOnline && isHost && endVotes >= activeRequiredVotes) {
@@ -5658,7 +5639,7 @@
                 const updateTimer = () => {
                     const elapsed = (Date.now() - startTime) / 1000 + skew;
                     let newTimeLeft = Math.round(Math.max(0, duration - elapsed));
-                    newTimeLeft = Math.min(duration, newTimeLeft); // Hard cap at max duration
+                    newTimeLeft = Math.min(duration, newTimeLeft);
                     
                     setTimeLeft(newTimeLeft);
 
@@ -5824,14 +5805,12 @@
                 audioManager.playSound('uiClick');
                 
                 const guessedWord = guessInput.trim();
-                // Normalize both strings by removing spaces, hyphens, and punctuation
                 const normalize = (str) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
                 const isCorrect = normalize(guessedWord) === normalize(lobbyData.secretWord);
                 
                 const targetDb = window.db || db;
 
                 if (isCorrect) {
-                    // If ANY imposter guesses correctly, instant win!
                     const finalResult = { winner: 'imposter', reason: 'guessed_word', guessedWord: lobbyData.secretWord };
                     await targetDb.collection('lobbies').doc(lobbyId).update({
                         gameState: 'result',
@@ -5840,11 +5819,9 @@
                         failedGuessers: firebase.firestore.FieldValue.delete()
                     }).catch(() => setIsSubmitting(false));
                 } else {
-                    // Incorrect guess
                     if (isMultiple) {
                         const currentFailed = lobbyData.failedGuessers || [];
                         if (currentFailed.length + 1 >= lobbyData.imposterIds.length) {
-                            // This is the LAST imposter to guess, and they failed. Agents win.
                             const finalResult = { ...(lobbyData.pendingResult || {}), guessedWord: guessedWord, imposterFailedGuess: true };
                             await targetDb.collection('lobbies').doc(lobbyId).update({
                                 gameState: 'result',
@@ -5853,13 +5830,11 @@
                                 failedGuessers: firebase.firestore.FieldValue.delete()
                             }).catch(() => setIsSubmitting(false));
                         } else {
-                            // They failed, but we must wait for the other imposter to guess
                             await targetDb.collection('lobbies').doc(lobbyId).update({
                                 failedGuessers: firebase.firestore.FieldValue.arrayUnion(user.uid)
                             }).catch(() => setIsSubmitting(false));
                         }
                     } else {
-                        // Only one imposter, and they failed. Agents win.
                         const finalResult = { ...(lobbyData.pendingResult || {}), guessedWord: guessedWord, imposterFailedGuess: true };
                         await targetDb.collection('lobbies').doc(lobbyId).update({
                             gameState: 'result',
@@ -6155,7 +6130,7 @@
             let titleBg = "bg-red-500/10";
             let titleText = isFakeWordMode ? "FAKE WORD PLAYER WINS" : "IMPOSTER WINS";
             let subtitleText = gameResult?.reason === 'tie' ? "The agents couldn't agree on a suspect." : `Agents incorrectly accused ${gameResult?.accusedName}.`;
-            let ambientBgClass = "bg-red-500/5"; // Very subtle sleek background tint
+            let ambientBgClass = "bg-red-500/5";
             
             if (isLocal) {
                  titleText = isFakeWordMode ? "FAKE WORD PLAYER" : (roguePlayers.length > 1 ? "IMPOSTERS" : "IMPOSTER");
@@ -6321,7 +6296,6 @@
         const encodeInviteCode = (lobbyId, password) => {
             let combined = 0;
             const fullStr = lobbyId + password;
-            // Mathematically combine 10 characters into one massive Integer
             for (let i = 0; i < 10; i++) {
                 combined = combined * 34 + LOBBY_ALPHABET.indexOf(fullStr[i]);
             }
@@ -6333,7 +6307,6 @@
             let combined = parseInt(code, 36);
             if (isNaN(combined)) return null;
             let str = '';
-            // Unpack the Integer back into the original 10 characters
             for (let i = 0; i < 10; i++) {
                 const char = LOBBY_ALPHABET[combined % 34];
                 if (!char) return null; 
@@ -6480,7 +6453,6 @@
                     imagesToLoad.push("https://em-content.zobj.net/source/microsoft-teams/364/christmas-tree_1f384.png");
                 }
 
-                // Create promises for images
                 const imagePromises = imagesToLoad.map(src => {
                     return new Promise(resolve => {
                         const img = new Image();
@@ -6488,12 +6460,11 @@
                         if (img.complete) resolve();
                         else {
                             img.onload = resolve;
-                            img.onerror = resolve; // Resolve even on error to prevent hanging
+                            img.onerror = resolve;
                         }
                     });
                 });
 
-                // Wait for both custom fonts and the main images to download
                 const allAssetsPromise = Promise.all([
                     document.fonts ? document.fonts.ready : Promise.resolve(),
                     ...imagePromises
@@ -6810,7 +6781,6 @@
                 let visibilityTimeout;
                 const handleVisibilityChange = () => {
                     if (document.hidden) {
-                        // After 15 minutes of the app being minimized/hidden, automatically sever connections.
                         visibilityTimeout = setTimeout(() => {
                             if (gameMode === 'online' && lobbyId && user) {
                                 console.log("Inactive for too long, leaving lobby to save resources.");
@@ -6844,11 +6814,9 @@
                         if (this.isUnlocked) return;
                         this.isUnlocked = true;
                         
-                        // 1. Unlock Web Audio API (iOS requirement)
                         const silentSound = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
                         silentSound.play().catch(() => {});
 
-                        // 2. Unlock DeviceMotion API (iOS 13+ Safari requirement for the Shake Easter Egg)
                         if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
                             DeviceMotionEvent.requestPermission()
                                 .then(permissionState => {
@@ -6856,7 +6824,7 @@
                                         console.log('DeviceMotion permission granted.');
                                     }
                                 })
-                                .catch(console.error); // Catch if user denies or if it's unsupported
+                                .catch(console.error);
                         }
                     },
             
@@ -6929,12 +6897,10 @@
                     setMuted: function(muted) {
                         this.isMuted = muted;
                         
-                        // Mute music
                         Object.values(this.music).forEach(track => {
                             track.muted = muted;
                         });
                         
-                        // Mute all sound effects and voice lines
                         Object.entries(this.sounds).forEach(([key, track]) => {
                             if (key === 'categories') {
                                 Object.values(track).forEach(catTrack => {
@@ -7093,7 +7059,6 @@
                         const previousData = latestLobbyData.current;
                         setLobbyData(data);
                         
-                        // Load custom categories for guests if the lobby is using them
                         if (data.lobbyCustomCategories && Array.isArray(data.lobbyCustomCategories)) {
                             setCustomCategoryNames(prev => {
                                 const newNames = { ...prev };
@@ -7108,7 +7073,6 @@
                             });
 
                             data.lobbyCustomCategories.forEach(customCat => {
-                                // If the lobby document contains the full data (words & icon), use it instantly!
                                 if (customCat.words && customCat.icon) {
                                     CATEGORY_ICONS[customCat.id] = customCat.icon;
                                     
@@ -7122,7 +7086,6 @@
                                         return {...prev, [customCat.id]: customCat.words};
                                     });
                                 } else if (!customCategories[customCat.id]) {
-                                    // Fallback for older lobbies created before this update
                                     commDb.collection('communigories').doc(customCat.id).get().then(docSnap => {
                                         if (docSnap.exists) {
                                             const catData = docSnap.data();
