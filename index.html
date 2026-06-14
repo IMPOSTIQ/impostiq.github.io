@@ -6599,38 +6599,52 @@
             const [showSponsorModal, setShowSponsorModal] = useState(false);
             const [initialLobbyParams, setInitialLobbyParams] = useState(null);
 			const [showSponsorPopup, setShowSponsorPopup] = useState(false);
+			const sponsorTimerRef = useRef(null);
 
-           useEffect(() => {
-                let timer;
-                if (!isLoading && gameMode === 'select' && appReady && !showHowToPlay && !showSponsorModal && !showCommunigories && !showRemovedModal && !lobbyClosedInfo && !restartNotification) {
-                    let isIgnored = false;
-                    let laterTime = null;
-                    let gamesPlayed = 0;
-                    
-                    try {
-                        isIgnored = localStorage.getItem('impostiq_sponsor_ignore') === 'true';
-                        laterTime = localStorage.getItem('impostiq_sponsor_later');
-                        gamesPlayed = parseInt(localStorage.getItem('impostiq_games_played') || '0', 10);
-                    } catch(e) {
-                        console.warn("Storage restricted, skipping sponsor popup.");
-                    }
-                    
-                    if (!isIgnored && gamesPlayed >= 5) {
-                        const now = Date.now();
-                        if (!laterTime || now > parseInt(laterTime, 10)) {
-                            timer = setTimeout(() => {
-                                try {
-                                    localStorage.setItem('impostiq_sponsor_later', (Date.now() + 604800000).toString());
-                                } catch(e) {}
-                                setShowSponsorPopup(true);
-                            }, 1000); 
+			useEffect(() => {
+                const isEligible = !isLoading && gameMode === 'select' && appReady && !showHowToPlay && !showSponsorModal && !showCommunigories && !showRemovedModal && !lobbyClosedInfo && !restartNotification;
+                
+                if (isEligible) {
+                    if (!showSponsorPopup && !sponsorTimerRef.current) {
+                        let isIgnored = false;
+                        let laterTime = null;
+                        let gamesPlayed = 0;
+                        
+                        try {
+                            isIgnored = localStorage.getItem('impostiq_sponsor_ignore') === 'true';
+                            laterTime = localStorage.getItem('impostiq_sponsor_later');
+                            gamesPlayed = parseInt(localStorage.getItem('impostiq_games_played') || '0', 10);
+                        } catch(e) {
+                            console.warn("Storage restricted, skipping sponsor popup.");
+                        }
+                        
+                        if (!isIgnored && gamesPlayed >= 5) {
+                            const now = Date.now();
+                            if (!laterTime || now > parseInt(laterTime, 10)) {
+                                sponsorTimerRef.current = setTimeout(() => {
+                                    try {
+                                        localStorage.setItem('impostiq_sponsor_later', (Date.now() + 604800000).toString());
+                                    } catch(e) {}
+                                    setShowSponsorPopup(true);
+                                    sponsorTimerRef.current = null;
+                                }, 1000); 
+                            }
                         }
                     }
                 } else {
+                    if (sponsorTimerRef.current) {
+                        clearTimeout(sponsorTimerRef.current);
+                        sponsorTimerRef.current = null;
+                    }
                     setShowSponsorPopup(false);
                 }
-                return () => clearTimeout(timer);
-            }, [gameMode, appReady, isLoading, showHowToPlay, showSponsorModal, showCommunigories, showRemovedModal, lobbyClosedInfo, restartNotification]);
+                
+                return () => {
+                    if (sponsorTimerRef.current) {
+                        clearTimeout(sponsorTimerRef.current);
+                    }
+                };
+            }, [gameMode, appReady, isLoading, showHowToPlay, showSponsorModal, showCommunigories, showRemovedModal, lobbyClosedInfo, restartNotification, showSponsorPopup]);
 
             const handleSponsorIgnore = (isSilent = false) => {
                 if (!isSilent && audioManagerRef.current) audioManagerRef.current.playSound('uiClick');
