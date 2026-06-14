@@ -702,6 +702,7 @@
             <li><strong>Voice Notes (Local Exclusive):</strong> Next to the add button is a microphone SVG icon. Tapping it records up to 3.5 seconds of microphone audio (hard-capped to prevent hitting the browser's 5MB localStorage cache limit). When the device is passed to that player, the custom voice note plays automatically (e.g., "Hey John, it's your turn!"). These recordings persist locally between sessions!</li>
             <li><strong>Timer Settings:</strong> Local Mode has an adjustable timer (Sky Blue clock face SVG icon). Host clicks '+' or '-' to set it between 1 to 15 minutes. It can also be toggled off entirely for "Untimed Mode", which replaces the countdown circle with an infinity SVG icon.</li>
             <li><strong>Handover UI:</strong> The screen says "Pass the device to [Player]". The player must tap the "Verify Identity" button (fingerprint SVG icon) to view their card secretly.</li>
+            <li><strong>Passing vs. Speaking Order:</strong> For physical convenience, the device is passed around the room in the exact sequence the players were added. However, the final "Mission Sequence" (Speaking Turn Order) is independently randomized at the end to ensure maximum suspense, meaning the first person handed the phone won't automatically speak first.</li>
             <li><strong>Voting:</strong> There is NO interactive voting screen. Players argue in real life. Once the group agrees, the host taps "IDENTIFY IMPOSTER" which skips straight to the results reveal.</li>
         </ul>
 
@@ -6276,7 +6277,9 @@
             while (currentIndex > 0) {
                 randomIndex = Math.floor(Math.random() * currentIndex);
                 currentIndex--;
-                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+                const temp = array[currentIndex];
+                array[currentIndex] = array[randomIndex];
+                array[randomIndex] = temp;
             }
             return array;
         };
@@ -6599,7 +6602,7 @@
 
            useEffect(() => {
                 let timer;
-                if (!isLoading && gameMode === 'select' && appReady && !showHowToPlay && !showSponsorModal && !showCommunigories) {
+                if (!isLoading && gameMode === 'select' && appReady && !showHowToPlay && !showSponsorModal && !showCommunigories && !showRemovedModal && !lobbyClosedInfo && !restartNotification) {
                     let isIgnored = false;
                     let laterTime = null;
                     let gamesPlayed = 0;
@@ -6620,14 +6623,14 @@
                                     localStorage.setItem('impostiq_sponsor_later', (Date.now() + 604800000).toString());
                                 } catch(e) {}
                                 setShowSponsorPopup(true);
-                            }, 800); 
+                            }, 1000); 
                         }
                     }
                 } else {
                     setShowSponsorPopup(false);
                 }
                 return () => clearTimeout(timer);
-            }, [gameMode, appReady, isLoading, showHowToPlay, showSponsorModal, showCommunigories]);
+            }, [gameMode, appReady, isLoading, showHowToPlay, showSponsorModal, showCommunigories, showRemovedModal, lobbyClosedInfo, restartNotification]);
 
             const handleSponsorIgnore = (isSilent = false) => {
                 if (!isSilent && audioManagerRef.current) audioManagerRef.current.playSound('uiClick');
@@ -7235,8 +7238,8 @@
 
 
             const startLocalGame = (players, selectedCategories, duration, isRandomMode, speakCategory, enableTwoImposters, isFakeWordMode) => {
-                const shuffledPlayers = shuffleArray([...players]);
-                
+                const orderedPlayers = [...players]; 
+				
                 const useRandom = isRandomMode || (selectedCategories && selectedCategories.length === 0);
                 let finalCategory;
                 
@@ -7260,9 +7263,9 @@
 
                 const secretWord = words[Math.floor(Math.random() * words.length)];
                 
-                const numRoguePlayers = enableTwoImposters && shuffledPlayers.length >= 10 ? 2 : 1;
+                const numRoguePlayers = enableTwoImposters && orderedPlayers.length >= 10 ? 2 : 1;
                 
-                const playerIndices = Array.from(Array(shuffledPlayers.length).keys());
+                const playerIndices = Array.from(Array(orderedPlayers.length).keys());
                 const shuffledIndices = shuffleArray([...playerIndices]);
                 const roguePlayerIndices = shuffledIndices.slice(0, numRoguePlayers);
 
@@ -7276,18 +7279,20 @@
                     }
                 }
 
+                const shuffledTurnOrder = shuffleArray([...orderedPlayers]).map((p, i) => ({ name: p.name, id: `local_${i}` }));
+
                 setLocalGameData({ 
-                    players: shuffledPlayers,
+                    players: orderedPlayers, 
                     imposterIndices: isFakeWordMode ? [] : roguePlayerIndices,
                     fakeWordPlayerIndices: isFakeWordMode ? roguePlayerIndices : [],
                     secretWord,
                     fakeWord,
                     isFakeWordMode,
                     duration,
-                    firstPlayer: shuffledPlayers[0].name,
+                    firstPlayer: shuffledTurnOrder[0].name,
                     category: finalCategory,
                     speakCategory,
-                    turnOrder: shuffledPlayers.map((p, i) => ({ name: p.name, id: `local_${i}` }))
+                    turnOrder: shuffledTurnOrder 
                 });
                 setLocalCurrentPlayerIndex(0);
                 setLocalGameState('pass');
@@ -7542,7 +7547,8 @@
                 let wordPool = availableWords.length > 0 ? availableWords : actualWords;
                 const secretWord = wordPool[Math.floor(Math.random() * wordPool.length)];
                 
-                const turnOrderList = shuffleArray([...lobbyPlayers]);
+                const mappedPlayers = lobbyPlayers.map(p => ({name: p.name, id: p.id}));
+                const turnOrderList = shuffleArray(mappedPlayers);
                 
                 const numRoguePlayers = lobbyData.enableTwoImposters && lobbyPlayers.length >= 10 ? 2 : 1;
                 
@@ -7552,7 +7558,7 @@
 
                 let updatePayload = {
                     secretWord,
-                    turnOrder: turnOrderList.map(p => ({name: p.name, id: p.id})),
+                    turnOrder: turnOrderList,
                     category: finalCategory, 
                     isRandomMode: isRandomMode,
                     gameState: 'reveal',
