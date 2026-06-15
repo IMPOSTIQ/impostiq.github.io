@@ -2154,8 +2154,13 @@
                                     </div>
                                 </div>
                                 
-                                <div className="text-center py-3 bg-black/50 border-t border-white/5">
-                                    <button key={isJoining ? 'to-create' : 'to-join'} onClick={() => { setIsJoining(!isJoining); setError(''); }} className="text-white/50 font-semibold hover:text-white transition-colors flex items-center justify-center gap-2 mx-auto text-sm">
+                                <div className={`text-center py-3 bg-black/50 border-t border-white/5 ${isLoading ? 'cursor-not-allowed' : ''}`}>
+                                    <button 
+                                        key={isJoining ? 'to-create' : 'to-join'} 
+                                        onClick={() => { if (isLoading) return; setIsJoining(!isJoining); setError(''); }} 
+                                        disabled={isLoading}
+                                        className="text-white/50 font-semibold transition-colors flex items-center justify-center gap-2 mx-auto text-sm disabled:opacity-50 disabled:cursor-not-allowed enabled:hover:text-white"
+                                    >
                                         <FaIcon name="icon-rotate" className=" text-brand-400" />
                                         <span>{isJoining ? 'Switch to Create Mission' : 'Switch to Join Mission'}</span>
                                     </button>
