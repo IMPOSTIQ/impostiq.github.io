@@ -4400,7 +4400,7 @@
                                 <FaIcon name="icon-list-ul" className=" text-brand-400 text-xs" /> Examples
                             </h3>
                             <p className="text-white/90 text-sm leading-relaxed">
-                                {examples}{remainingCount > 0 ? `, and ${Math.floor(remainingCount / 10) * 10}+ more` : ''}
+                                {examples}{remainingCount > 0 ? `, and ${remainingCount < 10 ? remainingCount : `${Math.floor(remainingCount / 10) * 10}+`} more` : ''}
                             </p>
                         </div>
                     </div>
