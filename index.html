@@ -1981,8 +1981,14 @@
                          <div className="mb-10 text-center">
                             <SeasonalTitle season={currentSeason} className="text-6xl font-display font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 mb-2 drop-shadow-lg tracking-tight" />
                             <div className="subtle-shine-container inline-flex items-center gap-2 px-3 py-1 rounded-[0.5rem] bg-white/5 border border-white/5 backdrop-blur-md">
-                                <span className="text-white/50 text-[11px] font-display font-semibold tracking-widest uppercase">Trust No One • {roundedWordCount > 0 ? `${roundedWordCount.toLocaleString()}+ Words` : 'Loading...'}</span>
-                            </div>
+								<span className="text-white/50 text-[11px] font-display font-semibold tracking-widest uppercase flex items-center gap-1">
+									Trust No One
+									<svg className="inline-block w-3 h-3 align-middle -mt-[1.5px]" viewBox="0 0 24 24" fill="currentColor">
+										<path d="m17 12c0 3.411-1.589 5-5 5s-5-1.589-5-5 1.589-5 5-5 5 1.589 5 5z"/>
+									</svg>
+									{roundedWordCount > 0 ? `${roundedWordCount.toLocaleString()}+ Words` : 'Loading...'}
+								</span>
+							</div>
                         </div>
 
                         <section className="w-full glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg mt-8">
@@ -3004,9 +3010,9 @@
                     <div className="flex-1 overflow-y-auto no-scrollbar pb-28 [overflow-anchor:none]">
                         <div className="max-w-lg mx-auto p-6 pt-28">
                             <div class="mb-10 text-center">
-                                <SeasonalTitle season={currentSeason} className="text-5xl font-display font-black text-white mb-2 drop-shadow-lg tracking-tight" />
-                                <p class="text-white/40 font-semibold tracking-wide">Mission Lobby • Waiting for agents</p>
-                            </div>
+								<SeasonalTitle season={currentSeason} className="text-5xl font-display font-black text-white mb-2 drop-shadow-lg tracking-tight" />
+								<p class="text-white/40 font-semibold tracking-wide">Mission Lobby • Waiting for agents</p>
+							</div>
 
                             {lobbyData.gameState === 'waiting' && (
                                 <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
