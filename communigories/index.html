@@ -1891,23 +1891,27 @@
                                             }}
                                         />
                                         {[
-                                            { id: 'trending', label: 'Trending', icon: 'icon-fire' },
-                                            { id: 'newest', label: 'Newest', icon: 'icon-sparkles' },
-                                            { id: 'my_categories', label: 'Library', icon: 'icon-folder-open' }
-                                        ].map(tab => (
-                                            <button 
-                                                key={tab.id} 
-                                                onClick={() => { handleFilterChange(tab.id); }}
-                                                className={`relative z-10 flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[13px] font-bold transition-colors duration-300 active:scale-95 ${activeFilter === tab.id ? 'text-white' : 'text-white/50 hover:text-white/80'}`}
-                                            >
-                                                <FaIcon 
-                                                    name={tab.icon} 
-                                                    className={activeFilter === tab.id ? '' : 'opacity-70'} 
-                                                    style={tab.icon === 'icon-folder-open' ? { width: '1.2em', height: '1.2em' } : undefined}
-                                                />
-                                                <span className="hidden sm:block">{tab.label}</span>
-                                            </button>
-                                        ))}
+											{ id: 'trending', label: 'Trending', icon: 'icon-fire' },
+											{ id: 'newest', label: 'Newest', icon: 'icon-sparkles' },
+											{ id: 'my_categories', label: 'Library', icon: 'icon-folder-open' }
+										].map(tab => (
+											<button 
+												key={tab.id} 
+												onClick={() => { handleFilterChange(tab.id); }}
+												className={`relative z-10 flex-1 h-11 rounded-xl text-[13px] font-bold group outline-none transition-colors duration-200 ${activeFilter === tab.id ? 'text-white' : 'text-white/50 hover:text-white/90 active:text-white/70'}`}
+											>
+												<div className="absolute inset-0 flex items-center justify-center gap-2 transition-transform duration-150 ease-out origin-center transform-gpu group-active:scale-[0.93]">
+													<FaIcon 
+														name={tab.icon} 
+														className={`!block ${tab.icon === 'icon-fire' ? 'translate-y-[0.5px]' : ''} ${activeFilter === tab.id ? '' : 'opacity-70'}`} 
+														style={(tab.icon === 'icon-folder-open' || tab.icon === 'icon-fire') ? { width: '1.2em', height: '1.2em' } : undefined}
+													/>
+													<span className="hidden sm:block">
+														{tab.label}
+													</span>
+												</div>
+											</button>
+										))}
                                     </div>
                                 )}
 
