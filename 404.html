@@ -33,12 +33,6 @@
                             500: '#8b5cf6',
                             600: '#7c3aed',
                         }
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                        'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                        'fade-in': 'fadeIn 0.5s ease-out forwards',
                     }
                 }
             }
@@ -54,9 +48,14 @@
             overflow: hidden;
             user-select: none;
             -webkit-user-select: none;
+            transition: opacity 0.25s ease-out;
         }
 
-		body, button:disabled, .cursor-default, .cursor-wait { 
+        body.uninitialized {
+            opacity: 0 !important;
+        }
+
+		body, button:disabled, .cursor-default, .cursor-wait {
             cursor: url('https://impostiq.github.io/images/cursors/default.cur'), default !important; 
         }
         
@@ -138,11 +137,6 @@
 
             if (isUnofficial) {
                 document.addEventListener('DOMContentLoaded', () => {
-                    document.body.classList.remove('uninitialized');
-                    document.body.style.opacity = '1';
-                    document.body.style.visibility = 'visible';
-                    document.body.style.overflow = 'hidden';
-
                     const root = document.getElementById('root');
                     if (root) root.remove();
 
@@ -176,7 +170,7 @@
                                 <div style="position: absolute; inset: 0; backdrop-filter: blur(80px); -webkit-backdrop-filter: blur(80px); transform: translateZ(0);"></div>
                             </div>
 
-                            <div style="position: relative; z-index: 10; width: 100%; max-width: 24rem; display: flex; flex-direction: column; align-items: center; animation: uf-fade 0.5s ease-out forwards;">
+                            <div style="position: relative; z-index: 10; width: 100%; max-width: 24rem; display: flex; flex-direction: column; align-items: center;">
                                 
                                 <div style="position: relative; width: 10rem; height: 10rem; display: flex; justify-content: center; z-index: 20; margin-bottom: -0.625rem;">                                    
                                     <img src="https://em-content.zobj.net/source/microsoft-teams/363/detective_light-skin-tone_1f575-1f3fb_1f3fb.png" 
@@ -196,7 +190,7 @@
                                          draggable="false" alt="Gesturing No">
                                 </div>
 
-                                <div style="position: relative; z-index: 10; width: 100%; border-radius: 2.5rem; padding: 2rem; text-align: center; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); animation: uf-slide 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+                                <div style="position: relative; z-index: 10; width: 100%; border-radius: 2.5rem; padding: 2rem; text-align: center; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);">
                                     
                                     <h1 style="font-size: 2.25rem; line-height: 2.5rem; font-family: 'Outfit', sans-serif; font-weight: 900; color: transparent; background-clip: text; -webkit-background-clip: text; background-image: linear-gradient(to bottom right, #ffffff, #ffffff, rgba(255,255,255,0.5)); margin-bottom: 1rem; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.04)); letter-spacing: -0.025em;">
                                         Unofficial Site Detected
@@ -224,6 +218,22 @@
                         </div>
                     `;
 
+                    const revealUnauth = () => {
+                        document.body.classList.remove('uninitialized');
+                        document.body.style.opacity = '1';
+                        document.body.style.visibility = 'visible';
+                        document.body.style.overflow = 'hidden';
+                    };
+
+                    if (document.fonts) {
+                        Promise.race([
+                            document.fonts.ready,
+                            new Promise(resolve => setTimeout(resolve, 800))
+                        ]).then(revealUnauth).catch(revealUnauth);
+                    } else {
+                        revealUnauth();
+                    }
+
                     const emojis = document.querySelectorAll('.uf-fade-emoji');
                     let currentIndex = 0;
                     setInterval(() => {
@@ -238,7 +248,7 @@
         })();
     </script>
 </head>
-<body class="min-h-[100dvh] flex flex-col items-center justify-center p-6 relative">
+<body class="min-h-[100dvh] flex flex-col items-center justify-center p-6 relative uninitialized">
 
     <div class="fixed inset-0 bg-[#020617] z-0"></div>
     <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
@@ -247,7 +257,7 @@
         <div class="absolute inset-0 backdrop-blur-[80px] transform-gpu"></div>
     </div>
 
-    <div class="relative z-10 w-full max-w-sm flex flex-col items-center animate-fadeIn">
+    <div class="relative z-10 w-full max-w-sm flex flex-col items-center">
         
         <div class="relative w-40 h-40 flex justify-center z-20 -mb-2.5">
             <img src="https://em-content.zobj.net/source/microsoft-teams/363/man-construction-worker-medium-dark-skin-tone_1f477-1f3fe-200d-2642-fe0f.png" 
@@ -263,7 +273,7 @@
                  draggable="false" alt="Artist">
         </div>
 
-        <div class="relative z-10 w-full glass-panel rounded-[2.5rem] p-8 pt-8 text-center animate-slide-up">
+        <div class="relative z-10 w-full glass-panel rounded-[2.5rem] p-8 pt-8 text-center">
             
             <h1 class="text-4xl font-display font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 mb-4 drop-shadow-lg tracking-tight">
                 404 Not Found
@@ -289,6 +299,19 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const revealPage = () => {
+                document.body.classList.remove('uninitialized');
+            };
+
+            if (document.fonts) {
+                Promise.race([
+                    document.fonts.ready,
+                    new Promise(resolve => setTimeout(resolve, 800))
+                ]).then(revealPage).catch(revealPage);
+            } else {
+                revealPage();
+            }
+
             const emojis = document.querySelectorAll('.fade-emoji');
             let currentIndex = 0;
 
