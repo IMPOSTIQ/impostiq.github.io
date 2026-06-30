@@ -532,11 +532,6 @@
 
             if (isUnofficial) {
                 document.addEventListener('DOMContentLoaded', () => {
-                    document.body.classList.remove('uninitialized');
-                    document.body.style.opacity = '1';
-                    document.body.style.visibility = 'visible';
-                    document.body.style.overflow = 'hidden';
-
                     const root = document.getElementById('root');
                     if (root) root.remove();
 
@@ -570,7 +565,7 @@
                                 <div style="position: absolute; inset: 0; backdrop-filter: blur(80px); -webkit-backdrop-filter: blur(80px); transform: translateZ(0);"></div>
                             </div>
 
-                            <div style="position: relative; z-index: 10; width: 100%; max-width: 24rem; display: flex; flex-direction: column; align-items: center; animation: uf-fade 0.5s ease-out forwards;">
+                            <div style="position: relative; z-index: 10; width: 100%; max-width: 24rem; display: flex; flex-direction: column; align-items: center;">
                                 
                                 <div style="position: relative; width: 10rem; height: 10rem; display: flex; justify-content: center; z-index: 20; margin-bottom: -0.625rem;">                                    
                                     <img src="https://em-content.zobj.net/source/microsoft-teams/363/detective_light-skin-tone_1f575-1f3fb_1f3fb.png" 
@@ -590,7 +585,7 @@
                                          draggable="false" alt="Gesturing No">
                                 </div>
 
-                                <div style="position: relative; z-index: 10; width: 100%; border-radius: 2.5rem; padding: 2rem; text-align: center; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); animation: uf-slide 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+                                <div style="position: relative; z-index: 10; width: 100%; border-radius: 2.5rem; padding: 2rem; text-align: center; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);">
                                     
                                     <h1 style="font-size: 2.25rem; line-height: 2.5rem; font-family: 'Outfit', sans-serif; font-weight: 900; color: transparent; background-clip: text; -webkit-background-clip: text; background-image: linear-gradient(to bottom right, #ffffff, #ffffff, rgba(255,255,255,0.5)); margin-bottom: 1rem; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.04)); letter-spacing: -0.025em;">
                                         Unofficial Site Detected
@@ -617,6 +612,22 @@
                             </div>
                         </div>
                     `;
+
+                    const revealUnauth = () => {
+                        document.body.classList.remove('uninitialized');
+                        document.body.style.opacity = '1';
+                        document.body.style.visibility = 'visible';
+                        document.body.style.overflow = 'hidden';
+                    };
+
+                    if (document.fonts) {
+                        Promise.race([
+                            document.fonts.ready,
+                            new Promise(resolve => setTimeout(resolve, 800))
+                        ]).then(revealUnauth).catch(revealUnauth);
+                    } else {
+                        revealUnauth();
+                    }
 
                     const emojis = document.querySelectorAll('.uf-fade-emoji');
                     let currentIndex = 0;
@@ -2124,7 +2135,7 @@
                                         <input
                                                 type="text"
                                                 value={username}
-                                                onChange={(e) => { setUsername(e.target.value.slice(0, 25)); if (error) setError(''); }}
+                                                onChange={(e) => { setUsername([...e.target.value].slice(0, 25).join('')); if (error) setError(''); }}
                                                 placeholder="Enter name..."
                                                 maxLength="25"
                                                 className="flex-1 bg-transparent px-5 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none placeholder:text-white/20 font-display font-semibold text-lg text-white min-w-0"
@@ -4918,7 +4929,7 @@
                                               type="text"
                                               value={newPlayerName}
                                               onChange={(e) => {
-                                                  setNewPlayerName(e.target.value.slice(0, 25));
+                                                  setNewPlayerName([...e.target.value].slice(0, 25).join(''));
                                                   if (playerError) setPlayerError('');
                                               }}
                                               onKeyDown={(e) => e.key === 'Enter' && addPlayer()}
@@ -5900,7 +5911,7 @@
                                                 <input
                                                     type="text"
                                                     value={guessInput}
-                                                    onChange={(e) => setGuessInput(e.target.value.slice(0, 50))}
+                                                    onChange={(e) => setGuessInput([...e.target.value].slice(0, 50).join(''))}
                                                     onKeyDown={(e) => {
                                                         if (e.key === 'Enter' && guessInput.trim()) {
                                                             e.preventDefault();
