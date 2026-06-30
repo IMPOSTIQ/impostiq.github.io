@@ -183,11 +183,11 @@
             background: rgba(139, 92, 246, 0.4);
             color: #ffffff;
         }
-        
         .text-overlay-textarea {
             color: transparent !important;
             -webkit-text-fill-color: transparent !important;
             text-shadow: none !important;
+            box-sizing: border-box !important;
         }
         .text-overlay-textarea::selection {
             color: transparent !important;
@@ -309,11 +309,6 @@
 
             if (isUnofficial) {
                 document.addEventListener('DOMContentLoaded', () => {
-                    document.body.classList.remove('uninitialized');
-                    document.body.style.opacity = '1';
-                    document.body.style.visibility = 'visible';
-                    document.body.style.overflow = 'hidden';
-
                     const root = document.getElementById('root');
                     if (root) root.remove();
 
@@ -347,7 +342,7 @@
                                 <div style="position: absolute; inset: 0; backdrop-filter: blur(80px); -webkit-backdrop-filter: blur(80px); transform: translateZ(0);"></div>
                             </div>
 
-                            <div style="position: relative; z-index: 10; width: 100%; max-width: 24rem; display: flex; flex-direction: column; align-items: center; animation: uf-fade 0.5s ease-out forwards;">
+                            <div style="position: relative; z-index: 10; width: 100%; max-width: 24rem; display: flex; flex-direction: column; align-items: center;">
                                 
                                 <div style="position: relative; width: 10rem; height: 10rem; display: flex; justify-content: center; z-index: 20; margin-bottom: -0.625rem;">                                    
                                     <img src="https://em-content.zobj.net/source/microsoft-teams/363/detective_light-skin-tone_1f575-1f3fb_1f3fb.png" 
@@ -367,7 +362,7 @@
                                          draggable="false" alt="Gesturing No">
                                 </div>
 
-                                <div style="position: relative; z-index: 10; width: 100%; border-radius: 2.5rem; padding: 2rem; text-align: center; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); animation: uf-slide 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+                                <div style="position: relative; z-index: 10; width: 100%; border-radius: 2.5rem; padding: 2rem; text-align: center; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);">
                                     
                                     <h1 style="font-size: 2.25rem; line-height: 2.5rem; font-family: 'Outfit', sans-serif; font-weight: 900; color: transparent; background-clip: text; -webkit-background-clip: text; background-image: linear-gradient(to bottom right, #ffffff, #ffffff, rgba(255,255,255,0.5)); margin-bottom: 1rem; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.04)); letter-spacing: -0.025em;">
                                         Unofficial Site Detected
@@ -394,6 +389,22 @@
                             </div>
                         </div>
                     `;
+
+                    const revealUnauth = () => {
+                        document.body.classList.remove('uninitialized');
+                        document.body.style.opacity = '1';
+                        document.body.style.visibility = 'visible';
+                        document.body.style.overflow = 'hidden';
+                    };
+
+                    if (document.fonts) {
+                        Promise.race([
+                            document.fonts.ready,
+                            new Promise(resolve => setTimeout(resolve, 800))
+                        ]).then(revealUnauth).catch(revealUnauth);
+                    } else {
+                        revealUnauth();
+                    }
 
                     const emojis = document.querySelectorAll('.uf-fade-emoji');
                     let currentIndex = 0;
@@ -430,7 +441,8 @@
             <li><strong>Word Bank Rules:</strong> Minimum 10 words required. Words must be separated by commas. To include a comma within a single word, wrap the word in curly braces (e.g., {Good Night, and Good Luck}).</li>
             <li><strong>Duplicate Prevention:</strong> Duplicate words are strictly prohibited and will automatically block the upload, highlighting the duplicates in red text inside the textarea.</li>
             <li><strong>Formatting:</strong> Category names are automatically sanitized using smart title-casing (e.g., "video games" becomes "Video Games"). Brand capitalization (like "iPad" or "macOS") and acronyms are preserved.</li>
-            <li><strong>Icons:</strong> Creators must assign a 3D visual icon to their category from a curated list of 242 high-quality emojis, a design choice that inherently prevents the upload of inappropriate imagery.</li>
+			<li><strong>No Emojis:</strong> Category names are strictly prohibited from containing emojis to preserve indexing and interface consistency.</li>
+			<li><strong>Icons:</strong> Creators must assign a 3D visual icon to their category from a curated list of 242 high-quality emojis, a design choice that inherently prevents the upload of inappropriate imagery.</li>
         </ul>
         </ul>
 
@@ -1534,6 +1546,7 @@
             
 			const handleUpload = async () => {
             if (!newCatName.trim()) { setError('Category name is required.'); return; }
+            if (/\p{Extended_Pictographic}/u.test(newCatName)) { setError('Category name cannot contain emojis.'); return; }
                 
                 const splitRegex = /,(?![^{]*\})/;
                 const wordsArray = newCatWords.split(splitRegex)
@@ -1941,10 +1954,10 @@
                                             </div>
 
                                             <div className="flex items-center gap-3 bg-slate-950/50 rounded-xl border border-white/5 focus-within:border-brand-500/50 focus-within:bg-slate-950/80 transition-colors pr-4 relative z-10">
-                                                <input type="text" maxLength="25" placeholder="Category Name" value={newCatName} onChange={e => {setNewCatName(e.target.value.slice(0, 25)); setError('');}}
+                                                <input type="text" maxLength="25" placeholder="Category Name" value={newCatName} onChange={e => {setNewCatName([...e.target.value].slice(0, 25).join('')); setError('');}}
                                                     className="flex-1 bg-transparent px-5 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none placeholder:text-white/20 font-display font-semibold text-lg text-white min-w-0"
                                                 />
-                                                <span className="text-xs font-bold text-white/30 tracking-wider">{newCatName.length}/25</span>
+                                                <span className="text-xs font-bold text-white/30 tracking-wider">{[...newCatName].length}/25</span>
                                             </div>
 
                                             <div className="bg-slate-950/50 rounded-xl border border-white/5 focus-within:border-brand-500/50 focus-within:bg-slate-950/80 transition-colors relative z-10">
