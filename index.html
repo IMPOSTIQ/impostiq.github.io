@@ -2378,7 +2378,7 @@
                         {}
                         <div className="flex overflow-x-auto snap-x no-scrollbar gap-4 mb-5 pb-2 sm:pb-0 sm:grid sm:grid-cols-5 sm:gap-3 sm:overflow-visible relative">
                             {shareLinks.map(link => (
-                                <button key={link.name} onClick={() => window.open(link.url, "_blank")} className="flex flex-col items-center gap-2 flex-shrink-0 snap-start group w-14 sm:w-auto outline-none">
+								<button key={link.name} onClick={() => { window.location.href = link.url; }} className="flex flex-col items-center gap-2 flex-shrink-0 snap-start group w-14 sm:w-auto outline-none">
                                     <div className={`w-12 h-12 rounded-[1rem] ${link.color} border flex items-center justify-center text-2xl transition-transform active:scale-90`}>
                                         <FaIcon name={link.icon} />
                                     </div>
