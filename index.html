@@ -464,14 +464,6 @@
             -webkit-clip-path: inset(0 round 9999px);
             clip-path: inset(0 round 9999px);
         }
-        @keyframes mic-recording-pulse-anim {
-            0%, 100% { transform: scale(1); background-color: rgb(239, 68, 68); }
-            50% { transform: scale(1.04); background-color: rgb(220, 38, 38); }
-        }
-        .mic-recording-pulse {
-            animation: mic-recording-pulse-anim 1.6s infinite ease-in-out !important;
-            will-change: transform, background-color;
-        }
     </style>
     
     <script>
@@ -4965,7 +4957,7 @@
                                       onMouseLeave={handleMicRelease}
                                       onTouchStart={handleMicPress}
                                       onTouchEnd={handleMicRelease}
-                                      className={`flex-1 flex items-center justify-center rounded-xl font-bold transition-all shadow-lg active:scale-95 border border-white/5 h-14 ${isMicPermissionDenied ? 'bg-red-500/20' : isRecording ? 'mic-recording-pulse text-white' : (recordedAudioData ? 'bg-green-500' : 'bg-white/10 hover:bg-white/20')}`}
+                                      className={`flex-1 flex items-center justify-center rounded-xl font-bold transition-all shadow-lg active:scale-95 border border-white/5 h-14 ${isMicPermissionDenied ? 'bg-red-500/20' : isRecording ? 'bg-red-500 animate-pulse' : (recordedAudioData ? 'bg-green-500' : 'bg-white/10 hover:bg-white/20')}`}
                                   >
                                       <FaIcon name={isMicPermissionDenied ? 'icon-no-microphone' : (recordedAudioData && !isRecording ? 'icon-check' : 'icon-microphone')} className={`text-white text-lg ${isMicPermissionDenied ? 'text-red-400/70' : (isRecording ? '' : 'opacity-70')}`} />
                                   </button>
@@ -7921,13 +7913,14 @@
                     {showExitConfirmModal && <ExitLobbyConfirmModal onConfirm={() => { setShowExitConfirmModal(false); handleBackToHome(); }} onCancel={() => setShowExitConfirmModal(false)} />}
                     
                     {showCommunigories && (
-                        <>
-                            <style>{`.blob, .liquid-blob, .animate-pulse-slow, .animate-float { animation-play-state: paused !important; visibility: hidden !important; }`}</style>
-                            <div className="fixed inset-0 bg-[#020617] z-[150]">
-                                <iframe src="/communigories" className="w-full h-full border-none block" title="Communigories" />
-                            </div>
-                        </>
+                        <style>{`.blob, .liquid-blob, .animate-pulse-slow, .animate-float { animation-play-state: paused !important; visibility: hidden !important; }`}</style>
                     )}
+
+                    <div 
+                        className={`fixed inset-0 bg-[#020617] z-[150] ${showCommunigories ? 'block' : 'hidden'}`}
+                    >
+                        <iframe src="/communigories" className="w-full h-full border-none block" title="Communigories" />
+                    </div>
                     
                     {showSponsorPopup && (
                         <SponsorPopup 
