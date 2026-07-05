@@ -7917,7 +7917,11 @@
                     )}
 
                     <div 
-                        className={`fixed inset-0 bg-[#020617] z-[150] ${showCommunigories ? 'block' : 'hidden'}`}
+                        className={`fixed inset-0 bg-[#020617] z-[150] transition-opacity duration-300 ${
+                            showCommunigories 
+                                ? 'block pointer-events-auto opacity-100' 
+                                : 'hidden pointer-events-none opacity-0 w-0 h-0 overflow-hidden'
+                        }`}
                     >
                         <iframe src="/communigories" className="w-full h-full border-none block" title="Communigories" />
                     </div>
