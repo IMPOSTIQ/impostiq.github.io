@@ -6676,10 +6676,7 @@
                 if (audioManagerRef.current) audioManagerRef.current.playSound('uiClick');
                 
                 try {
-                    const gamesPlayed = parseInt(localStorage.getItem('impostiq_games_played') || '0', 10);
-                    if (gamesPlayed >= 5) {
-                        localStorage.setItem('impostiq_sponsor_later', (Date.now() + 604800000).toString()); 
-                    }
+                    localStorage.setItem('impostiq_sponsor_ignore', 'true');
                 } catch(e) {}
                 
                 setShowSponsorPopup(false);
