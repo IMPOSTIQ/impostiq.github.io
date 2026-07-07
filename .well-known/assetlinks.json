@@ -1,13 +1,11 @@
 [
   {
-    "relation": [
-      "delegate_permission/common.handle_all_urls"
-    ],
+    "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "co.median.android.dyaywap",
+      "package_name": "com.fillabrona.impostiq",
       "sha256_cert_fingerprints": [
-        "14:4D:9F:D0:47:CE:05:80:B2:1D:17:CC:CD:5F:9F:7F:CB:23:CD:9E:9F:38:26:C8:AB:F3:25:9D:7C:37:87:3C"
+        "A0:66:60:0E:E4:D7:FD:F9:81:E1:14:5F:D7:DB:47:69:C0:16:16:6B:AB:0F:00:51:EF:DB:F2:ED:3B:58:B8:B8"
       ]
     }
   }
