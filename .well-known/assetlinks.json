@@ -5,8 +5,7 @@
       "namespace": "android_app",
       "package_name": "com.fillabrona.impostiq",
       "sha256_cert_fingerprints": [
-        "A0:66:60:0E:E4:D7:FD:3D:F9:81:E1:14:5F:D7:DB:47:69:C0:16:6B:AB:0F:00:51:EF:DB:F2:ED:3B:58:B8:B8",
-        "BD:53:83:2C:EC:17:6C:83:EE:5E:04:24:F0:FD:64:20:FB:01:97:60:35:4C:CF:F0:50:57:14:96:6F:3A:DE:40"
+        "A0:66:60:0E:E4:D7:FD:3D:F9:81:E1:14:5F:D7:DB:47:69:C0:16:6B:AB:0F:00:51:EF:DB:F2:ED:3B:58:B8:B8"
       ]
     }
   }
