@@ -658,7 +658,7 @@
             <li><strong>Official Game URL:</strong> https://impostiq.github.io</li>
             <li><strong>Communigories:</strong> https://impostiq.github.io/communigories</li>
             <li><strong>Discord Community:</strong> https://discord.gg/m9WrJxGKtr</li>
-            <li><strong>Android APK Download:</strong> https://www.dropbox.com/scl/fi/kh8yf9gnvo3zjynipd5h8/Impostiq.apk?rlkey=8e9wwz2kaifa38o8xq98oqjhe&st=7xg4dsyn&dl=1</li>
+            <li><strong>Android APK Download:</strong> https://www.dropbox.com/scl/fi/2nyxqcku2ndvii9cq1j8t/Impostiq.apk?rlkey=z67co7bysd2kqm25inztsviz0&st=xqnosrgb&dl=1</li>
             <li><strong>GitHub Sponsors URL:</strong> https://github.com/sponsors/impostiq?frequency=one-time</li>
             <li><strong>Alternate Names / Misspelled Names:</strong> Impostic, Impostick, Imposter Online, Agent vs Imposter, Find the Spy, Inpostiq.</li>
             <li><strong>Word Bank:</strong> 8500+ words pulled from a live GitHub Gist, divided across 28 official categories, plus unlimited dynamically-loaded user-generated "Communigories".</li>
@@ -734,7 +734,7 @@
                 <ul>
                     <li><strong>On Desktop:</strong> The card actively tracks mouse movement (`onMouseMove`) to create a dynamic 3D tilt, skew, and depth scale effect using Framer Motion physics.</li>
                     <li><strong>On Mobile / Touch Devices:</strong> The game detects `ontouchstart` and disables the complex mouse-tracking physics, reverting to a clean, simple 3D flip (`rotateY`) on tap to save battery and performance.</li>
-                    <li><strong>WebView Fallback:</strong> If the game detects it is running inside an APK wrapper (like Median.co) or an iOS UIWebView, the stacked 3D depth layers are dynamically disabled completely to prevent severe graphical glitching.</li>
+                    <li><strong>WebView Fallback:</strong> If the game detects it is running inside an APK wrapper or an iOS UIWebView, the stacked 3D depth layers are dynamically disabled completely to prevent severe graphical glitching.</li>
                 </ul>
             </li>
             <li><strong>Easter Egg: Dizzy Imposter:</strong> If a player receives the Imposter card on a mobile device and physically shakes their device vigorously (detected via the `devicemotion` API, requiring 6+ rapid directional shifts exceeding a magnitude of 22), a secret Easter egg activates. The card transforms into a "DIZZY IMPOSTER" featuring a spiral-eyes emoji and a nauseous subtext ("Whoa... everything is spinning. I think I'm gonna be sick..."), triggering a custom haptic vibration sequence.</li>
@@ -1932,7 +1932,7 @@
                 setIsDownloading(true);
                 
                 const link = document.createElement('a');
-                link.href = 'https://www.dropbox.com/scl/fi/kh8yf9gnvo3zjynipd5h8/Impostiq.apk?rlkey=8e9wwz2kaifa38o8xq98oqjhe&st=7xg4dsyn&dl=1';
+                link.href = 'https://www.dropbox.com/scl/fi/2nyxqcku2ndvii9cq1j8t/Impostiq.apk?rlkey=z67co7bysd2kqm25inztsviz0&st=xqnosrgb&dl=1';
                 link.download = 'Impostiq.apk';
                 document.body.appendChild(link);
                 link.click();
@@ -5282,10 +5282,8 @@
             const [isWebView] = useState(() => {
                 if (typeof window === 'undefined') return false;
                 
-                if (window.median || window.gonative) return true;
-                
                 const ua = navigator.userAgent.toLowerCase();
-                if (ua.includes('median') || ua.includes('gonative') || ua.includes('wv')) return true;
+                if (ua.includes('wv')) return true;
                 if (/iphone|ipod|ipad/.test(ua) && !ua.includes('safari')) return true;
                 
                 return false;
@@ -7788,8 +7786,7 @@
 
                 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || navigator.maxTouchPoints > 0;
                 
-                const isWebView = window.median || window.gonative || 
-                                  /median|gonative|wv/i.test(navigator.userAgent) || 
+                const isWebView = /wv/i.test(navigator.userAgent) || 
                                   (/iphone|ipod|ipad/i.test(navigator.userAgent) && !/safari/i.test(navigator.userAgent));
                 
                 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
