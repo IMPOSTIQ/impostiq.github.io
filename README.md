@@ -13,7 +13,7 @@
 
   <p>
     <a href="https://impostiq.github.io"><img draggable="false" src="https://i.ibb.co/8g9SvjYn/impostiq-button-1779812857441-4x.png" alt="Play Now" height="50"></a>&nbsp;
-    <a href="https://www.dropbox.com/scl/fi/kh8yf9gnvo3zjynipd5h8/Impostiq.apk?rlkey=8e9wwz2kaifa38o8xq98oqjhe&st=7xg4dsyn&dl=1"><img draggable="false" src="https://i.ibb.co/C5WHY73n/impostiq-button-1779976509952-4x.png" alt="Download Android APK" height="50"></a>&nbsp;
+    <a href="https://www.dropbox.com/scl/fi/2nyxqcku2ndvii9cq1j8t/Impostiq.apk?rlkey=z67co7bysd2kqm25inztsviz0&st=xqnosrgb&dl=1"><img draggable="false" src="https://i.ibb.co/C5WHY73n/impostiq-button-1779976509952-4x.png" alt="Download Android APK" height="50"></a>&nbsp;
     <a href="https://discord.gg/m9WrJxGKtr"><img draggable="false" src="https://i.ibb.co/BmN3WSP/impostiq-button-1779975944423-4x.png" alt="Join the Discord" height="50"></a>
   </p>
 </div>
@@ -221,7 +221,7 @@
   <li><strong>Backend:</strong> Firebase Firestore (Real-time NoSQL state management) &amp; Firebase Auth.</li>
   <li><strong>Infrastructure &amp; Load Balancing:</strong> Time-based Database Load Balancing (Dynamically checks the Pacific Time Zone and swaps between primary Firebase instances 'APP1' and 'APP2' at 12:00 PT to prevent rate limit throttling).</li>
   <li><strong>Communigories Architecture:</strong> User-generated categories are pushed to a completely separate, dedicated Firebase instance to safely handle public uploads, votes, and queries without congesting live game servers.</li> 
-  <li><strong>WebView/APK Fallbacks:</strong> The game detects if it's running inside an iOS UIWebView or an Android APK wrapper (like Median.co) and dynamically disables the 3D depth layering on cards to prevent native graphical glitching.</li>
+  <li><strong>WebView/APK Fallbacks:</strong> The game detects if it's running inside an iOS UIWebView or an Android APK wrapper and dynamically disables the 3D depth layering on cards to prevent native graphical glitching.</li>
   <li><strong>Avatars:</strong> Auto-generated on the fly via the Dicebear API based on the user's typed name.</li>
   <li><strong>Audio Engine:</strong> Custom-built <code>audioManager</code> for parallel SFX, automatic iOS Web Audio unlocking, and looping music states.</li>
 </ul>
