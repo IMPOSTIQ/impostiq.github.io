@@ -850,29 +850,39 @@
                 setLoaded(false);
                 setHasError(false);
                 setShouldAnimate(true);
+
                 const img = new Image();
+                let resolved = false;
+
+                const handleLoad = () => {
+                    if (resolved) return;
+                    resolved = true;
+                    setTimeout(() => {
+                        globalImageCache.add(src);
+                        setLoaded(true);
+                        setHasError(false);
+                    }, 250);
+                };
+
+                const handleError = () => {
+                    if (resolved) return;
+                    resolved = true;
+                    globalImageErrorCache.add(src);
+                    setHasError(true);
+                    setLoaded(true);
+                };
+
+                img.onload = handleLoad;
+                img.onerror = handleError;
                 img.src = src;
-                
-                img.decode()
-                    .then(() => {
-                        setTimeout(() => {
-                            globalImageCache.add(src);
-                            setLoaded(true);
-                        }, 250);
-                    })
-                    .catch(() => {
-                        img.onload = () => {
-                            setTimeout(() => {
-                                globalImageCache.add(src);
-                                setLoaded(true);
-                            }, 250);
-                        };
-                        img.onerror = () => {
-                            globalImageErrorCache.add(src);
-                            setHasError(true);
-                            setLoaded(true);
-                        };
-                    });
+
+                if (img.complete) {
+                    if (img.naturalWidth !== 0) {
+                        handleLoad();
+                    } else {
+                        handleError();
+                    }
+                }
             }, [src]);
 
             const spinnerColorClass = purpleSpinner ? "text-brand-500" : "text-white/40";
