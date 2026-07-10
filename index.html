@@ -2778,7 +2778,7 @@
                             </button>
                         )}
 
-                        <div className={`relative z-10 flex-1 w-full flex flex-col items-center justify-center ${isSupercell ? 'gap-1 -translate-y-1' : 'gap-3'} transition-transform duration-150 group-active:scale-[0.98]`}>
+                        <div className={`relative z-10 flex-1 w-full flex flex-col items-center justify-center ${isSupercell ? 'gap-1 -translate-y-1' : 'gap-3'} transition-transform duration-150 group-active:scale-[0.95] transform-gpu origin-center will-change-transform`}>
                             {isMystery ? (
                                 <img src={iconSource} alt="Dice" draggable="false" className={`w-10 h-10 transition-transform duration-300 drop-shadow-md ${isSelected ? 'rotate-0 opacity-100' : 'opacity-100 group-hover:opacity-100 group-hover:rotate-0'}`} />
                             ) : (
@@ -4397,22 +4397,31 @@
 
                 missingUrls.forEach(url => {
                     const img = new Image();
-                    img.src = url;
-                    
+                    let resolved = false;
+
                     const handleLoad = () => {
+                        if (resolved) return;
+                        resolved = true;
                         globalCategoryCache.add(url);
                         setLoadedUrls(prev => ({ ...prev, [url]: true }));
                     };
                     const handleError = () => {
+                        if (resolved) return;
+                        resolved = true;
                         globalCategoryErrorCache.add(url);
                         setFailedUrls(prev => ({ ...prev, [url]: true }));
                     };
 
+                    img.onload = handleLoad;
+                    img.onerror = handleError;
+                    img.src = url;
+
                     if (img.complete) {
-                        handleLoad();
-                    } else {
-                        img.onload = handleLoad;
-                        img.onerror = handleError;
+                        if (img.naturalWidth !== 0) {
+                            handleLoad();
+                        } else {
+                            handleError();
+                        }
                     }
                 });
             }, [urls]);
@@ -4458,22 +4467,37 @@
                 }
 
                 if (Array.isArray(name)) {
-                    return (
-                        <div className={`relative w-8 h-8 inline-block ${className}`}>
-                            {name.map((url, index) => (
-                                 <img 
-                                    key={url} 
-                                    src={url} 
-                                    alt="icon" 
-                                    draggable="false"
-                                    className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`} 
-                                 />
-                            ))}
-                        </div>
-                    );
-                }
+					return (
+						<div className={`relative w-8 h-8 inline-block ${className}`}>
+							{name.map((url, index) => (
+								 <img 
+									key={url} 
+									src={url} 
+									alt="icon" 
+									draggable="false"
+									onError={() => {
+										globalCategoryErrorCache.add(url);
+										setFailedUrls(prev => ({ ...prev, [url]: true }));
+									}}
+									className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`} 
+								 />
+							))}
+						</div>
+					);
+				}
 
-                return <img src={name} alt="icon" draggable="false" className={`${sizeStyleClass} object-contain ${className}`} />;
+				return (
+					<img 
+						src={name} 
+						alt="icon" 
+						draggable="false" 
+						onError={() => {
+							globalCategoryErrorCache.add(name);
+							setFailedUrls(prev => ({ ...prev, [name]: true }));
+						}} 
+						className={`${sizeStyleClass} object-contain ${className}`} 
+					/>
+				);
             }
 
             let iconKey = name;
