@@ -940,7 +940,12 @@
         const CATEGORY_ICONS = {
             Supercell: "https://i.ibb.co/mVTfv4C1/supercell-logo.webp",
             Celebs: "https://em-content.zobj.net/source/microsoft-teams/337/smiling-face-with-sunglasses_1f60e.png",
-            Movies: "https://em-content.zobj.net/source/microsoft-teams/337/popcorn_1f37f.png",
+			Movies: [
+                "https://em-content.zobj.net/source/microsoft-teams/337/popcorn_1f37f.png",
+                "https://em-content.zobj.net/source/microsoft-teams/337/film-frames_1f39e-fe0f.png",
+                "https://em-content.zobj.net/source/microsoft-teams/337/ticket_1f3ab.png",
+                "https://em-content.zobj.net/source/microsoft-teams/363/film-projector_1f4fd-fe0f.png"
+            ],
             Food: [
                 "https://em-content.zobj.net/source/microsoft-teams/337/hamburger_1f354.png",
                 "https://em-content.zobj.net/source/microsoft-teams/337/hot-dog_1f32d.png",
@@ -2785,7 +2790,7 @@
                                 sizeClass="text-3xl" 
                                 className={`transition-transform duration-300 drop-shadow-md ${
                                     isMystery 
-                                        ? `${isSelected ? 'rotate-0 opacity-100' : 'opacity-100 group-hover:opacity-100 group-hover:rotate-0'}`
+                                        ? `w-10 h-10 ${isSelected ? 'rotate-0 opacity-100' : 'opacity-100 group-hover:opacity-100 group-hover:rotate-0'}`
                                         : `transition-colors ${isSupercell ? "brightness-125" : (isSeasonal ? "brightness-125" : (isSelected ? "text-brand-400" : "text-slate-500 group-hover:text-slate-300"))}`
                                 }`}
                             />
@@ -3288,9 +3293,9 @@
 												{isFaIcon ? (
 													<FaIcon name={displayIcon} className="text-2xl text-yellow-400 drop-shadow-md" />
 												) : (
-													<FaIcon key={displayIcon} name={displayIcon} sizeClass="text-3xl" className={`transition-transform text-brand-400 drop-shadow-md ${displayIcon && displayIcon.includes('supercell') ? 'scale-[0.9]' : ''}`} purpleSpinner={true} />
+													<FaIcon key={displayIcon} name={displayIcon} sizeClass="text-3xl" className={`transition-transform text-brand-400 drop-shadow-md ${displayIcon && displayIcon.includes('supercell') ? 'scale-[0.75]' : ''}`} purpleSpinner={true} />
 												)}
-											</div>
+										</div>
                                             <div className="text-left flex-1 min-w-0">
                                                 <h3 className="text-white font-display font-bold text-lg leading-tight line-clamp-2 break-words pr-2">{displayTitle}</h3>
                                                 <p className="text-white/40 text-xs mt-1">{me?.categoryVote ? `You voted for: ${customCategoryNames[me.categoryVote] || me.categoryVote}` : 'Tap to cast your vote'}</p>
@@ -4443,9 +4448,9 @@
             const spinnerSizeClass = purpleSpinner ? "w-8 h-8" : "w-6 h-6";
 
             if (isUrlType) {
-                const isDice = typeof name === 'string' && name.includes('game-die_1f3b2');
                 const isSupercell = typeof name === 'string' && name.includes('supercell-logo');
-                const sizeStyleClass = isDice ? 'w-10 h-10' : (isSupercell ? 'w-[46px] h-[46px]' : 'w-8 h-8');
+                const hasCustomWidth = className && className.split(/\s+/).some(c => c.startsWith('w-') || c.startsWith('sm:w-') || c.startsWith('md:w-') || c.startsWith('lg:w-') || c.startsWith('hover:w-') || c.startsWith('group-hover:w-'));
+                const sizeStyleClass = hasCustomWidth ? '' : (isSupercell ? 'w-[46px] h-[46px]' : 'w-8 h-8');
                 
                 if (anyFailed) {
                     return (
@@ -5299,7 +5304,7 @@
                                   className="w-full bg-black/20 hover:bg-white/5 border border-white/5 rounded-[1.5rem] p-4 flex items-center gap-4 transition-all active:scale-95 group"
                               >
                                   <div className="w-14 h-14 rounded-2xl bg-brand-500/20 flex items-center justify-center flex-shrink-0 relative overflow-hidden">
-                                      <FaIcon key={displayIcon} name={displayIcon} sizeClass="text-3xl" className={`transition-transform text-brand-400 drop-shadow-md ${displayIcon && displayIcon.includes('supercell') ? 'scale-[0.9]' : ''}`} purpleSpinner={true} />
+                                      <FaIcon key={displayIcon} name={displayIcon} sizeClass="text-3xl" className={`transition-transform text-brand-400 drop-shadow-md ${displayIcon && displayIcon.includes('supercell') ? 'scale-[0.75]' : ''}`} purpleSpinner={true} />
                                   </div>
                                   <div className="text-left flex-1 min-w-0">
                                       <h3 className="text-white font-display font-bold text-lg leading-tight line-clamp-2 break-words pr-2">{catName}</h3>
