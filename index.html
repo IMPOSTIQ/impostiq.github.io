@@ -464,6 +464,17 @@
             -webkit-clip-path: inset(0 round 9999px);
             clip-path: inset(0 round 9999px);
         }
+
+        .shake {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
     </style>
     
     <script>
@@ -927,7 +938,7 @@
         let auth = activeApp.auth();
 
         const CATEGORY_ICONS = {
-            Supercell: "https://twitch.supercell.com/supercell-logo.png",
+            Supercell: "https://i.ibb.co/mVTfv4C1/supercell-logo.webp",
             Celebs: "https://em-content.zobj.net/source/microsoft-teams/337/smiling-face-with-sunglasses_1f60e.png",
             Movies: "https://em-content.zobj.net/source/microsoft-teams/337/popcorn_1f37f.png",
             Food: [
@@ -1089,26 +1100,113 @@
         
         const OfflineScreen = () => {
             const [showConnectedIcon, setShowConnectedIcon] = useState(true);
+            const [isChecking, setIsChecking] = useState(false);
+            const [isShaking, setIsShaking] = useState(false);
+            const [statusText, setStatusText] = useState("Oops! We can't reach the servers. Please check your internet connection.");
+            const [statusTextColor, setStatusTextColor] = useState("text-white/60");
+
+            const currentController = useRef(null);
+            const offlineTimeoutId = useRef(null);
+
             useEffect(() => {
                 const interval = setInterval(() => {
                     setShowConnectedIcon(prev => !prev);
                 }, 2500);
                 return () => clearInterval(interval);
             }, []);
+
+            const handleRetry = () => {
+                if (currentController.current) {
+                    currentController.current.abort();
+                    currentController.current = null;
+                }
+
+                if (offlineTimeoutId.current) {
+                    clearTimeout(offlineTimeoutId.current);
+                    offlineTimeoutId.current = null;
+                }
+
+                const isOnline = (typeof Android !== "undefined" && Android.isNetworkAvailable) ? 
+                    Android.isNetworkAvailable() : navigator.onLine;
+
+                if (isOnline) {
+                    setIsChecking(true);
+                    setStatusText("Checking connection...");
+                    setStatusTextColor("text-white/80");
+
+                    currentController.current = new AbortController();
+                    const controller = currentController.current;
+                    const timeoutId = setTimeout(() => {
+                        if (currentController.current && currentController.current === controller) {
+                            currentController.current.abort();
+                            currentController.current = null;
+                            showOfflineState();
+                        }
+                    }, 2500);
+
+                    fetch("https://clients3.google.com/generate_204?" + Date.now(), { 
+                        method: 'HEAD', 
+                        mode: 'no-cors',
+                        signal: controller.signal
+                    })
+                    .then(() => {
+                        clearTimeout(timeoutId);
+                        currentController.current = null;
+                        
+                        const stillOnline = (typeof Android !== "undefined" && Android.isNetworkAvailable) ? 
+                            Android.isNetworkAvailable() : navigator.onLine;
+
+                        if (stillOnline) {
+                            if (typeof Android !== "undefined" && Android.reloadApp) {
+                                Android.reloadApp();
+                            } else {
+                                window.location.href = 'https://impostiq.github.io';
+                            }
+                        } else {
+                            showOfflineState();
+                        }
+                    })
+                    .catch((err) => {
+                        clearTimeout(timeoutId);
+                        currentController.current = null;
+                        if (err && err.name !== 'AbortError') {
+                            showOfflineState();
+                        }
+                    });
+                } else {
+                    showOfflineState();
+                }
+
+                function showOfflineState() {
+                    setIsChecking(false);
+                    setIsShaking(true);
+                    setTimeout(() => setIsShaking(false), 400);
+
+                    setStatusText("Still offline! Give it a second...");
+                    setStatusTextColor("text-red-300");
+
+                    offlineTimeoutId.current = setTimeout(() => {
+                        setStatusText("Oops! We can't reach the servers. Please check your internet connection.");
+                        setStatusTextColor("text-white/60");
+                        offlineTimeoutId.current = null;
+                    }, 3000);
+                }
+            };
+
             return (
                 <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-6 bg-slate-950 text-center animate-fadeIn select-none overflow-hidden">
-                    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                         <div className="blob bg-red-600/10 top-[-20%] left-[-20%] w-[80%] h-[80%]"></div>
-                         <div className="blob bg-orange-600/10 bottom-[-20%] right-[-20%] w-[80%] h-[80%] animation-delay-2000"></div>
-                         <div className="absolute inset-0 backdrop-blur-[100px] transform-gpu"></div>
+                    <div className="background-container">
+                        <div className="blob blob-brand"></div>
+                        <div className="blob blob-cyan"></div>
+                        <div className="blur-overlay"></div>
                     </div>
 
-                    <div className="relative z-10 w-full max-w-sm glass-panel p-6 pb-8 rounded-[2.5rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-                        <div className="w-22 h-22 mx-auto mb-4 relative overflow-hidden">
+                    <div className={`relative z-10 w-full max-w-sm glass-panel p-6 pb-8 rounded-[2.5rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.5)] ${isShaking ? 'shake' : ''}`}>
+                        <div className="w-20 h-20 mx-auto mb-4 relative overflow-hidden">
                             <div 
                                 style={{
-                                    transition: "opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)",
-                                    transform: showConnectedIcon ? "scale(1) translateY(0)" : "scale(0.85) translateY(8px)"
+                                    transition: "opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+                                    transform: showConnectedIcon ? "scale(1)" : "scale(0.85)"
                                 }}
                                 className={`absolute inset-0 flex items-center justify-center ${showConnectedIcon ? "opacity-100" : "opacity-0"}`}
                             >
@@ -1118,8 +1216,8 @@
                             </div>
                             <div 
                                 style={{
-                                    transition: "opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)",
-                                    transform: !showConnectedIcon ? "scale(1) translateY(0)" : "scale(0.85) translateY(8px)"
+                                    transition: "opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+                                    transform: !showConnectedIcon ? "scale(1)" : "scale(0.85)"
                                 }}
                                 className={`absolute inset-0 flex items-center justify-center ${!showConnectedIcon ? "opacity-100" : "opacity-0"}`}
                             >
@@ -1129,14 +1227,22 @@
                             </div>
                         </div>
                         <h2 className="text-3xl font-display font-black text-white mb-2 tracking-tight">Connection Lost</h2>
-                        <p className="text-white/60 text-sm font-medium leading-relaxed mb-6 max-w-[260px] mx-auto">
-                            Oops! We can't reach the servers. Please check your internet connection.
+                        <p className={`${statusTextColor} text-sm font-medium leading-relaxed mb-6 max-w-[260px] mx-auto transition-colors duration-300`}>
+                            {statusText}
                         </p>
                         <button 
-                            onClick={() => window.location.reload()} 
-                            className="w-full bg-white text-slate-950 font-display font-bold text-lg py-4 rounded-2xl active:scale-95 transition-all flex items-center justify-center gap-3"
+                            onClick={handleRetry} 
+                            disabled={isChecking}
+                            className="w-full bg-white text-slate-950 font-display font-bold text-lg py-4 rounded-2xl active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            <FaIcon name="icon-rotate-right" className=" text-lg" /> TRY AGAIN
+                            {isChecking ? (
+                                <svg className="sleek-spinner w-6 h-6 text-slate-950" viewBox="25 25 50 50">
+                                    <circle cx="50" cy="50" r="20" fill="none" strokeWidth="6" stroke="currentColor" strokeLinecap="round"></circle>
+                                </svg>
+                            ) : (
+                                <svg style={{ height: "1em", width: "1em" }} viewBox="0 0 512 512"><path fill="currentColor" d="M386.3 160H336c-17.7 0-32 14.3-32 32s14.3 32 32 32H464c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32s-32 14.3-32 32v51.2L414.4 97.6c-87.5-87.5-229.3-87.5-316.8 0s-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.5-62.5 163.8-62.5 226.3 0L386.3 160z"></path></svg>
+                            )}
+                            {isChecking ? 'CHECKING...' : 'TRY AGAIN'}
                         </button>
                     </div>
                 </div>
@@ -1798,7 +1904,7 @@
                     <div className="relative w-full max-w-sm rounded-[2rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-slide-up flex flex-col overflow-hidden bg-[#040716]">
                         
                         <div className="absolute top-0 left-0 w-full h-[70%] z-0 pointer-events-none" style={{
-                            backgroundImage: "linear-gradient(to bottom, rgba(4, 7, 22, 0) 0%, rgba(4, 7, 22, 0) 30%, #040716 95%), url('https://i.ibb.co/JwRBsVbQ/sponsor-backg.png')",
+                            backgroundImage: "linear-gradient(to bottom, rgba(4, 7, 22, 0) 0%, rgba(4, 7, 22, 0) 30%, #040716 95%), url('https://i.ibb.co/3YTBdDGk/support-backgroundblob.png')",
                             backgroundSize: "cover",
                             backgroundPosition: "top center",
                             opacity: 0.95
@@ -1817,10 +1923,7 @@
                                 Impostiq is 100% free and ad-free. Your support covers server costs and directly fuels new features, game modes, and massive content updates!
                             </p>
                             
-                            <div className="mb-4 flex items-center justify-center gap-1.5 text-white/60 text-sm font-sans font-medium leading-none">
-                                <FaIcon name="icon-github" className="text-[15px] text-white/60 relative-top-[0.5px]" />
-                                <span className="relative top-[0.6px]">account required</span>
-                            </div>
+                             <div className="mb-4"></div>
 
                              <button 
                                 onClick={() => {
@@ -2675,14 +2778,15 @@
                             </button>
                         )}
 
-                        <div className="relative z-10 flex-1 w-full flex flex-col items-center justify-center gap-3 transition-transform duration-150 group-active:scale-[0.98]">
+                        <div className={`relative z-10 flex-1 w-full flex flex-col items-center justify-center ${isSupercell ? 'gap-1 -translate-y-1' : 'gap-3'} transition-transform duration-150 group-active:scale-[0.98]`}>
                             {isMystery ? (
                                 <img src={iconSource} alt="Dice" draggable="false" className={`w-10 h-10 transition-transform duration-300 drop-shadow-md ${isSelected ? 'rotate-0 opacity-100' : 'opacity-100 group-hover:opacity-100 group-hover:rotate-0'}`} />
                             ) : (
                                 <FaIcon 
+                                    key={iconSource}
                                     name={iconSource} 
                                     sizeClass="text-3xl" 
-                                    className={`transition-colors duration-300 ${isSupercell || isSeasonal ? "brightness-125" : (isSelected ? "text-brand-400" : "text-slate-500 group-hover:text-slate-300")}`} 
+                                    className={`transition-transform transition-colors duration-300 ${isSupercell ? "brightness-125" : (isSeasonal ? "brightness-125" : (isSelected ? "text-brand-400" : "text-slate-500 group-hover:text-slate-300"))}`} 
                                 />
                             )}
                             <span className={`text-xs font-bold tracking-wide text-center leading-tight line-clamp-2 px-1 w-full break-words ${isSupercell || isSeasonal || isMystery ? 'text-white' : 'text-white'}`}>{smartCapitalize(customCategoryNames[cat] || cat)}</span>
@@ -3187,7 +3291,7 @@
                                                     displayTitle === 'Mystery Mode' || displayTitle === 'Mystery Mode (Default)' ? (
                                                         <img src={displayIcon} alt="Random" className="w-8 h-8 drop-shadow-md" />
                                                     ) : (
-                                                        <FaIcon name={displayIcon} sizeClass="text-3xl" className="text-brand-400 drop-shadow-md" />
+                                                        <FaIcon key={displayIcon} name={displayIcon} sizeClass="text-3xl" className={`transition-transform text-brand-400 drop-shadow-md ${displayIcon && displayIcon.includes('supercell') ? 'scale-[0.9]' : ''}`} purpleSpinner={true} />
                                                     )
                                                 )}
                                             </div>
@@ -3507,6 +3611,18 @@
             const [isReady, setIsReady] = useState(false);
             const [isTrueLoadingComplete, setIsTrueLoadingComplete] = useState(false);
             const [visualProgress, setVisualProgress] = useState(0);
+            const [logoLoaded, setLogoLoaded] = useState(false);
+
+            useEffect(() => {
+                const img = new Image();
+                img.src = "https://impostiq.github.io/images/displayimage512.png";
+                if (img.complete) {
+                    setLogoLoaded(true);
+                } else {
+                    img.onload = () => setLogoLoaded(true);
+                    img.onerror = () => setLogoLoaded(true);
+                }
+            }, []);
 
             useEffect(() => {
                 const tipInterval = setInterval(() => {
@@ -3604,10 +3720,15 @@
                     
                     <div className="relative z-10 flex flex-col items-center w-full max-w-sm">
                         <div className="w-28 h-28 mb-8 relative flex items-center justify-center">
-                            <div 
-								className="w-24 h-24 bg-contain bg-center bg-no-repeat" 
-								style={{ backgroundImage: "url('https://em-content.zobj.net/source/microsoft-teams/400/disguised-face_1f978.png')" }}
-							></div>
+                            {!logoLoaded ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-24 h-24" viewBox="0 0 32 32" fill="none">
+                                    <path d="M15.999 29.998c9.334 0 13.999-6.268 13.999-14 0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999" fill="url(#a)"/><path d="M15.999 29.998c9.334 0 13.999-6.268 13.999-14 0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999" fill="url(#b)"/><path d="M15.999 29.998c9.334 0 13.999-6.268 13.999-14 0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999" fill="url(#c)"/><path d="M15.999 29.998c9.334 0 13.999-6.268 13.999-14 0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999" fill="url(#d)" fill-opacity=".6"/><path d="M15.999 29.998c9.334 0 13.999-6.268 13.999-14 0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999" fill="url(#e)"/><path d="M15.999 29.998c9.334 0 13.999-6.268 13.999-14 0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999" fill="url(#f)"/><path d="M15.999 29.998c9.334 0 13.999-6.268 13.999-14 0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999" fill="url(#g)"/><path d="M15.999 29.998c9.334 0 13.999-6.268 13.999-14 0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999" fill="url(#h)"/><g filter="url(#i)"><circle cx="9.156" cy="16.127" r="5.406" fill="url(#j)"/></g><g filter="url(#k)"><circle r="5.406" transform="matrix(-1 0 0 1 20.844 15.565)" fill="url(#l)"/></g><path fill-rule="evenodd" clip-rule="evenodd" d="M9.879 9.121c-.829-.828-1.93-.828-2.758 0A3 3 0 0 1 2.88 4.88c3.171-3.172 8.07-3.172 11.242 0A3 3 0 1 1 9.88 9.12" fill="url(#m)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M9.879 9.121c-.829-.828-1.93-.828-2.758 0A3 3 0 0 1 2.88 4.88c3.171-3.172 8.07-3.172 11.242 0A3 3 0 1 1 9.88 9.12" fill="url(#n)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M9.879 9.121c-.829-.828-1.93-.828-2.758 0A3 3 0 0 1 2.88 4.88c3.171-3.172 8.07-3.172 11.242 0A3 3 0 1 1 9.88 9.12" fill="url(#o)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.121 9.121c.829-.828 1.93-.828 2.758 0A3 3 0 1 0 29.12 4.88c-3.171-3.172-8.07-3.172-11.242 0a3 3 0 1 0 4.242 4.24" fill="url(#p)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.121 9.121c.829-.828 1.93-.828 2.758 0A3 3 0 1 0 29.12 4.88c-3.171-3.172-8.07-3.172-11.242 0a3 3 0 1 0 4.242 4.24" fill="url(#q)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.121 9.121c.829-.828 1.93-.828 2.758 0A3 3 0 1 0 29.12 4.88c-3.171-3.172-8.07-3.172-11.242 0a3 3 0 1 0 4.242 4.24" fill="url(#r)"/><g filter="url(#s)"><ellipse cx="12.594" cy="6.05" rx="1.23" ry="1.845" transform="rotate(-48.682 12.594 6.05)" fill="url(#t)" fill-opacity=".4"/></g><g filter="url(#u)"><ellipse cx="27.574" cy="6.05" rx="1.23" ry="1.845" transform="rotate(-48.682 27.574 6.05)" fill="url(#v)" fill-opacity=".4"/></g><path d="M19.766 28a3.3 3.3 0 0 1-1.876-.583l-.379-.265a2.63 2.63 0 0 0-3.035.021l-.227.16c-1.269.9-3.068.89-4.206-.17a3.145 3.145 0 0 1 .304-4.92l3.707-2.64a3.315 3.315 0 0 1 3.782-.021l3.685 2.555c1.377.954 1.908 2.778 1.095 4.22A3.26 3.26 0 0 1 19.766 28" fill="url(#w)"/><path d="M19.766 28a3.3 3.3 0 0 1-1.876-.583l-.379-.265a2.63 2.63 0 0 0-3.035.021l-.227.16c-1.269.9-3.068.89-4.206-.17a3.145 3.145 0 0 1 .304-4.92l3.707-2.64a3.315 3.315 0 0 1 3.782-.021l3.685 2.555c1.377.954 1.908 2.778 1.095 4.22A3.26 3.26 0 0 1 19.766 28" fill="url(#x)"/><path d="M19.766 28a3.3 3.3 0 0 1-1.876-.583l-.379-.265a2.63 2.63 0 0 0-3.035.021l-.227.16c-1.269.9-3.068.89-4.206-.17a3.145 3.145 0 0 1 .304-4.92l3.707-2.64a3.315 3.315 0 0 1 3.782-.021l3.685 2.555c1.377.954 1.908 2.778 1.095 4.22A3.26 3.26 0 0 1 19.766 28" fill="url(#y)"/><path d="M17.918 22.972h-3.835c-1.427 0-2.458-1.688-1.536-3.09 0 0 2.281-2.723 2.438-6.882h2.06c-.092 3.487 1.78 6.055 2.314 6.715.092.113.18.23.242.363.637 1.397-.33 2.893-1.683 2.893" fill="url(#z)"/><path d="M17.918 22.972h-3.835c-1.427 0-2.458-1.688-1.536-3.09 0 0 2.281-2.723 2.438-6.882h2.06c-.092 3.487 1.78 6.055 2.314 6.715.092.113.18.23.242.363.637 1.397-.33 2.893-1.683 2.893" fill="url(#A)"/><path d="M17.918 22.972h-3.835c-1.427 0-2.458-1.688-1.536-3.09 0 0 2.281-2.723 2.438-6.882h2.06c-.092 3.487 1.78 6.055 2.314 6.715.092.113.18.23.242.363.637 1.397-.33 2.893-1.683 2.893" fill="url(#B)"/><path d="M17.918 22.972h-3.835c-1.427 0-2.458-1.688-1.536-3.09 0 0 2.281-2.723 2.438-6.882h2.06c-.092 3.487 1.78 6.055 2.314 6.715.092.113.18.23.242.363.637 1.397-.33 2.893-1.683 2.893" fill="url(#C)"/><g filter="url(#D)"><path d="M18.063 19.25c.145.323.518 1.073.843 1.488" stroke="url(#E)" stroke-opacity=".75" stroke-linecap="round"/></g><path d="M1 13a1 1 0 0 1 1-1h28a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1" fill="url(#F)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M9.5 9a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9M4 13.5a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0" fill="url(#G)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.5 9.007a4.493 4.493 0 1 0 0 8.986 4.493 4.493 0 0 0 0-8.986M17 13.5a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0" fill="url(#H)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M14 13.5a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0m13 0a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0" fill="#fff"/><path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 11a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5m11 0a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5" fill="#402a32"/><defs><radialGradient id="a" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(132.839 10.786 10.065)scale(37.5033)"><stop stop-color="#fff478"/><stop offset=".475" stop-color="#ffb02e"/><stop offset="1" stop-color="#f70a8d"/></radialGradient><radialGradient id="b" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(131.878 10.74 10.193)scale(38.9487)"><stop stop-color="#fff478"/><stop offset=".475" stop-color="#ffb02e"/><stop offset="1" stop-color="#f70a8d"/></radialGradient><radialGradient id="c" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(101.31 2.876 12.808)scale(17.8466 22.8581)"><stop offset=".788" stop-color="#f59639" stop-opacity="0"/><stop offset=".973" stop-color="#ff7dce"/></radialGradient><radialGradient id="d" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-29 29 -29 -29 18 14)"><stop offset=".315" stop-opacity="0"/><stop offset="1"/></radialGradient><radialGradient id="e" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(77.692 -2.555 18.434)scale(28.1469)"><stop offset=".508" stop-color="#7d6133" stop-opacity="0"/><stop offset="1" stop-color="#715b32"/></radialGradient><radialGradient id="f" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(7.5 10.99996 -7.97335 5.4364 16.5 16.5)"><stop stop-color="#ffb849"/><stop offset="1" stop-color="#ffb847" stop-opacity="0"/></radialGradient><radialGradient id="g" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(11.49998 2 -2 11.49998 20.5 18)"><stop stop-color="#ffa64b"/><stop offset=".9" stop-color="#ffae46" stop-opacity="0"/></radialGradient><radialGradient id="h" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(43.97 -9.827 29.173)scale(59.0529)"><stop offset=".185" stop-opacity="0"/><stop offset="1" stop-opacity=".4"/></radialGradient><radialGradient id="j" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(129.705 1.423 9.804)scale(9.58606 27.7769)"><stop stop-color="#a84d29"/><stop offset=".895" stop-color="#9c634d" stop-opacity="0"/></radialGradient><radialGradient id="l" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(129.705 2.064 3.562)scale(9.58606 27.7769)"><stop stop-color="#ce5628"/><stop offset=".802" stop-color="#ce5628" stop-opacity="0"/></radialGradient><radialGradient id="m" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(-96.688 11.211 3.1)scale(19.319 17.7365)"><stop stop-color="#482641"/><stop offset=".521" stop-color="#54414f"/><stop offset=".964" stop-color="#482641"/></radialGradient><radialGradient id="n" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(-99.834 11.665 4.092)scale(9.51479 8.74653)"><stop offset=".646" stop-color="#1a1819"/><stop offset="1" stop-color="#1a1819" stop-opacity="0"/></radialGradient><radialGradient id="o" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(157.221 4.57 4.678)scale(11.2188 11.7023)"><stop offset=".489" stop-color="#1a1819" stop-opacity="0"/><stop offset="1" stop-color="#1a1819"/></radialGradient><radialGradient id="p" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(-83.312 19.485 -5.383)scale(19.319 17.7365)"><stop stop-color="#482641"/><stop offset=".521" stop-color="#54414f"/><stop offset=".964" stop-color="#482641"/></radialGradient><radialGradient id="q" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.625 -9.375 8.61803 1.4938 22.375 16.284)"><stop offset=".646" stop-color="#1a1819"/><stop offset="1" stop-color="#1a1819" stop-opacity="0"/></radialGradient><radialGradient id="r" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(235.72 14.906 -2.32)scale(10.0978 12.9064)"><stop offset=".489" stop-color="#1a1819" stop-opacity="0"/><stop offset="1" stop-color="#1a1819"/></radialGradient><radialGradient id="t" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(250.846 10.063 -.486)scale(5.53376 2.23724)"><stop stop-color="#947f8e"/><stop offset="1" stop-color="#947f8e" stop-opacity="0"/></radialGradient><radialGradient id="v" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(250.846 17.553 -5.813)scale(5.53376 2.23724)"><stop stop-color="#947f8e"/><stop offset="1" stop-color="#947f8e" stop-opacity="0"/></radialGradient><radialGradient id="w" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0 14.6875 -35.3125 0 16.438 17.284)"><stop stop-color="#482641"/><stop offset=".521" stop-color="#54414f"/><stop offset=".781" stop-color="#482641"/></radialGradient><radialGradient id="x" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(139.467 3.479 12.987)scale(5.67409 5.44966)"><stop stop-color="#3f2628"/><stop offset="1" stop-color="#3f2628" stop-opacity="0"/></radialGradient><radialGradient id="y" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(90.003 -3.187 19.188)scale(10.5338 20.0404)"><stop offset=".448" stop-color="#a72274" stop-opacity="0"/><stop offset="1" stop-color="#a72274"/></radialGradient><radialGradient id="z" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(81.764 .704 15.987)scale(16.5506 18.1954)"><stop stop-color="#ffc42e"/><stop offset=".452" stop-color="#ffb02e"/><stop offset="1" stop-color="#f70a8d"/></radialGradient><radialGradient id="B" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(27.568 -26.373 33.555)scale(3.29171 10.5613)"><stop stop-color="#682e17"/><stop offset=".158" stop-color="#a84d29"/><stop offset="1" stop-color="#9c634d" stop-opacity="0"/></radialGradient><radialGradient id="C" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(133.27 6.73 11.239)scale(3.94671 4.36597)"><stop offset=".175" stop-color="#682e17"/><stop offset=".608" stop-color="#a84d29"/><stop offset="1" stop-color="#9c634d" stop-opacity="0"/></radialGradient><radialGradient id="G" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(-12.498 73.94 -32.914)scale(12.7074 12.7417)"><stop offset=".452" stop-color="#482641"/><stop offset=".554" stop-color="#5f4558"/><stop offset=".7" stop-color="#482641"/><stop offset="1" stop-color="#482641"/></radialGradient><radialGradient id="H" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(-12.498 80.44 -92.273)scale(12.7074 12.7417)"><stop offset=".452" stop-color="#482641"/><stop offset=".554" stop-color="#5f4558"/><stop offset=".7" stop-color="#482641"/><stop offset="1" stop-color="#482641"/></radialGradient><filter id="i" x="2.25" y="9.222" width="13.811" height="13.811" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation=".75" result="effect1_foregroundBlur_6811_5229"/></filter><filter id="k" x="13.938" y="8.659" width="13.811" height="13.811" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation=".75" result="effect1_foregroundBlur_6811_5229"/></filter><filter id="s" x="9.987" y="3.521" width="5.213" height="5.058" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation=".5" result="effect1_foregroundBlur_6811_5229"/></filter><filter id="u" x="24.967" y="3.521" width="5.213" height="5.058" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation=".5" result="effect1_foregroundBlur_6811_5229"/></filter><filter id="D" x="16.562" y="17.749" width="3.844" height="4.489" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation=".5" result="effect1_foregroundBlur_6811_5229"/></filter><linearGradient id="A" x1="16" y1="13" x2="16" y2="17.192" gradientUnits="userSpaceOnUse"><stop stop-color="#a84d29"/><stop offset="1" stop-color="#9c634d" stop-opacity="0"/></linearGradient><linearGradient id="E" x1="17.706" y1="19.25" x2="19.675" y2="20.785" gradientUnits="userSpaceOnUse"><stop offset=".328" stop-color="#fff478" stop-opacity=".5"/><stop offset="1" stop-color="#fff478" stop-opacity="0"/></linearGradient><linearGradient id="F" x1="16.156" y1="9.05" x2="16.156" y2="15.472" gradientUnits="userSpaceOnUse"><stop offset=".45" stop-color="#482641"/><stop offset=".55" stop-color="#5f4558"/><stop offset=".674" stop-color="#482641"/></linearGradient></defs></svg>
+                            ) : (
+                                <div 
+                                    className="w-24 h-24 bg-contain bg-center bg-no-repeat animate-fadeIn" 
+                                    style={{ backgroundImage: "url('https://em-content.zobj.net/source/microsoft-teams/400/disguised-face_1f978.png')" }}
+                                ></div>
+                            )}
                         </div>
                         
                         <SeasonalTitle season={currentSeason} className="text-6xl font-display font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 mb-2 drop-shadow-lg tracking-tight" />
@@ -4225,8 +4346,76 @@
             )
         };
 
-        const FaIcon = ({ name, sizeClass = "text-xl", className = "" }) => {
+        const globalCategoryCache = new Set();
+        const globalCategoryErrorCache = new Set();
+
+        const FaIcon = ({ name, sizeClass = "text-xl", className = "", purpleSpinner = false }) => {
             const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+            const urls = React.useMemo(() => {
+                if (Array.isArray(name)) return name;
+                if (name && typeof name === 'string' && name.startsWith('http')) return [name];
+                return [];
+            }, [name]);
+
+            const [loadedUrls, setLoadedUrls] = useState(() => {
+                const initial = {};
+                urls.forEach(url => {
+                    if (globalCategoryCache.has(url)) {
+                        initial[url] = true;
+                    }
+                });
+                return initial;
+            });
+
+            const [failedUrls, setFailedUrls] = useState(() => {
+                const initial = {};
+                urls.forEach(url => {
+                    if (globalCategoryErrorCache.has(url)) {
+                        initial[url] = true;
+                    }
+                });
+                return initial;
+            });
+
+            const [prevUrls, setPrevUrls] = useState(urls);
+            if (JSON.stringify(prevUrls) !== JSON.stringify(urls)) {
+                setPrevUrls(urls);
+                const newLoaded = {};
+                const newFailed = {};
+                urls.forEach(url => {
+                    if (globalCategoryCache.has(url)) newLoaded[url] = true;
+                    if (globalCategoryErrorCache.has(url)) newFailed[url] = true;
+                });
+                setLoadedUrls(newLoaded);
+                setFailedUrls(newFailed);
+            }
+
+            useEffect(() => {
+                const missingUrls = urls.filter(url => !loadedUrls[url] && !failedUrls[url]);
+                if (missingUrls.length === 0) return;
+
+                missingUrls.forEach(url => {
+                    const img = new Image();
+                    img.src = url;
+                    
+                    const handleLoad = () => {
+                        globalCategoryCache.add(url);
+                        setLoadedUrls(prev => ({ ...prev, [url]: true }));
+                    };
+                    const handleError = () => {
+                        globalCategoryErrorCache.add(url);
+                        setFailedUrls(prev => ({ ...prev, [url]: true }));
+                    };
+
+                    if (img.complete) {
+                        handleLoad();
+                    } else {
+                        img.onload = handleLoad;
+                        img.onerror = handleError;
+                    }
+                });
+            }, [urls]);
 
             useEffect(() => {
                 if (Array.isArray(name) && name.length > 1) {
@@ -4237,25 +4426,54 @@
                 }
             }, [name]);
 
-            if (Array.isArray(name)) {
-                return (
-                    <div className={`relative w-8 h-8 inline-block ${className}`}>
-                        {name.map((url, index) => (
-                             <img 
-                                key={url} 
-                                src={url} 
-                                alt="icon" 
-                                draggable="false"
-                                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`} 
-                             />
-                        ))}
-                    </div>
-                );
-            }
+            const isUrlType = urls.length > 0;
+            const anyFailed = isUrlType && urls.some(url => failedUrls[url]);
+            const allLoaded = isUrlType && urls.every(url => loadedUrls[url]);
 
-            if (name && typeof name === 'string' && name.startsWith('http')) {
-                const isSupercell = name.includes('supercell-logo');
-                return <img src={name} alt="icon" draggable="false" className={`${isSupercell ? 'w-10' : 'w-8 h-8'} object-contain ${className}`} />;
+            const spinnerColorClass = purpleSpinner ? "text-brand-500" : "text-white/40";
+            const spinnerSizeClass = purpleSpinner ? "w-8 h-8" : "w-6 h-6";
+
+            if (isUrlType) {
+                const isSupercell = typeof name === 'string' && name.includes('supercell-logo');
+                const sizeStyleClass = isSupercell ? 'w-[46px] h-[46px]' : 'w-8 h-8';
+                
+                if (anyFailed) {
+                    return (
+                        <div className={`relative ${sizeStyleClass} inline-block flex items-center justify-center ${className}`}>
+                            <svg xmlns="http://www.w3.org/2000/svg" id="failed" viewBox="0 0 24 24" data-name="failed" className="w-full h-full fill-current text-red-400">
+                                <path d="m9 10c0 1.105-.895 2-2 2s-2-.895-2-2 .895-2 2-2 2 .895 2 2zm10.5 4c-.828 0-1.5.672-1.5 1.5v2.172l-3.682-3.682c-1.28-1.28-3.356-1.28-4.636 0l-6.097 6.097c-.359-.433-.585-.982-.585-1.587v-10c0-1.378 1.122-2.5 2.5-2.5h3c.829 0 1.5-.671 1.5-1.5s-.671-1.5-1.5-1.5h-3c-3.033 0-5.5 2.467-5.5 5.5v10c0 3.032 2.467 5.5 5.5 5.5h10c3.032 0 5.5-2.468 5.5-5.5v-3c0-.828-.672-1.5-1.5-1.5zm4.5-8c0 3.314-2.686 6-6 6s-6-2.686-6-6 2.686-6 6-6 6 2.686 6 6zm-7-1c0 .553.448 1 1 1s1-.447 1-1v-2c0-.553-.448-1-1-1s-1 .447-1 1zm2.5 3.5c0-.828-.672-1.5-1.5-1.5s-1.5.672-1.5 1.5.672 1.5 1.5 1.5 1.5-.672 1.5-1.5z"/>
+                            </svg>
+                        </div>
+                    );
+                }
+
+                if (!allLoaded) {
+                    return (
+                        <div className={`relative ${sizeStyleClass} inline-block flex items-center justify-center ${className}`}>
+                            <svg className={`sleek-spinner ${spinnerSizeClass} ${spinnerColorClass}`} viewBox="25 25 50 50">
+                                <circle cx="50" cy="50" r="20" fill="none" strokeWidth="6" stroke="currentColor" strokeLinecap="round"></circle>
+                            </svg>
+                        </div>
+                    );
+                }
+
+                if (Array.isArray(name)) {
+                    return (
+                        <div className={`relative w-8 h-8 inline-block ${className}`}>
+                            {name.map((url, index) => (
+                                 <img 
+                                    key={url} 
+                                    src={url} 
+                                    alt="icon" 
+                                    draggable="false"
+                                    className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`} 
+                                 />
+                            ))}
+                        </div>
+                    );
+                }
+
+                return <img src={name} alt="icon" draggable="false" className={`${sizeStyleClass} object-contain ${className}`} />;
             }
 
             let iconKey = name;
@@ -4432,8 +4650,8 @@
                         </button>
                         
                         <div className="flex flex-col items-center text-center mb-6">
-                            <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-4 ${category === 'Supercell' ? 'bg-blue-500/20' : 'bg-brand-500/20'} ring-1 ring-white/10`}>
-                                <FaIcon name={icon} sizeClass="text-3xl" className={`${category === 'Supercell' ? '' : 'text-brand-400'} w-11 h-11`} />
+                            <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 bg-brand-500/20 ring-1 ring-white/10">
+                                <FaIcon key={icon} name={icon} sizeClass="text-3xl" className="text-brand-400 w-11 h-11" purpleSpinner={true} />
                             </div>
                             <h2 className="text-2xl font-display font-bold text-white leading-tight line-clamp-3 px-2 break-words">{catName}</h2>
                             <p className="text-white/40 text-xs font-bold tracking-widest uppercase mt-1">Category Info</p>
@@ -5056,7 +5274,7 @@
                                   className="w-full bg-black/20 hover:bg-white/5 border border-white/5 rounded-[1.5rem] p-4 flex items-center gap-4 transition-all active:scale-95 group"
                               >
                                   <div className="w-14 h-14 rounded-2xl bg-brand-500/20 flex items-center justify-center flex-shrink-0 relative overflow-hidden">
-                                      <FaIcon name={displayIcon} sizeClass="text-3xl" className="text-brand-400 drop-shadow-md" />
+                                      <FaIcon key={displayIcon} name={displayIcon} sizeClass="text-3xl" className={`transition-transform text-brand-400 drop-shadow-md ${displayIcon && displayIcon.includes('supercell') ? 'scale-[0.9]' : ''}`} purpleSpinner={true} />
                                   </div>
                                   <div className="text-left flex-1 min-w-0">
                                       <h3 className="text-white font-display font-bold text-lg leading-tight line-clamp-2 break-words pr-2">{catName}</h3>
@@ -6393,7 +6611,7 @@
                 'https://cdn.svgator.com/images/2022/12/snow-globe-city-animation.svg',
                 'https://impostiq.github.io/images/displayimage512.png',
 				'https://i.ibb.co/ycdC1cdc/supbackg.webp',
-				'https://twitch.supercell.com/supercell-logo.png',
+				'https://i.ibb.co/mVTfv4C1/supercell-logo.webp',
                 'https://i.ibb.co/JwRBsVbQ/sponsor-backg.png'
             ].forEach(url => imageUrls.add(url));
 
