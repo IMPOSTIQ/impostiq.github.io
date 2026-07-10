@@ -826,16 +826,30 @@
         ];
 
         const globalImageCache = new Set();
-        const LazyImage = ({ src, className, sizeClassName = "w-full h-full", spinnerSize = "w-7 h-7 sm:w-8 sm:h-8", alt = "" }) => {
+        const globalImageErrorCache = new Set();
+        const LazyImage = ({ src, className, sizeClassName = "w-full h-full", spinnerSize = "w-7 h-7 sm:w-8 sm:h-8", purpleSpinner = false, alt = "" }) => {
             const isCached = globalImageCache.has(src);
-            const [loaded, setLoaded] = React.useState(isCached);
+            const isFailedCached = globalImageErrorCache.has(src);
+            const [loaded, setLoaded] = React.useState(isCached || isFailedCached);
+            const [hasError, setHasError] = React.useState(isFailedCached);
+            const [shouldAnimate, setShouldAnimate] = React.useState(!isCached);
 
             React.useEffect(() => {
                 if (isCached) {
                     setLoaded(true);
+                    setHasError(false);
+                    setShouldAnimate(false);
+                    return;
+                }
+                if (isFailedCached) {
+                    setLoaded(true);
+                    setHasError(true);
+                    setShouldAnimate(false);
                     return;
                 }
                 setLoaded(false);
+                setHasError(false);
+                setShouldAnimate(true);
                 const img = new Image();
                 img.src = src;
                 
@@ -854,23 +868,33 @@
                             }, 250);
                         };
                         img.onerror = () => {
+                            globalImageErrorCache.add(src);
+                            setHasError(true);
                             setLoaded(true);
                         };
                     });
             }, [src]);
 
+            const spinnerColorClass = purpleSpinner ? "text-brand-500" : "text-white/40";
+
             return (
                 <div className={`relative ${sizeClassName} flex items-center justify-center`}>
                     {!loaded ? (
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <svg className={`sleek-spinner ${spinnerSize} text-white/60 drop-shadow-sm`} viewBox="25 25 50 50">
-                                <circle cx="50" cy="50" r="20"></circle>
+                            <svg className={`sleek-spinner ${spinnerSize} ${spinnerColorClass} drop-shadow-sm`} viewBox="25 25 50 50">
+                                <circle cx="50" cy="50" r="20" fill="none" strokeWidth="6" stroke="currentColor" strokeLinecap="round"></circle>
+                            </svg>
+                        </div>
+                    ) : hasError ? (
+                        <div className="absolute inset-0 flex items-center justify-center p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="failed" viewBox="0 0 24 24" data-name="failed" className="w-full h-full fill-current text-red-400">
+                                <path d="m9 10c0 1.105-.895 2-2 2s-2-.895-2-2 .895-2 2-2 2 .895 2 2zm10.5 4c-.828 0-1.5.672-1.5 1.5v2.172l-3.682-3.682c-1.28-1.28-3.356-1.28-4.636 0l-6.097 6.097c-.359-.433-.585-.982-.585-1.587v-10c0-1.378 1.122-2.5 2.5-2.5h3c.829 0 1.5-.671 1.5-1.5s-.671-1.5-1.5-1.5h-3c-3.033 0-5.5 2.467-5.5 5.5v10c0 3.032 2.467 5.5 5.5 5.5h10c3.032 0 5.5-2.468 5.5-5.5v-3c0-.828-.672-1.5-1.5-1.5zm4.5-8c0 3.314-2.686 6-6 6s-6-2.686-6-6 2.686-6 6-6 6 2.686 6 6zm-7-1c0 .553.448 1 1 1s1-.447 1-1v-2c0-.553-.448-1-1-1s-1 .447-1 1zm2.5 3.5c0-.828-.672-1.5-1.5-1.5s-1.5.672-1.5 1.5.672 1.5 1.5 1.5 1.5-.672 1.5-1.5z"/>
                             </svg>
                         </div>
                     ) : (
                         <img 
                             src={src} 
-                            className={`${className} animate-fade-in`} 
+                            className={`${className} ${shouldAnimate ? 'animate-fade-in' : ''}`} 
                             alt={alt} 
                             draggable="false" 
                         />
@@ -969,13 +993,20 @@
 
                         <div className="flex overflow-x-auto snap-x no-scrollbar gap-4 mb-5 pb-2 sm:pb-0 sm:grid sm:grid-cols-5 sm:gap-3 sm:overflow-visible relative">
                             {shareLinks.map(link => (
-                                <button key={link.name} onClick={() => window.open(link.url, "_blank")} className="flex flex-col items-center gap-2 flex-shrink-0 snap-start group w-14 sm:w-auto outline-none">
-                                    <div className={`w-12 h-12 rounded-[1rem] ${link.color} border flex items-center justify-center text-2xl transition-transform active:scale-90`}>
-                                        <FaIcon name={link.icon} />
-                                    </div>
-                                    <span className="text-[10px] font-semibold text-white/50 group-hover:text-white/90">{link.name}</span>
-                                </button>
-                            ))}
+								<button key={link.name} onClick={(e) => {
+									e.preventDefault();
+									if (typeof Android !== 'undefined') {
+										window.location.href = link.url;
+									} else {
+										window.open(link.url, "_blank");
+									}
+								}} className="flex flex-col items-center gap-2 flex-shrink-0 snap-start group w-14 sm:w-auto outline-none">
+									<div className={`w-12 h-12 rounded-[1rem] ${link.color} border flex items-center justify-center text-2xl transition-transform active:scale-90`}>
+										<FaIcon name={link.icon} />
+									</div>
+									<span className="text-[10px] font-semibold text-white/50 group-hover:text-white/90">{link.name}</span>
+								</button>
+							))}
                         </div>
 
                         <div className="flex items-center gap-2 bg-black/40 rounded-xl p-1.5 border border-white/5">
@@ -1078,6 +1109,7 @@
                                                 >
                                                     <div className="flex-1 flex items-center justify-center w-full relative z-0 mt-1">
                                                         <LazyImage 
+                                                            key={iconObj.url}
                                                             src={iconObj.url}
                                                             sizeClassName="w-full h-full"
                                                             spinnerSize="w-7 h-7 sm:w-8 sm:h-8"
@@ -1121,8 +1153,15 @@
                         </button>
                         
                         <div className="flex flex-col items-center text-center mb-6 mt-2">
-                            <div className="w-24 h-24 rounded-full flex items-center justify-center mb-4 bg-brand-500/20 ring-1 ring-white/10">
-                                <img src={cat.icon} className="w-14 h-14 drop-shadow-md" draggable="false" />
+                            <div className="w-24 h-24 rounded-full flex items-center justify-center mb-4 bg-brand-500/20 ring-1 ring-white/10 overflow-hidden">
+                                <LazyImage 
+                                    key={cat.icon}
+                                    src={cat.icon} 
+                                    sizeClassName="w-14 h-14" 
+                                    spinnerSize="w-8 h-8" 
+                                    purpleSpinner={true} 
+                                    className="w-full h-full object-contain drop-shadow-md" 
+                                />
                             </div>
                             <h2 className="text-2xl font-display font-bold text-white leading-tight line-clamp-3 px-2 break-words">{smartCapitalize(cat.name)}</h2>
                             <div className="flex flex-col items-center justify-center gap-2 mt-3 text-[10px] font-bold uppercase tracking-widest text-white/60">
@@ -1939,8 +1978,15 @@
                                             
                                             <div className="bg-black/20 border border-white/5 rounded-[1.5rem] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 											<div className="flex items-center gap-4 w-full sm:w-auto">
-												<div className="w-14 h-14 rounded-[1rem] bg-black/20 border border-white/5 flex items-center justify-center flex-shrink-0">
-													<img src={selectedIcon} className="w-8 h-8 object-contain drop-shadow-md" draggable="false" />
+												<div className="w-14 h-14 rounded-[1rem] bg-black/20 border border-white/5 flex items-center justify-center flex-shrink-0 overflow-hidden">
+													<LazyImage 
+                                                        key={selectedIcon}
+                                                        src={selectedIcon} 
+                                                        sizeClassName="w-8 h-8" 
+                                                        spinnerSize="w-6 h-6" 
+                                                        purpleSpinner={true} 
+                                                        className="w-full h-full object-contain drop-shadow-md" 
+                                                    />
 												</div>
                                                     <div>
                                                         <h3 className="font-bold text-white/90 text-sm">Category Icon</h3>
@@ -2115,7 +2161,13 @@
 															)}
                                                             
                                                             <div className="relative flex-1 w-full flex flex-col items-center justify-center gap-3 p-4">
-                                                                <img src={cat.icon} className="w-10 h-10 transition-transform duration-300 drop-shadow-md opacity-60 group-hover:opacity-100 group-hover:scale-110" alt="" draggable="false" />
+                                                                <LazyImage 
+                                                                    key={cat.icon}
+                                                                    src={cat.icon} 
+                                                                    sizeClassName="w-10 h-10" 
+                                                                    spinnerSize="w-6 h-6" 
+                                                                    className="w-full h-full object-contain transition-transform duration-300 drop-shadow-md opacity-60 group-hover:opacity-100 group-hover:scale-110" 
+                                                                />
                                                                 <span className="text-xs font-bold tracking-wide text-white text-center leading-tight line-clamp-2 px-1 w-full break-words">{smartCapitalize(cat.name)}</span>
                                                             </div>
                                                         </button>
