@@ -1465,6 +1465,62 @@
 
             const getSavedIds = () => { try { return Object.keys(JSON.parse(localStorage.getItem('saved_communigories') || '{}')); } catch { return []; } };
 
+            const fetchTrendingData = async () => {
+                const query = db.collection('communigories')
+                    .where('isPrivate', '==', false)
+                    .orderBy('downloads', 'desc')
+                    .limit(500);
+                const snapshot = await query.get();
+                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            };
+
+            const fetchNewestData = async () => {
+                const query = db.collection('communigories')
+                    .where('isPrivate', '==', false)
+                    .orderBy('createdAt', 'desc')
+                    .limit(500);
+                const snapshot = await query.get();
+                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            };
+
+            const fetchMyCategoriesData = async () => {
+                const myIds = getMyIds();
+                const savedIds = getSavedIds();
+                const allRelevantIds = [...new Set([...myIds, ...savedIds])];
+
+                if (allRelevantIds.length > 0) {
+                    const docPromises = allRelevantIds.map(id => db.collection('communigories').doc(id).get());
+                    const docSnaps = await Promise.all(docPromises);
+                    
+                    const deletedIds = docSnaps.filter(snap => !snap.exists).map(snap => snap.id);
+                    
+                    if (deletedIds.length > 0) {
+                        const savedComms = JSON.parse(localStorage.getItem('saved_communigories') || '{}');
+                        let changed = false;
+                        deletedIds.forEach(id => {
+                            if (savedComms[id]) {
+                                delete savedComms[id];
+                                changed = true;
+                            }
+                            removeMyId(id); 
+                        });
+                        if (changed) {
+                            localStorage.setItem('saved_communigories', JSON.stringify(savedComms));
+                            window.dispatchEvent(new Event('storage'));
+                        }
+                    }
+                    
+                    const onlineData = docSnaps.filter(snap => snap.exists).map(doc => ({ id: doc.id, ...doc.data() }));
+                    const onlineIds = onlineData.map(c => c.id);
+                    
+                    const savedData = Object.values(JSON.parse(localStorage.getItem('saved_communigories') || '{}'))
+                        .filter(s => !onlineIds.includes(s.id));
+                        
+                    return [...onlineData, ...savedData];
+                }
+                return [];
+            };
+
             const fetchCategories = async (filterToFetch) => {
                 activeFetchRef.current = filterToFetch;
                 const hasCache = categoriesCache[filterToFetch];
@@ -1472,71 +1528,45 @@
                 if (hasCache) {
                     setCategories(categoriesCache[filterToFetch]);
                     setIsLoading(false);
+                    return;
                 } else {
                     setCategories([]); 
                     setIsLoading(true);
                 }
 
                 try {
-                    let results = [];
+                    const isInitialLoad = !categoriesCache.trending && !categoriesCache.newest && !categoriesCache.my_categories;
 
-                    if (filterToFetch === 'my_categories') {
-                        const myIds = getMyIds();
-                        const savedIds = getSavedIds();
-                        const allRelevantIds = [...new Set([...myIds, ...savedIds])];
+                    if (isInitialLoad) {
+                        const [trending, newest, my_categories] = await Promise.all([
+                            fetchTrendingData().catch(err => { console.error(err); return []; }),
+                            fetchNewestData().catch(err => { console.error(err); return []; }),
+                            fetchMyCategoriesData().catch(err => { console.error(err); return []; })
+                        ]);
 
-                        if (allRelevantIds.length > 0) {
-                            const docPromises = allRelevantIds.map(id => db.collection('communigories').doc(id).get());
-                            const docSnaps = await Promise.all(docPromises);
-                            
-                            const deletedIds = docSnaps.filter(snap => !snap.exists).map(snap => snap.id);
-                            
-                            if (deletedIds.length > 0) {
-                                const savedComms = JSON.parse(localStorage.getItem('saved_communigories') || '{}');
-                                let changed = false;
-                                deletedIds.forEach(id => {
-                                    if (savedComms[id]) {
-                                        delete savedComms[id];
-                                        changed = true;
-                                    }
-                                    removeMyId(id); 
-                                });
-                                if (changed) {
-                                    localStorage.setItem('saved_communigories', JSON.stringify(savedComms));
-                                    window.dispatchEvent(new Event('storage'));
-                                }
-                            }
-                            
-                            const onlineData = docSnaps.filter(snap => snap.exists).map(doc => ({ id: doc.id, ...doc.data() }));
-                            const onlineIds = onlineData.map(c => c.id);
-                            
-                            const savedData = Object.values(JSON.parse(localStorage.getItem('saved_communigories') || '{}'))
-                                .filter(s => !onlineIds.includes(s.id));
-                                
-                            results = [...onlineData, ...savedData];
-                        }
+                        if (activeFetchRef.current !== filterToFetch) return;
+
+                        const newCache = { trending, newest, my_categories };
+                        setCategoriesCache(newCache);
+                        setCategories(newCache[filterToFetch]);
                     } else {
-						let query = db.collection('communigories')
-							.where('isPrivate', '==', false)
-							.limit(500)
+                        let results = [];
+                        if (filterToFetch === 'my_categories') {
+                            results = await fetchMyCategoriesData();
+                        } else if (filterToFetch === 'trending') {
+                            results = await fetchTrendingData();
+                        } else if (filterToFetch === 'newest') {
+                            results = await fetchNewestData();
+                        }
 
-						if (filterToFetch === 'trending') {
-							query = query.orderBy('downloads', 'desc');
-						} else if (filterToFetch === 'newest') {
-							query = query.orderBy('createdAt', 'desc');
-						}
+                        if (activeFetchRef.current !== filterToFetch) return;
 
-						const snapshot = await query.get();
-						results = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        setCategories(results);
+                        setCategoriesCache(prev => ({ ...prev, [filterToFetch]: results }));
                     }
-                    
-                    if (activeFetchRef.current !== filterToFetch) return;
-
-                    setCategories(results);
-                    setCategoriesCache(prev => ({ ...prev, [filterToFetch]: results }));
                 } catch (e) { 
                     console.error("Fetch Error:", e);
-                    if (!hasCache && activeFetchRef.current === filterToFetch) {
+                    if (activeFetchRef.current === filterToFetch) {
                         setAlert({ title: 'Connection Lost', message: 'Failed to load community categories. Check your internet connection.', type: 'error' }); 
                     }
                 } finally {
