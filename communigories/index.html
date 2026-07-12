@@ -106,7 +106,7 @@
 		});
 
 		document.addEventListener('keydown', function(e) {
-			if (
+            if (
 				e.keyCode === 123 || 
 				(e.ctrlKey && e.shiftKey && e.keyCode === 73) || 
 				(e.ctrlKey && e.shiftKey && e.keyCode === 74) ||
@@ -199,7 +199,23 @@
             -webkit-text-fill-color: transparent !important;
             background: rgba(139, 92, 246, 0.4) !important;
         }
-        html, body { position: fixed; inset: 0; overflow: hidden; background-color: #020617; color: #f8fafc; touch-action: none; user-select: none; -webkit-user-select: none; }
+        html, body { 
+            position: fixed; 
+            inset: 0; 
+            overflow: hidden; 
+            background-color: #020617; 
+            color: #f8fafc; 
+            touch-action: none; 
+            user-select: none; 
+            -webkit-user-select: none; 
+            transition: opacity 0.5s ease-out; 
+        }
+        body.uninitialized { 
+            opacity: 0 !important; 
+        }
+        body.uninitialized .blob { 
+            display: none !important; 
+        }
         img { -webkit-user-drag: none; user-drag: none; -webkit-touch-callout: none; pointer-events: none; }
         
 		body, button:disabled, .cursor-default, .cursor-wait { 
@@ -277,10 +293,13 @@
 
         .glass-btn {
             position: relative;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: none;
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
         }
 
         .glass-btn::before {
@@ -293,6 +312,11 @@
             -webkit-backdrop-filter: blur(12px);
             -webkit-clip-path: inset(0 round 9999px);
             clip-path: inset(0 round 9999px);
+        }
+
+        .no-transition *,
+        .no-transition *::before {
+            transition: none !important;
         }
     </style>
     <script>
@@ -398,7 +422,6 @@
                     `;
 
                     const revealUnauth = () => {
-                        document.body.classList.remove('uninitialized');
                         document.body.style.opacity = '1';
                         document.body.style.visibility = 'visible';
                         document.body.style.overflow = 'hidden';
@@ -427,7 +450,7 @@
         })();
     </script>
 </head>
-<body class="select-none">
+<body class="select-none uninitialized no-transition">
     <noscript>
 		<img src="https://impostiq.github.io/images/displayimage512_communigories.png" alt="Communigories • Impostiq" width="512" height="512" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;">
         <h1>Communigories • Impostiq</h1>
@@ -530,10 +553,14 @@
                 if (!el || !txt) return;
 
                 const check = () => {
-                    const containerWidth = el.clientWidth;
-                    if (containerWidth === 0) return;
-
                     const textWidth = txt.scrollWidth;
+                    const containerWidth = el.clientWidth;
+                    
+                    if (containerWidth === 0) {
+                        setIsOverflowing(false);
+                        return;
+                    }
+                    
                     const isOverflow = textWidth + 4 > containerWidth;
                     setIsOverflowing(isOverflow);
 
@@ -648,7 +675,7 @@
             "icon-facebook-messenger": props => <svg viewBox="0 0 24.5 24" width="0.93em" {...props}><path fill="currentColor" d="M12,0C5.24,0,0,4.952,0,11.64c0,3.498,1.434,6.522,3.769,8.61c0.196,0.175,0.314,0.421,0.323,0.684l0.065,2.134c0.021,0.681,0.724,1.124,1.347,0.849l2.382-1.051c0.202-0.089,0.428-0.105,0.641-0.047C9.621,23.12,10.786,23.28,12,23.28c6.76,0,12-4.952,12-11.64S18.76,0,12,0zM19.206,8.956l-3.525,5.593c-0.561,0.89-1.762,1.111-2.603,0.48l-2.804-2.103c-0.257-0.193-0.611-0.192-0.867,0.003l-3.787,2.873c-0.505,0.383-1.165-0.221-0.827-0.758l3.525-5.593c0.561-0.89,1.762-1.111,2.603-0.48l2.804,2.103c0.257,0.193,0.611,0.192,0.867-0.003l3.787-2.873C18.885,7.815,19.544,8.419,19.206,8.956z"/></svg>,
             "icon-envelope": props => <svg viewBox="0 0 24.5 24" width="0.92em" {...props}><path fill="currentColor" d="M18.5,1H5.5A5.506,5.506,0,0,0,0,6.5v11A5.506,5.506,0,0,0,5.5,23h13A5.506,5.506,0,0,0,24,17.5V6.5A5.506,5.506,0,0,0,18.5,1Zm0,3a2.476,2.476,0,0,1,1.643.631l-6.5,6.5a2.373,2.373,0,0,1-3.278,0l-6.5-6.5A2.476,2.476,0,0,1,5.5,4Zm0,16H5.5A2.5,2.5,0,0,1,3,17.5V8.017l5.239,5.239a5.317,5.317,0,0,0,7.521,0L21,8.017V17.5A2.5,2.5,0,0,1,18.5,20Z"/></svg>,
             "icon-mobile-screen": props => <svg viewBox="0 0 25 25" width="1.2em" {...props}><path fill="currentColor" d="M12,16.5v5c0,.83-.67,1.5-1.5,1.5H6.5c-.83,0-1.5-.67-1.5-1.5s.67-1.5,1.5-1.5h2.5v-2h-3.5c-3.03,0-5.5-2.47-5.5-5.5V6.5C0,3.47,2.47,1,5.5,1h11c2.51,0,4.7,1.7,5.33,4.13,.21,.8-.28,1.62-1.08,1.83-.8,.2-1.62-.28-1.83-1.08-.28-1.1-1.28-1.87-2.42-1.87H5.5c-1.38,0-2.5,1.12-2.5,2.5v6c0,1.38,1.12,2.5,2.5,2.5h5c.83,0,1.5,.67,1.5,1.5Zm12-3.5v7c0,2.21-1.79,4-4,4h-2c-2.21,0-4-1.79-4-4v-7c0-2.21,1.79-4,4-4h2c2.21,0,4,1.79,4,4Zm-3,0c0-.55-.45-1-1-1h-2c-.55,0-1,.45-1,1v7c0,.55,.45,1,1,1h2c.55,0,1-.45,1-1v-7Z"/></svg>,
-            "icon-earth-americas": props => <svg viewBox="0 0 25 25" width="1.2em" {...props}><path fill="currentColor" d="m11.57 20.99c-4.119-.193-7.465-3.124-8.34-6.99h3.42c.134.979.352 1.969.678 2.966.255.795 1.125 1.217 1.892.96.787-.257 1.217-1.104.96-1.892-.224-.686-.392-1.365-.506-2.034h.326c.828 0 1.5-.671 1.5-1.5s-.672-1.5-1.5-1.5h-.454c.249-2.842 1.497-5.346 2.454-6.894.712 1.149 1.583 2.82 2.085 4.768.203.809 1.046 1.286 1.827 1.078.802-.207 1.284-1.025 1.077-1.827-.453-1.758-1.148-3.306-1.823-4.543 2.991 1.136 5.27 3.828 5.741 7.13.114.824.894 1.392 1.697 1.272.82-.117 1.391-.877 1.273-1.697-.837-5.864-5.943-10.287-11.877-10.287-6.603.014-12.004 5.374-12 12 .003 6.355 5.043 11.756 11.501 11.988.796 0 1.46-.626 1.497-1.43.039-.828-.601-1.53-1.428-1.569zm-2.74-17.402c-1.023 1.875-2.084 4.469-2.289 7.412h-3.482c.379-3.408 2.669-6.239 5.771-7.412zm14.731 17.852-2.145-2.145c.361-.691.584-1.463.584-2.295 0-2.757-2.243-5-5-5s-5 2.243-5 5 2.243 5 5 5c.831 0 1.604-.223 2.295-.584l2.145 2.145c.293.293.677.439 1.061.439s.768-.146 1.061-.439c.586-.585.586-1.536 0-2.121zm-6.561-2.439c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2z"/></svg>
+            "icon-earth-americas": props => <svg viewBox="0 0 25 25" width="1.2em" {...props}><path fill="currentColor" d="m11.57 20.99c-4.119-.193-7.465-3.124-8.34-6.99h3.42c.134.979.352 1.969.678 2.966.255.795 1.125 1.217 1.892.96.787-.257 1.217-1.104.96-1.892-.224-.686-.392-1.365-.506-2.034h.326c.828 0 1.5-.671 1.5-1.5s-.672-1.5-1.5-1.5h-.454c.249-2.842 1.497-5.346 2.454-6.894.712 1.149 1.583 2.82 2.085 4.768.203.809 1.046 1.286 1.827 1.078.802-.207 1.284-1.025 1.077-1.827-.453-1.758-1.148-3.306-1.823-4.543 2.991 1.136 5.27 3.828 5.741 7.13.114.824.894 1.697 1.272.82-.117 1.391-.877 1.273-1.697-.837-5.864-5.943-10.287-11.877-10.287-6.603.014-12.004 5.374-12 12 .003 6.355 5.043 11.756 11.501 11.988.796 0 1.46-.626 1.497-1.43.039-.828-.601-1.53-1.428-1.569zm-2.74-17.402c-1.023 1.875-2.084 4.469-2.289 7.412h-3.482c.379-3.408 2.669-6.239 5.771-7.412zm14.731 17.852-2.145-2.145c.361-.691.584-1.463.584-2.295 0-2.757-2.243-5-5-5s-5 2.243-5 5 2.243 5 5 5c.831 0 1.604-.223 2.295-.584l2.145 2.145c.293.293.677.439 1.061.439s.768-.146 1.061-.439c.586-.585.586-1.536 0-2.121zm-6.561-2.439c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2z"/></svg>
         };
 
         const FaIcon = ({ name, className = "", ...props }) => {
@@ -1159,7 +1186,8 @@
                                     placeholder="Search icons..." 
                                     value={iconSearch}
                                     onChange={e => setIconSearch(e.target.value)}
-                                    className="w-full bg-[#0a1021] rounded-xl pl-14 pr-14 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none border border-white/5 focus:border-brand-500/50 transition-colors placeholder:text-white/20 font-display font-semibold text-lg text-white"
+                                    style={{ backgroundColor: '#0a1021', color: '#fff', borderRadius: '0.75rem', border: '1px solid rgba(255,255,255,0.05)' }}
+                                    className="w-full pl-14 pr-14 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none focus:border-brand-500/50 transition-colors placeholder:text-white/20 font-display font-semibold text-lg"
                                 />
                                 {iconSearch && (
                                     <button 
@@ -1287,9 +1315,13 @@
                                     </div>
                                     <button 
                                         onClick={() => { playSound(savedData?.useLocal !== false ? 'switchOff' : 'switchOn'); onToggleSetting(cat.id, 'useLocal'); }}
-                                        className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${savedData?.useLocal !== false ? 'bg-brand-500' : 'bg-white/10'}`}
+                                        style={{ width: '3rem', height: '1.75rem', borderRadius: '9999px', backgroundColor: savedData?.useLocal !== false ? 'rgba(139, 92, 246, 1)' : 'rgba(255, 255, 255, 0.1)' }}
+                                        className="group flex-shrink-0 p-1 cursor-pointer transition-all duration-300"
                                     >
-                                        <div className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${savedData?.useLocal !== false ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} />
+                                        <div 
+                                            style={{ width: '1.25rem', height: '1.25rem', borderRadius: '9999px', backgroundColor: '#fff', transform: savedData?.useLocal !== false ? 'translateX(1.25rem)' : 'translateX(0)' }}
+                                            className={`group-active:w-6 shadow-md transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${savedData?.useLocal !== false ? 'group-active:translate-x-4' : ''}`} 
+                                        />
                                     </button>
                                 </div>
                                 <div className="flex items-center justify-between bg-black/20 border border-white/5 rounded-xl p-3 px-4">
@@ -1299,9 +1331,13 @@
                                     </div>
                                     <button 
                                         onClick={() => { playSound(savedData?.useOnline !== false ? 'switchOff' : 'switchOn'); onToggleSetting(cat.id, 'useOnline'); }}
-                                        className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${savedData?.useOnline !== false ? 'bg-brand-500' : 'bg-white/10'}`}
+                                        style={{ width: '3rem', height: '1.75rem', borderRadius: '9999px', backgroundColor: savedData?.useOnline !== false ? 'rgba(139, 92, 246, 1)' : 'rgba(255, 255, 255, 0.1)' }}
+                                        className="group flex-shrink-0 p-1 cursor-pointer transition-all duration-300"
                                     >
-                                        <div className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${savedData?.useOnline !== false ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} />
+                                        <div 
+                                            style={{ width: '1.25rem', height: '1.25rem', borderRadius: '9999px', backgroundColor: '#fff', transform: savedData?.useOnline !== false ? 'translateX(1.25rem)' : 'translateX(0)' }}
+                                            className={`group-active:w-6 shadow-md transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${savedData?.useOnline !== false ? 'group-active:translate-x-4' : ''}`} 
+                                        />
                                     </button>
                                 </div>
                             </div>
@@ -1391,28 +1427,22 @@
 		};
 
         const App = () => {
+            useEffect(() => {
+                const timer = setTimeout(() => {
+                    document.body.classList.remove('uninitialized');
+                    document.body.classList.remove('no-transition');
+                }, 150);
+                return () => clearTimeout(timer);
+            }, []);
+
             const isEmbedded = window !== window.parent;
             
             const [activeView, setActiveView] = useState('browse');
-            const browseScrollPosRef = useRef(0);
-            const uploadScrollPosRef = useRef(0);
-
-            useEffect(() => {
-                if (scrollContainerRef.current) {
-                    const targetPos = activeView === 'browse' ? browseScrollPosRef.current : uploadScrollPosRef.current;
-                    const timer = setTimeout(() => {
-                        if (scrollContainerRef.current) {
-                            scrollContainerRef.current.scrollTop = targetPos;
-                        }
-                    }, 100);
-                    return () => clearTimeout(timer);
-                }
-            }, [activeView]);
-
             const [activeFilter, setActiveFilter] = useState('trending');
             const [categories, setCategories] = useState([]);
             const [searchQuery, setSearchQuery] = useState('');
-            const [isLoading, setIsLoading] = useState(true);
+            const [isFetchingCategories, setIsFetchingCategories] = useState(true);
+            const [isUploading, setIsUploading] = useState(false);
             
             const [categoriesCache, setCategoriesCache] = useState({ trending: null, newest: null, my_categories: null });
             const activeFetchRef = useRef('');
@@ -1626,16 +1656,19 @@
                 
                 if (hasCache) {
                     setCategories(categoriesCache[filterToFetch]);
-                    setIsLoading(false);
+                    setIsFetchingCategories(false);
                     return;
                 } else {
                     setCategories([]); 
-                    setIsLoading(true);
+                    setIsFetchingCategories(true);
                 }
+
+                const fetchStartTime = Date.now();
 
                 try {
                     const isInitialLoad = !categoriesCache.trending && !categoriesCache.newest && !categoriesCache.my_categories;
 
+                    let results;
                     if (isInitialLoad) {
                         const [trending, newest, my_categories] = await Promise.all([
                             fetchTrendingData().catch(err => { console.error(err); return []; }),
@@ -1647,9 +1680,8 @@
 
                         const newCache = { trending, newest, my_categories };
                         setCategoriesCache(newCache);
-                        setCategories(newCache[filterToFetch]);
+                        results = newCache[filterToFetch];
                     } else {
-                        let results = [];
                         if (filterToFetch === 'my_categories') {
                             results = await fetchMyCategoriesData();
                         } else if (filterToFetch === 'trending') {
@@ -1660,8 +1692,17 @@
 
                         if (activeFetchRef.current !== filterToFetch) return;
 
-                        setCategories(results);
                         setCategoriesCache(prev => ({ ...prev, [filterToFetch]: results }));
+                    }
+
+                    const elapsed = Date.now() - fetchStartTime;
+                    const minTime = 600;
+                    if (elapsed < minTime) {
+                        await new Promise(resolve => setTimeout(resolve, minTime - elapsed));
+                    }
+
+                    if (activeFetchRef.current === filterToFetch) {
+                        setCategories(results);
                     }
                 } catch (e) { 
                     console.error("Fetch Error:", e);
@@ -1670,7 +1711,7 @@
                     }
                 } finally {
                     if (activeFetchRef.current === filterToFetch) {
-                        setIsLoading(false);
+                        setIsFetchingCategories(false);
                     }
                 }
             };
@@ -1680,7 +1721,7 @@
                 const sharedId = params.get('id');
 
                 if (sharedId) {
-                    setIsLoading(true);
+                    setIsFetchingCategories(true);
                     db.collection('communigories').doc(sharedId).get().then(doc => {
                         if (doc.exists) {
                             setSelectedCategory({ id: doc.id, ...doc.data() });
@@ -1688,10 +1729,10 @@
                             setAlert({ title: 'Not Found', message: 'This category does not exist or was deleted.', type: 'error' });
                         }
                         window.history.replaceState({}, document.title, window.location.pathname);
-                        setIsLoading(false);
+                        setIsFetchingCategories(false);
                     }).catch(e => {
                         console.error(e);
-                        setIsLoading(false);
+                        setIsFetchingCategories(false);
                     });
                 }
             }, []);
@@ -1707,10 +1748,10 @@
                 
                 if (categoriesCache[newFilter]) {
                     setCategories(categoriesCache[newFilter]);
-                    setIsLoading(false);
+                    setIsFetchingCategories(false);
                 } else {
                     setCategories([]);
-                    setIsLoading(true);
+                    setIsFetchingCategories(true);
                 }
                 
                 setActiveFilter(newFilter);
@@ -1742,7 +1783,7 @@
                 
                 if (wordsArray.length < 10) { setError('Please add at least 10 words.'); return; }
 
-                setIsLoading(true);
+                setIsUploading(true);
                 try {
                     const capitalizedName = smartCapitalize(newCatName);
                     const payload = { name: capitalizedName, words: wordsArray, icon: selectedIcon, isPrivate };
@@ -1788,14 +1829,11 @@
                         setCategoriesCache(prev => ({ ...prev, my_categories: null, newest: null }));
                     }
                     
-                    if (scrollContainerRef.current) {
-                        uploadScrollPosRef.current = scrollContainerRef.current.scrollTop;
-                    }
                     setActiveView('browse');
                     setActiveFilter(editId ? activeFilter : 'my_categories');
                     setNewCatName(''); setNewCatWords(''); setIsPrivate(false); setEditId(null);
                 } catch (e) { setAlert({ title: 'Error', message: 'Failed to upload category.', type: 'error' }); }
-                setIsLoading(false);
+                setIsUploading(false);
             };
 
             const triggerEdit = (cat) => {
@@ -1956,8 +1994,20 @@
                 emptyIcon = "icon-no-result";
             }
 
+            const [showApp, setShowApp] = useState(false);
+
+            useEffect(() => {
+                const timer = setTimeout(() => {
+                    setShowApp(true);
+                }, 100); 
+                return () => clearTimeout(timer);
+            }, []);
+
             return (
-                <div className="w-full h-full text-slate-200 font-sans selection:bg-brand-500/30">
+                <div 
+                    className="w-full h-full text-slate-200 font-sans selection:bg-brand-500/30 transition-opacity duration-500"
+                    style={{ opacity: showApp ? 1 : 0 }}
+                >
 
                     <IconSelectionModal
                         isOpen={isIconModalOpen} 
@@ -2000,9 +2050,6 @@
                             <button 
                                 onClick={() => {
                                     if (activeView === 'upload') {
-                                        if (scrollContainerRef.current) {
-                                            uploadScrollPosRef.current = scrollContainerRef.current.scrollTop;
-                                        }
                                         setActiveView('browse');
                                         setEditId(null);
                                         setNewCatName('');
@@ -2017,7 +2064,8 @@
                                         }
                                     }
                                 }} 
-                                className="glass-btn w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all"
+                                style={{ width: '3rem', height: '3rem', borderRadius: '9999px' }}
+                                className="glass-btn flex items-center justify-center text-white/50 hover:bg-white/10 hover:text-white active:scale-90"
                             >
                                 <FaIcon name="icon-chevron-left" className="text-xl" />
                             </button>
@@ -2026,17 +2074,11 @@
                         <div className="absolute top-6 right-6 z-20 flex gap-3">
                             <button 
                                 onClick={() => { 
-                                    if (scrollContainerRef.current) {
-                                        if (activeView === 'browse') {
-                                            browseScrollPosRef.current = scrollContainerRef.current.scrollTop;
-                                        } else {
-                                            uploadScrollPosRef.current = scrollContainerRef.current.scrollTop;
-                                        }
-                                    }
                                     setActiveView(activeView === 'upload' ? 'browse' : 'upload'); 
                                     setEditId(null); setNewCatName(''); setNewCatWords(''); setIsPrivate(false); setError(''); 
                                 }}
-                                className="relative w-12 h-12 rounded-full flex items-center justify-center group active:scale-90 transition-transform duration-300 isolate outline-none"
+                                style={{ width: '3rem', height: '3rem', borderRadius: '9999px', backgroundColor: 'transparent', border: 'none' }}
+                                className="relative flex items-center justify-center group active:scale-90 transition-transform duration-300 isolate outline-none"
                             >
                                 <div className="absolute inset-0 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors duration-300 backdrop-blur-[12px] [clip-path:inset(0_round_9999px)] -z-20"></div>
                                 
@@ -2047,7 +2089,7 @@
                                 </div>
                             </button>
                             {!isEmbedded && (
-                                <button onClick={() => { handleMuteToggle(); }} className="glass-btn w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all">
+                                <button onClick={() => { handleMuteToggle(); }} style={{ width: '3rem', height: '3rem', borderRadius: '9999px' }} className="glass-btn flex items-center justify-center text-white/50 hover:bg-white/10 hover:text-white active:scale-90">
                                     {isMuted ? (
 										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 fill-current overflow-visible">
 											<path d="m23.707,22.293c.391.391.391,1.023,0,1.414-.195.195-.451.293-.707.293s-.512-.098-.707-.293L.293,1.707C-.098,1.316-.098.684.293.293S1.316-.098,1.707.293l4.628,4.628C8.142,2.461,10.839.757,13.828.207c.288-.056.593.025.82.215.229.19.36.472.36.769v12.404l1.688,1.688c1.806-1.817,1.803-4.763-.01-6.576-.391-.391-.391-1.023,0-1.414.391-.391,1.023-.391,1.414,0,2.592,2.592,2.596,6.808.01,9.404l1.44,1.44c3.316-3.481,3.266-9.011-.152-12.43-.391-.391-.391-1.023,0-1.414s1.023-.391,1.414,0c4.198,4.198,4.249,10.997.152,15.258l2.742,2.742ZM.009,10v4c0,2.757,2.243,5,5,5h1.269c1.807,2.502,4.53,4.237,7.551,4.793.06.011.12.017.181.017.232,0,.459-.081.64-.231.229-.19.36-.472.36-.769v-3.579L1.881,6.103C.74,7.02.009,8.426.009,10Z"/>
@@ -2084,7 +2126,7 @@
                                     </div>
                                 </div>
 
-                                {activeView === 'browse' && (
+                                <div className={activeView === 'browse' ? 'block' : 'hidden'}>
                                     <div className="relative flex bg-black/40 p-1.5 rounded-[1.25rem] mb-6 border border-white/5 shadow-inner isolate">
                                         <div 
                                             className="absolute top-1.5 bottom-1.5 rounded-xl bg-brand-500 shadow-lg transition-transform duration-300 ease-out z-0"
@@ -2117,9 +2159,9 @@
 											</button>
 										))}
                                     </div>
-                                )}
+                                </div>
 
-                                {activeView === 'upload' ? (
+                                <div className={activeView === 'upload' ? 'block' : 'hidden'}>
                                     <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                         <div className="text-center py-3 bg-black/50 border-b border-white/5">
 											<h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
@@ -2205,9 +2247,13 @@
                                                 </div>
                                                 <button 
                                                     onClick={() => { playSound(!isPrivate ? 'switchOn' : 'switchOff'); setIsPrivate(!isPrivate); }}
-                                                    className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${isPrivate ? 'bg-orange-500/80' : 'bg-white/10'}`}
+                                                    style={{ width: '3rem', height: '1.75rem', borderRadius: '9999px', backgroundColor: isPrivate ? 'rgba(249, 115, 22, 0.8)' : 'rgba(255, 255, 255, 0.1)' }}
+                                                    className="group flex-shrink-0 p-1 cursor-pointer transition-all duration-300"
                                                 >
-                                                    <div className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isPrivate ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} />
+                                                    <div 
+                                                        style={{ width: '1.25rem', height: '1.25rem', borderRadius: '9999px', backgroundColor: '#fff', transform: isPrivate ? 'translateX(1.25rem)' : 'translateX(0)' }}
+                                                        className={`group-active:w-6 shadow-md transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isPrivate ? 'group-active:translate-x-4' : ''}`} 
+                                                    />
                                                 </button>
                                             </div>
                                         </div>
@@ -2229,12 +2275,15 @@
                                             </p>
                                         </div>
                                     </section>
-                                ) : (
+                                </div>
+
+                                <div className={activeView === 'browse' ? 'block' : 'hidden'}>
                                     <div>
                                         <div className="relative mb-6">
                                             <div className="absolute left-5 top-1/2 -translate-y-1/2 text-white/30 text-lg flex items-center justify-center"><FaIcon name="icon-search" /></div>
                                             <input type="text" placeholder="Search categories..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
-                                                className="w-full bg-slate-950/50 rounded-xl pl-14 pr-14 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none border border-white/5 focus:border-brand-500/50 focus:bg-slate-950/80 transition-colors placeholder:text-white/20 font-display font-semibold text-lg text-white"
+                                                style={{ backgroundColor: 'rgba(2, 6, 23, 0.5)', color: '#fff', borderRadius: '0.75rem', border: '1px solid rgba(255,255,255,0.05)' }}
+                                                className="w-full pl-14 pr-14 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none focus:border-brand-500/50 focus:bg-slate-950/80 transition-colors placeholder:text-white/20 font-display font-semibold text-lg"
                                             />
                                             {searchQuery && (
                                                 <button 
@@ -2247,7 +2296,7 @@
                                             )}
                                         </div>
 
-                                       {isLoading ? (
+                                       {isFetchingCategories ? (
                                             <div className="grid grid-cols-2 gap-4 smooth-pulse">
                                                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => (
                                                     <div key={i} className="relative overflow-hidden flex flex-col items-center rounded-[1.5rem] h-[133px] border bg-slate-800/40 border-white/5 backdrop-blur-md">
@@ -2338,7 +2387,7 @@
                                             </>
                                         )}
                                     </div>
-                                )}
+                                </div>
                             </div>
                         </div>
 
@@ -2349,27 +2398,25 @@
 							<FaIcon name="icon-chevron-up" className="text-xl" />
 						</button>
 
-                        {activeView === 'upload' && (
-                            <div className="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-[#020617] via-[#020617] to-transparent z-50">
-                                <div className="max-w-lg mx-auto pb-[env(safe-area-inset-bottom)]">
-                                    <button onClick={() => { playSound(); handleUpload(); }} disabled={isLoading}
-                                        className="w-full h-[68px] flex items-center justify-center bg-white text-slate-950 font-display font-bold text-lg py-5 rounded-[1.5rem] disabled:opacity-50 disabled:shadow-none active:scale-[0.98] transition-transform duration-200"
-                                    >
-                                        {isLoading ? (
-                                            <div className="flex items-center justify-center gap-3">
-                                                <svg className="sleek-spinner w-6 h-6 text-brand-500 drop-shadow-sm" viewBox="25 25 50 50"><circle cx="50" cy="50" r="20"></circle></svg>
-                                                <span className="animate-pulse text-slate-950/80">{editId ? 'SAVING...' : 'UPLOADING...'}</span>
-                                            </div>
-                                        ) : (
+                        <div className={`fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-[#020617] via-[#020617] to-transparent z-50 ${activeView === 'upload' ? 'block' : 'hidden'}`}>
+                            <div className="max-w-lg mx-auto pb-[env(safe-area-inset-bottom)]">
+                                <button onClick={() => { playSound(); handleUpload(); }} disabled={isUploading}
+                                    className="w-full h-[68px] flex items-center justify-center bg-white text-slate-950 font-display font-bold text-lg py-5 rounded-[1.5rem] disabled:opacity-50 disabled:shadow-none active:scale-[0.98] transition-transform duration-200"
+                                >
+                                    {isUploading ? (
+                                        <div className="flex items-center justify-center gap-3">
+                                            <svg className="sleek-spinner w-6 h-6 text-brand-500 drop-shadow-sm" viewBox="25 25 50 50"><circle cx="50" cy="50" r="20"></circle></svg>
+                                            <span className="animate-pulse text-slate-950/80">{editId ? 'SAVING...' : 'UPLOADING...'}</span>
+                                        </div>
+                                    ) : (
 											<span className="flex items-center gap-3">
 												<FaIcon name={editId ? "icon-pen" : "icon-cloud-up-button"} className="text-[22px]" width="1.1em" /> 
 												{editId ? "SAVE CHANGES" : "UPLOAD TO COMMUNITY"}
 											</span>
 										)}
-                                    </button>
-                                </div>
+                                </button>
                             </div>
-                        )}
+                        </div>
                     </div>
                 </div>
             );
