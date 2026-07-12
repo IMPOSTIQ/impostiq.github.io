@@ -1307,41 +1307,37 @@
                         </div>
 
                         {isSaved && (
-                            <div className="flex flex-col gap-2 mb-6">
-                                <div className="flex items-center justify-between bg-black/20 border border-white/5 rounded-xl p-3 px-4">
-                                    <div className="flex items-center gap-3">
-                                        <FaIcon name="icon-mobile-screen" className="text-brand-500 text-lg" />
-                                        <span className="text-sm text-white/90 font-medium">Local Games</span>
-                                    </div>
-                                    <button 
-                                        onClick={() => { playSound(savedData?.useLocal !== false ? 'switchOff' : 'switchOn'); onToggleSetting(cat.id, 'useLocal'); }}
-                                        style={{ width: '3rem', height: '1.75rem', borderRadius: '9999px', backgroundColor: savedData?.useLocal !== false ? 'rgba(139, 92, 246, 1)' : 'rgba(255, 255, 255, 0.1)' }}
-                                        className="group flex-shrink-0 p-1 cursor-pointer transition-all duration-300"
-                                    >
-                                        <div 
-                                            style={{ width: '1.25rem', height: '1.25rem', borderRadius: '9999px', backgroundColor: '#fff', transform: savedData?.useLocal !== false ? 'translateX(1.25rem)' : 'translateX(0)' }}
-                                            className={`group-active:w-6 shadow-md transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${savedData?.useLocal !== false ? 'group-active:translate-x-4' : ''}`} 
-                                        />
-                                    </button>
-                                </div>
-                                <div className="flex items-center justify-between bg-black/20 border border-white/5 rounded-xl p-3 px-4">
-                                    <div className="flex items-center gap-3">
-                                        <FaIcon name="icon-earth-americas" className="text-brand-500 text-lg" />
-                                        <span className="text-sm text-white/90 font-medium">Online Lobbies</span>
-                                    </div>
-                                    <button 
-                                        onClick={() => { playSound(savedData?.useOnline !== false ? 'switchOff' : 'switchOn'); onToggleSetting(cat.id, 'useOnline'); }}
-                                        style={{ width: '3rem', height: '1.75rem', borderRadius: '9999px', backgroundColor: savedData?.useOnline !== false ? 'rgba(139, 92, 246, 1)' : 'rgba(255, 255, 255, 0.1)' }}
-                                        className="group flex-shrink-0 p-1 cursor-pointer transition-all duration-300"
-                                    >
-                                        <div 
-                                            style={{ width: '1.25rem', height: '1.25rem', borderRadius: '9999px', backgroundColor: '#fff', transform: savedData?.useOnline !== false ? 'translateX(1.25rem)' : 'translateX(0)' }}
-                                            className={`group-active:w-6 shadow-md transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${savedData?.useOnline !== false ? 'group-active:translate-x-4' : ''}`} 
-                                        />
-                                    </button>
-                                </div>
-                            </div>
-                        )}
+							<div className="flex flex-col gap-2 mb-6">
+								<div className="flex items-center justify-between bg-black/20 border border-white/5 rounded-xl p-3 px-4">
+									<div className="flex items-center gap-3">
+										<FaIcon name="icon-mobile-screen" className="text-brand-500 text-lg" />
+										<span className="text-sm text-white/90 font-medium">Local Games</span>
+									</div>
+									<button 
+										onClick={() => { playSound(savedData?.useLocal !== false ? 'switchOff' : 'switchOn'); onToggleSetting(cat.id, 'useLocal'); }}
+										className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${savedData?.useLocal !== false ? 'bg-brand-500' : 'bg-white/10'}`}
+									>
+										<div 
+											className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${savedData?.useLocal !== false ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} 
+										/>
+									</button>
+								</div>
+								<div className="flex items-center justify-between bg-black/20 border border-white/5 rounded-xl p-3 px-4">
+									<div className="flex items-center gap-3">
+										<FaIcon name="icon-earth-americas" className="text-brand-500 text-lg" />
+										<span className="text-sm text-white/90 font-medium">Online Lobbies</span>
+									</div>
+									<button 
+										onClick={() => { playSound(savedData?.useOnline !== false ? 'switchOff' : 'switchOn'); onToggleSetting(cat.id, 'useOnline'); }}
+										className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${savedData?.useOnline !== false ? 'bg-brand-500' : 'bg-white/10'}`}
+									>
+										<div 
+											className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${savedData?.useOnline !== false ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} 
+										/>
+									</button>
+								</div>
+							</div>
+						)}
                         
                         <div className="flex flex-col gap-3 w-full flex-shrink-0 mt-auto">
                             {!isSaved && (
@@ -2236,26 +2232,24 @@
                                             </div>
 
                                             <div className="flex items-center justify-between bg-black/20 border border-white/5 rounded-[1.5rem] p-4 transition-all duration-300">
-                                                <div className="flex items-center gap-4 pr-4">
-                                                    <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 flex-shrink-0">
-                                                        <FaIcon name="icon-lock" className="text-lg" />
-                                                    </div>
-                                                    <div>
-                                                        <h3 className="font-bold text-white/90 text-sm">Private Category</h3>
-                                                        <p className="text-white/40 text-xs mt-1 leading-relaxed">Hides your category from the public community feed. Only accessible via share link.</p>
-                                                    </div>
-                                                </div>
-                                                <button 
-                                                    onClick={() => { playSound(!isPrivate ? 'switchOn' : 'switchOff'); setIsPrivate(!isPrivate); }}
-                                                    style={{ width: '3rem', height: '1.75rem', borderRadius: '9999px', backgroundColor: isPrivate ? 'rgba(249, 115, 22, 0.8)' : 'rgba(255, 255, 255, 0.1)' }}
-                                                    className="group flex-shrink-0 p-1 cursor-pointer transition-all duration-300"
-                                                >
-                                                    <div 
-                                                        style={{ width: '1.25rem', height: '1.25rem', borderRadius: '9999px', backgroundColor: '#fff', transform: isPrivate ? 'translateX(1.25rem)' : 'translateX(0)' }}
-                                                        className={`group-active:w-6 shadow-md transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isPrivate ? 'group-active:translate-x-4' : ''}`} 
-                                                    />
-                                                </button>
-                                            </div>
+												<div className="flex items-center gap-4 pr-4">
+													<div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 flex-shrink-0">
+														<FaIcon name="icon-lock" className="text-lg" />
+													</div>
+													<div>
+														<h3 className="font-bold text-white/90 text-sm">Private Category</h3>
+														<p className="text-white/40 text-xs mt-1 leading-relaxed">Hides your category from the public community feed. Only accessible via share link.</p>
+													</div>
+												</div>
+												<button 
+													onClick={() => { playSound(!isPrivate ? 'switchOn' : 'switchOff'); setIsPrivate(!isPrivate); }}
+													className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${isPrivate ? 'bg-orange-500/80' : 'bg-white/10'}`}
+												>
+													<div 
+														className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isPrivate ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} 
+													/>
+												</button>
+											</div>
                                         </div>
 
                                         <div className={`grid transition-all duration-300 ease-in-out px-4 ${error ? 'grid-rows-[1fr] opacity-100 pb-4' : 'grid-rows-[0fr] opacity-0 pb-0'}`}>
