@@ -258,6 +258,13 @@
         .subtle-shine-container { position: relative; overflow: hidden; isolation: isolate; }
         .subtle-shine-container::before { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.06) 48%, rgba(255, 255, 255, 0.06) 52%, transparent 70%); transform: translateX(-100%); animation: subtleShine 7s ease-in-out infinite; }
         @keyframes subtleShine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        @keyframes marquee {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(calc(-100% - var(--marquee-gap, 2rem)), 0, 0); }
+        }
+        .animate-marquee {
+            animation: marquee 10s linear infinite;
+        }
         
         .smooth-pulse {
             animation: smoothPulse 2.5s ease-in-out infinite;
@@ -510,6 +517,75 @@
 	
     <script type="text/babel" data-presets="react">
         const { useState, useEffect, useRef } = React;
+
+        const OverflowMarquee = ({ text, className = "" }) => {
+            const containerRef = useRef(null);
+            const textRef = useRef(null);
+            const [isOverflowing, setIsOverflowing] = useState(false);
+            const [gap, setGap] = useState(24);
+
+            useEffect(() => {
+                const el = containerRef.current;
+                const txt = textRef.current;
+                if (!el || !txt) return;
+
+                const check = () => {
+                    const textWidth = txt.scrollWidth;
+                    const containerWidth = el.clientWidth;
+                    
+                    const isOverflow = textWidth + 4 > containerWidth;
+                    setIsOverflowing(isOverflow);
+
+                    if (isOverflow) {
+                        const calculatedGap = Math.max(24, containerWidth - (textWidth * 0.85));
+                        setGap(calculatedGap);
+                    }
+                };
+
+                const observer = new ResizeObserver(() => {
+                    check();
+                });
+                observer.observe(el);
+
+                check();
+                const t = setTimeout(check, 100);
+
+                return () => {
+                    observer.disconnect();
+                    clearTimeout(t);
+                };
+            }, [text]);
+
+            const maskStyle = isOverflowing ? {
+                WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+                maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+            } : {};
+
+            return (
+                <div 
+                    ref={containerRef} 
+                    className="w-full overflow-hidden select-none relative" 
+                    style={maskStyle}
+                >
+                    <span 
+                        ref={textRef} 
+                        className={`absolute opacity-0 pointer-events-none whitespace-nowrap invisible ${className}`}
+                        style={{ left: 0, top: 0 }}
+                    >
+                        {text}
+                    </span>
+
+                    {isOverflowing ? (
+                        <div className="flex whitespace-nowrap animate-marquee-container" style={{ gap: `${gap}px` }}>
+                            <span className={`animate-marquee shrink-0 ${className}`} style={{ '--marquee-gap': `${gap}px` }}>{text}</span>
+                            <span className={`animate-marquee shrink-0 ${className}`} style={{ '--marquee-gap': `${gap}px` }}>{text}</span>
+                        </div>
+                    ) : (
+                        <span className={`block text-center whitespace-nowrap ${className}`}>{text}</span>
+                    )}
+                </div>
+            );
+        };
 
         const firebaseConfig = {
             apiKey: "AIzaSyChul9YK3HepgMSy4qhf9aOO3AZT5GE8m8",
@@ -1123,7 +1199,7 @@
                                                             src={iconObj.url}
                                                             sizeClassName="w-full h-full"
                                                             spinnerSize="w-7 h-7 sm:w-8 sm:h-8"
-                                                            className={`w-[50%] h-[50%] sm:w-[55%] sm:h-[55%] object-contain transition-transform duration-300 drop-shadow-md ${isSelected ? 'scale-110' : 'opacity-60 group-hover:opacity-100 group-hover:scale-110'}`} 
+                                                            className={`w-[50%] h-[50%] sm:w-[55%] sm:h-[55%] object-contain transition-transform duration-300 drop-shadow-md ${isSelected ? 'scale-110' : 'opacity-100 sm:opacity-60 group-hover:opacity-100 group-hover:scale-110'}`} 
                                                         />
                                                     </div>
                                                     <div className="w-full h-8 sm:h-9 flex items-center justify-center bg-black/50 border-t border-white/5 relative z-0 px-2">
@@ -1317,6 +1393,21 @@
             const isEmbedded = window !== window.parent;
             
             const [activeView, setActiveView] = useState('browse');
+            const browseScrollPosRef = useRef(0);
+            const uploadScrollPosRef = useRef(0);
+
+            useEffect(() => {
+                if (scrollContainerRef.current) {
+                    const targetPos = activeView === 'browse' ? browseScrollPosRef.current : uploadScrollPosRef.current;
+                    const timer = setTimeout(() => {
+                        if (scrollContainerRef.current) {
+                            scrollContainerRef.current.scrollTop = targetPos;
+                        }
+                    }, 100);
+                    return () => clearTimeout(timer);
+                }
+            }, [activeView]);
+
             const [activeFilter, setActiveFilter] = useState('trending');
             const [categories, setCategories] = useState([]);
             const [searchQuery, setSearchQuery] = useState('');
@@ -1689,6 +1780,9 @@
                         setCategoriesCache(prev => ({ ...prev, my_categories: null, newest: null }));
                     }
                     
+                    if (scrollContainerRef.current) {
+                        uploadScrollPosRef.current = scrollContainerRef.current.scrollTop;
+                    }
                     setActiveView('browse');
                     setActiveFilter(editId ? activeFilter : 'my_categories');
                     setNewCatName(''); setNewCatWords(''); setIsPrivate(false); setEditId(null);
@@ -1898,6 +1992,9 @@
                             <button 
                                 onClick={() => {
                                     if (activeView === 'upload') {
+                                        if (scrollContainerRef.current) {
+                                            uploadScrollPosRef.current = scrollContainerRef.current.scrollTop;
+                                        }
                                         setActiveView('browse');
                                         setEditId(null);
                                         setNewCatName('');
@@ -1921,6 +2018,13 @@
                         <div className="absolute top-6 right-6 z-20 flex gap-3">
                             <button 
                                 onClick={() => { 
+                                    if (scrollContainerRef.current) {
+                                        if (activeView === 'browse') {
+                                            browseScrollPosRef.current = scrollContainerRef.current.scrollTop;
+                                        } else {
+                                            uploadScrollPosRef.current = scrollContainerRef.current.scrollTop;
+                                        }
+                                    }
                                     setActiveView(activeView === 'upload' ? 'browse' : 'upload'); 
                                     setEditId(null); setNewCatName(''); setNewCatWords(''); setIsPrivate(false); setError(''); 
                                 }}
@@ -2137,15 +2241,17 @@
 
                                        {isLoading ? (
                                             <div className="grid grid-cols-2 gap-4 smooth-pulse">
-                                                {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
-                                                    <div key={i} className="relative overflow-hidden flex flex-col items-center rounded-[1.5rem] min-h-[133px] border bg-slate-800/40 border-white/5 backdrop-blur-md">
-                                                        <div className="w-full py-2 bg-black/50 border-b border-white/5 h-8 flex justify-center items-center gap-4">
-                                                            <div className="w-6 h-3 bg-white/10 rounded"></div>
-                                                            <div className="w-6 h-3 bg-white/10 rounded"></div>
+                                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => (
+                                                    <div key={i} className="relative overflow-hidden flex flex-col items-center rounded-[1.5rem] h-[133px] border bg-slate-800/40 border-white/5 backdrop-blur-md">
+                                                        <div className="w-full text-center py-2 bg-black/50 border-b border-white/5">
+                                                            <div className="flex justify-center items-center gap-4">
+                                                                <div className="w-8 h-[14px] bg-white/10 rounded"></div>
+                                                                <div className="w-8 h-[14px] bg-white/10 rounded"></div>
+                                                            </div>
                                                         </div>
                                                         <div className="relative flex-1 w-full flex flex-col items-center justify-center gap-3 p-4">
                                                             <div className="w-10 h-10 rounded-full bg-white/10"></div>
-                                                            <div className="w-20 h-3 rounded bg-white/10"></div>
+                                                            <div className="w-20 h-4 rounded bg-white/10"></div>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -2183,7 +2289,7 @@
                                                         <button 
                                                             key={cat.id} 
                                                             onClick={() => { playSound('openInfo'); setSelectedCategory(cat); }}
-                                                            className="relative overflow-hidden flex flex-col items-center rounded-[1.5rem] transition-transform duration-200 group min-h-[130px] border bg-slate-800/40 border-white/5 hover:bg-white/5 hover:border-white/5 backdrop-blur-md active:scale-95"
+                                                            className="relative overflow-hidden flex flex-col items-center rounded-[1.5rem] transition-transform duration-200 group h-[133px] border bg-slate-800/40 border-white/5 hover:bg-white/5 hover:border-white/5 backdrop-blur-md active:scale-95"
                                                         >
                                                             {!cat.isPrivate ? (
                                                                 <div className="w-full text-center py-2 bg-black/50 border-b border-white/5">
@@ -2207,7 +2313,7 @@
 																	spinnerSize="w-6 h-6" 
 																	className="w-full h-full object-contain transition-transform duration-300 drop-shadow-md opacity-100 group-hover:opacity-100 group-hover:scale-110" 
 																/>
-                                                                <span className="text-xs font-bold tracking-wide text-white text-center leading-tight line-clamp-2 px-1 w-full break-words">{smartCapitalize(cat.name)}</span>
+                                                                <OverflowMarquee text={smartCapitalize(cat.name)} className="text-xs font-bold tracking-wide text-white px-1" />
                                                             </div>
                                                         </button>
                                                     ))}
