@@ -904,7 +904,7 @@
 					) : (
                         <img 
                             src={src} 
-                            className={`${className} ${shouldAnimate ? 'animate-fade-in' : ''}`} 
+                            className={`${className} ${(shouldAnimate && !isCached) ? 'animate-fade-in' : ''}`} 
                             alt={alt} 
                             draggable="false" 
                         />
@@ -2202,12 +2202,11 @@
                                                             
                                                             <div className="relative flex-1 w-full flex flex-col items-center justify-center gap-3 p-4">
                                                                 <LazyImage 
-                                                                    key={cat.icon}
-                                                                    src={cat.icon} 
-                                                                    sizeClassName="w-10 h-10" 
-                                                                    spinnerSize="w-6 h-6" 
-                                                                    className="w-full h-full object-contain transition-transform duration-300 drop-shadow-md opacity-60 group-hover:opacity-100 group-hover:scale-110" 
-                                                                />
+																	src={cat.icon} 
+																	sizeClassName="w-10 h-10" 
+																	spinnerSize="w-6 h-6" 
+																	className="w-full h-full object-contain transition-transform duration-300 drop-shadow-md opacity-100 group-hover:opacity-100 group-hover:scale-110" 
+																/>
                                                                 <span className="text-xs font-bold tracking-wide text-white text-center leading-tight line-clamp-2 px-1 w-full break-words">{smartCapitalize(cat.name)}</span>
                                                             </div>
                                                         </button>
