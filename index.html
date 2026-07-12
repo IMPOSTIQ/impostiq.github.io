@@ -6494,15 +6494,15 @@
                                                 <FaIcon name="icon-key" className=" text-brand-400 mr-1" /> Classified Intel
                                             </h2>
                                         </div>
-                                        <div className="p-4 flex gap-3">
-                                            <div className="flex-1 bg-black/20 rounded-xl p-4 border border-white/5 text-center">
+                                        <div className="p-4 flex flex-col gap-3">
+                                            <div className="bg-black/20 rounded-xl p-4 border border-white/5 text-center">
                                                 <p className="text-white/40 text-[10px] uppercase font-bold tracking-widest mb-2">
                                                     {isFakeWordMode ? 'Real Word' : 'Secret Word'}
                                                 </p>
                                                 <p className="text-xl font-display font-bold text-white break-words">{secretWord}</p>
                                             </div>
                                             {isFakeWordMode && fakeWord && (
-                                                <div className="flex-1 bg-black/20 rounded-xl p-4 border border-white/5 text-center">
+                                                <div className="bg-black/20 rounded-xl p-4 border border-white/5 text-center">
                                                     <p className="text-white/40 text-[10px] uppercase font-bold tracking-widest mb-2">Fake Word</p>
                                                     <p className="text-xl font-display font-bold text-white break-words">{fakeWord}</p>
                                                 </div>
