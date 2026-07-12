@@ -1423,6 +1423,7 @@
 
             const [showScrollTop, setShowScrollTop] = useState(false);
             const scrollContainerRef = useRef(null);
+            const uploadContainerRef = useRef(null);
 
             const handleScroll = (e) => {
                 if (e.target.scrollTop > 300) {
@@ -1437,6 +1438,12 @@
                     scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             };
+
+            useEffect(() => {
+                if (scrollContainerRef.current) {
+                    scrollContainerRef.current.scrollTop = 0;
+                }
+            }, [activeView]);
 
             const AUDIO_URLS = {
                 uiClick: "https://impostiq.github.io/sound/uiclick.mp3",
@@ -1537,9 +1544,9 @@
             useEffect(() => {
                 if (error) {
                     setTimeout(() => {
-                        if (scrollContainerRef.current) {
-                            scrollContainerRef.current.scrollTo({ 
-                                top: scrollContainerRef.current.scrollHeight, 
+                        if (uploadContainerRef.current) {
+                            uploadContainerRef.current.scrollTo({ 
+                                top: uploadContainerRef.current.scrollHeight, 
                                 behavior: 'smooth' 
                             });
                         }
