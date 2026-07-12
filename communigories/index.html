@@ -530,9 +530,10 @@
                 if (!el || !txt) return;
 
                 const check = () => {
-                    const textWidth = txt.scrollWidth;
                     const containerWidth = el.clientWidth;
-                    
+                    if (containerWidth === 0) return;
+
+                    const textWidth = txt.scrollWidth;
                     const isOverflow = textWidth + 4 > containerWidth;
                     setIsOverflowing(isOverflow);
 
