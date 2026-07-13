@@ -2360,7 +2360,7 @@
                                                                 <div className="w-full text-center py-2 bg-black/50 border-b border-white/5">
                                                                     <div className="flex justify-center items-center gap-4 text-[10px] font-bold text-white/60 tracking-wider">
                                                                         <span className="flex items-center gap-1.5"><FaIcon name="icon-download" className="text-white/60" /> {formatNumber(cat.downloads || 0)}</span>
-                                                                        <span className="flex items-center gap-1.5"><FaIcon name="icon-words" className="text-white/60" /> {formatNumber(cat.edits || 0)}</span>
+                                                                        <span className="flex items-center gap-1.5"><FaIcon name="icon-words" className="text-white/60" /> {formatNumber(cat.words?.length || 0)}</span>
                                                                     </div>
                                                                 </div>
                                                             ) : (
