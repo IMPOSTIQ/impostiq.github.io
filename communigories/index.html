@@ -553,7 +553,13 @@
             const fadeTimerRef = useRef(null);
             const isMouseInsideRef = useRef(false);
 
-            const isTouch = window.matchMedia("(pointer: coarse)").matches;
+            const isTouch = typeof window !== 'undefined' && (
+                'ontouchstart' in window || 
+                navigator.maxTouchPoints > 0 || 
+                /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                /wv/i.test(navigator.userAgent.toLowerCase()) ||
+                (/iphone|ipod|ipad/i.test(navigator.userAgent.toLowerCase()) && !/safari/i.test(navigator.userAgent.toLowerCase()))
+            );
 
             const showTooltip = () => {
                 clearTimeout(fadeTimerRef.current);
@@ -624,7 +630,6 @@
                 }
             };
 
-            // Safely clear the auto-close timer only on true unmount to prevent leaks
             useEffect(() => {
                 return () => {
                     clearTimeout(timerRef.current);
