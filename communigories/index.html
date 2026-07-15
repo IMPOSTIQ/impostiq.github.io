@@ -472,7 +472,7 @@
             <li><strong>Duplicate Prevention:</strong> Duplicate words are strictly prohibited and will automatically block the upload, highlighting the duplicates in red text inside the textarea.</li>
             <li><strong>Formatting:</strong> Category names are automatically sanitized using smart title-casing (e.g., "video games" becomes "Video Games"). Brand capitalization (like "iPad" or "macOS") and acronyms are preserved.</li>
 			<li><strong>No Emojis:</strong> Category names are strictly prohibited from containing emojis to preserve indexing and interface consistency.</li>
-			<li><strong>Icons:</strong> Creators must assign a 3D visual icon to their category from a curated list of 242 high-quality emojis, a design choice that inherently prevents the upload of inappropriate imagery.</li>
+			<li><strong>Icons:</strong> Creators must assign a 3D visual icon to their category from a curated list of 300 high-quality emojis, a design choice that inherently prevents the upload of inappropriate imagery.</li>
         </ul>
 
         <h2>3. Library Management, UI & Privacy</h2>
@@ -684,248 +684,301 @@
         };
 
         const ICONS_LIST = [
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fire_1f525.png", name: "Fire" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/star_2b50.png", name: "Star" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/trophy_1f3c6.png", name: "Trophy" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/popcorn_1f37f.png", name: "Popcorn" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/television_1f4fa.png", name: "TV" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/joystick_1f579-fe0f.png", name: "Joystick" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/game-die_1f3b2.png", name: "Dice" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/musical-notes_1f3b6.png", name: "Music" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/364/artist-palette_1f3a8.png", name: "Palette" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crown_1f451.png", name: "Crown" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/money-bag_1f4b0.png", name: "Money" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/light-bulb_1f4a1.png", name: "Lightbulb" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/books_1f4da.png", name: "Books" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/globe-showing-americas_1f30e.png", name: "Globe" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rocket_1f680.png", name: "Rocket" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/microscope_1f52c.png", name: "Microscope" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hamburger_1f354.png", name: "Hamburger" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hot-beverage_2615.png", name: "Coffee" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/red-apple_1f34e.png", name: "Apple" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dog-face_1f436.png", name: "Dog" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/airplane_2708-fe0f.png", name: "Airplane" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/automobile_1f697.png", name: "Car" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shopping-bags_1f6cd-fe0f.png", name: "Shopping" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/laptop_1f4bb.png", name: "Laptop" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/gear_2699-fe0f.png", name: "Gear" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/magic-wand_1fa84.png", name: "Wand" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crossed-swords_2694-fe0f.png", name: "Swords" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/heart-suit_2665-fe0f.png", name: "Heart" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/400/camera-with-flash_1f4f8.png", name: "Camera" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/speech-balloon_1f4ac.png", name: "Chat" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/smiling-face-with-sunglasses_1f60e.png", name: "Sunglasses" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ghost_1f47b.png", name: "Ghost" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/jack-o-lantern_1f383.png", name: "Pumpkin" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/364/christmas-tree_1f384.png", name: "Tree" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/party-popper_1f389.png", name: "Party" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/lipstick_1f484.png", name: "Lipstick" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/soccer-ball_26bd.png", name: "Soccer" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/man-lifting-weights-light-skin-tone_1f3cb-1f3fb-200d-2642-fe0f.png", name: "Fitness" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/magnifying-glass-tilted-right_1f50e.png", name: "Search" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/gem-stone_1f48e.png", name: "Diamond" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/alien_1f47d.png", name: "Alien" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/robot_1f916.png", name: "Robot" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ninja_light-skin-tone_1f977-1f3fb_1f3fb.png", name: "Ninja" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/skull_1f480.png", name: "Skull" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/detective_light-skin-tone_1f575-1f3fb_1f3fb.png", name: "Detective" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cowboy-hat-face_1f920.png", name: "Cowboy" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/clown-face_1f921.png", name: "Clown" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/brain_1f9e0.png", name: "Brain" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bone_1f9b4.png", name: "Bone" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dragon-face_1f432.png", name: "Dragon" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/unicorn_1f984.png", name: "Unicorn" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/butterfly_1f98b.png", name: "Butterfly" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/snake_1f40d.png", name: "Snake" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/turtle_1f422.png", name: "Turtle" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/spouting-whale_1f433.png", name: "Whale" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/mushroom_1f344.png", name: "Mushroom" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cherry-blossom_1f338.png", name: "Flower" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/evergreen-tree_1f332.png", name: "Pine" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cactus_1f335.png", name: "Cactus" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pizza_1f355.png", name: "Pizza" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/doughnut_1f369.png", name: "Donut" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/taco_1f32e.png", name: "Taco" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sushi_1f363.png", name: "Sushi" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/french-fries_1f35f.png", name: "Fries" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/stadium_1f3df-fe0f.png", name: "Stadium" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ferris-wheel_1f3a1.png", name: "Ferris Wheel" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/roller-coaster_1f3a2.png", name: "Coaster" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/363/tent_26fa.png", name: "Tent" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/classical-building_1f3db-fe0f.png", name: "Museum" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/house_1f3e0.png", name: "House" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hospital_1f3e5.png", name: "Hospital" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/police-car_1f693.png", name: "Police" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fire-engine_1f692.png", name: "Fire Truck" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/helicopter_1f681.png", name: "Helicopter" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/364/speedboat_1f6a4.png", name: "Boat" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/anchor_2693.png", name: "Anchor" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/guitar_1f3b8.png", name: "Guitar" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/saxophone_1f3b7.png", name: "Saxophone" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/trumpet_1f3ba.png", name: "Trumpet" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/violin_1f3bb.png", name: "Violin" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/drum_1f941.png", name: "Drums" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/puzzle-piece_1f9e9.png", name: "Puzzle" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bowling_1f3b3.png", name: "Bowling" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crystal-ball_1f52e.png", name: "Magic Ball" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ring_1f48d.png", name: "Ring" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/high-heeled-shoe_1f460.png", name: "Heels" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/jeans_1f456.png", name: "Jeans" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/necktie_1f454.png", name: "Tie" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/glasses_1f453.png", name: "Glasses" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/watch_231a.png", name: "Watch" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/mobile-phone_1f4f1.png", name: "Phone" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/telephone-receiver_1f4de.png", name: "Telephone" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/desktop-computer_1f5a5-fe0f.png", name: "Computer" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/video-camera_1f4f9.png", name: "Video" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/radio_1f4fb.png", name: "Radio" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/compass_1f9ed.png", name: "Compass" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/stopwatch_23f1-fe0f.png", name: "Stopwatch" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hot-dog_1f32d.png", name: "Hot Dog" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sandwich_1f96a.png", name: "Sandwich" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pretzel_1f968.png", name: "Pretzel" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pancakes_1f95e.png", name: "Pancakes" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/waffle_1f9c7.png", name: "Waffle" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cheese-wedge_1f9c0.png", name: "Cheese" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/meat-on-bone_1f356.png", name: "Meat" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/poultry-leg_1f357.png", name: "Chicken Leg" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cut-of-meat_1f969.png", name: "Steak" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bacon_1f953.png", name: "Bacon" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/burrito_1f32f.png", name: "Burrito" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/stuffed-flatbread_1f959.png", name: "Flatbread" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/falafel_1f9c6.png", name: "Falafel" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/egg_1f95a.png", name: "Egg" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cooking_1f373.png", name: "Pan" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shallow-pan-of-food_1f958.png", name: "Paella" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pot-of-food_1f372.png", name: "Pot" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bowl-with-spoon_1f963.png", name: "Bowl" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/green-salad_1f957.png", name: "Salad" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/butter_1f9c8.png", name: "Butter" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/salt_1f9c2.png", name: "Salt" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/canned-food_1f96b.png", name: "Canned Food" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bento-box_1f371.png", name: "Bento" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rice-cracker_1f358.png", name: "Rice Cracker" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rice-ball_1f359.png", name: "Rice Ball" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cooked-rice_1f35a.png", name: "Rice" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/curry-rice_1f35b.png", name: "Curry" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/steaming-bowl_1f35c.png", name: "Noodles" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/spaghetti_1f35d.png", name: "Spaghetti" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/roasted-sweet-potato_1f360.png", name: "Sweet Potato" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/oden_1f362.png", name: "Oden" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fried-shrimp_1f364.png", name: "Shrimp" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fish-cake-with-swirl_1f365.png", name: "Fish Cake" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/moon-cake_1f96e.png", name: "Moon Cake" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dango_1f361.png", name: "Dango" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dumpling_1f95f.png", name: "Dumpling" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fortune-cookie_1f960.png", name: "Fortune Cookie" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/takeout-box_1f961.png", name: "Takeout" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crab_1f980.png", name: "Crab" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/364/lobster_1f99e.png", name: "Lobster" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shrimp_1f990.png", name: "Shrimp" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/squid_1f991.png", name: "Squid" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/oyster_1f9aa.png", name: "Oyster" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/soft-ice-cream_1f366.png", name: "Soft Ice Cream" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shaved-ice_1f367.png", name: "Shaved Ice" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ice-cream_1f368.png", name: "Ice Cream" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cookie_1f36a.png", name: "Cookie" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/birthday-cake_1f382.png", name: "Cake" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shortcake_1f370.png", name: "Shortcake" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cupcake_1f9c1.png", name: "Cupcake" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pie_1f967.png", name: "Pie" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/chocolate-bar_1f36b.png", name: "Chocolate" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/candy_1f36c.png", name: "Candy" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/lollipop_1f36d.png", name: "Lollipop" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/custard_1f36e.png", name: "Custard" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/honey-pot_1f36f.png", name: "Honey" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/baby-bottle_1f37c.png", name: "Baby Bottle" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/glass-of-milk_1f95b.png", name: "Milk" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/teacup-without-handle_1f375.png", name: "Tea" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sake_1f376.png", name: "Sake" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bottle-with-popping-cork_1f37e.png", name: "Champagne" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/wine-glass_1f377.png", name: "Wine" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cocktail-glass_1f378.png", name: "Cocktail" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/tropical-drink_1f379.png", name: "Tropical Drink" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/beer-mug_1f37a.png", name: "Beer" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/clinking-glasses_1f942.png", name: "Cheers" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/tumbler-glass_1f943.png", name: "Whiskey" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cup-with-straw_1f964.png", name: "Juice Box" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/mate_1f9c9.png", name: "Mate" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ice_1f9ca.png", name: "Ice" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/chopsticks_1f962.png", name: "Chopsticks" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fork-and-knife-with-plate_1f37d-fe0f.png", name: "Plate" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fork-and-knife_1f374.png", name: "Cutlery" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/spoon_1f944.png", name: "Spoon" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/363/kitchen-knife_1f52a.png", name: "Knife" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/amphora_1f3fa.png", name: "Amphora" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pill_1f48a.png", name: "Pill" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/syringe_1f489.png", name: "Syringe" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/microbe_1f9a0.png", name: "Microbe" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/telescope_1f52d.png", name: "Telescope" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/flying-saucer_1f6f8.png", name: "UFO" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ringed-planet_1fa90.png", name: "Planet" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/first-quarter-moon_1f313.png", name: "Moon" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sun-with-face_1f31e.png", name: "Sun" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/volcano_1f30b.png", name: "Volcano" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/basketball_1f3c0.png", name: "Basketball" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/american-football_1f3c8.png", name: "Football" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/tennis_1f3be.png", name: "Tennis" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/baseball_26be.png", name: "Baseball" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/volleyball_1f3d0.png", name: "Volleyball" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/364/pool-8-ball_1f3b1.png", name: "8-Ball" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/boxing-glove_1f94a.png", name: "Boxing" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/skis_1f3bf.png", name: "Skis" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ice-skate_26f8-fe0f.png", name: "Ice Skate" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bow-and-arrow_1f3f9.png", name: "Archery" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fishing-pole_1f3a3.png", name: "Fishing" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/direct-hit_1f3af.png", name: "Darts" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/video-game_1f3ae.png", name: "Controller" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/slot-machine_1f3b0.png", name: "Slot Machine" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pistol_1f52b.png", name: "Water Gun" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/microphone_1f3a4.png", name: "Microphone" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/headphone_1f3a7.png", name: "Headphones" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/clapper-board_1f3ac.png", name: "Clapper" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/movie-camera_1f3a5.png", name: "Camera" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ticket_1f3ab.png", name: "Ticket" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/paintbrush_1f58c-fe0f.png", name: "Brush" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crayon_1f58d-fe0f.png", name: "Crayon" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/thread_1f9f5.png", name: "Thread" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/yarn_1f9f6.png", name: "Yarn" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bear_1f43b.png", name: "Bear" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/363/tiger-face_1f42f.png", name: "Tiger" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fox_1f98a.png", name: "Fox" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/364/cat-face_1f431.png", name: "Cat" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/mouse-face_1f42d.png", name: "Mouse" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rabbit-face_1f430.png", name: "Rabbit" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/koala_1f428.png", name: "Koala" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/panda_1f43c.png", name: "Panda" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/frog_1f438.png", name: "Frog" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/monkey-face_1f435.png", name: "Monkey" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/penguin_1f427.png", name: "Penguin" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bird_1f426.png", name: "Bird" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/owl_1f989.png", name: "Owl" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bat_1f987.png", name: "Bat" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/horse-face_1f434.png", name: "Horse" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/spider_1f577-fe0f.png", name: "Spider" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/scorpion_1f982.png", name: "Scorpion" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/octopus_1f419.png", name: "Octopus" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fish_1f41f.png", name: "Fish" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/tropical-fish_1f420.png", name: "Tropical Fish" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shark_1f988.png", name: "Shark" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dolphin_1f42c.png", name: "Dolphin" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crocodile_1f40a.png", name: "Crocodile" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/leopard_1f406.png", name: "Leopard" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/zebra_1f993.png", name: "Zebra" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/gorilla_1f98d.png", name: "Gorilla" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/orangutan_1f9a7.png", name: "Orangutan" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/elephant_1f418.png", name: "Elephant" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rhinoceros_1f98f.png", name: "Rhino" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hippopotamus_1f99b.png", name: "Hippo" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/camel_1f42a.png", name: "Camel" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/giraffe_1f992.png", name: "Giraffe" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/kangaroo_1f998.png", name: "Kangaroo" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sloth_1f9a5.png", name: "Sloth" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/swan_1f9a2.png", name: "Swan" },
-            { url: "https://em-content.zobj.net/source/microsoft-teams/337/peacock_1f99a.png", name: "Peacock" }
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/grinning-face_1f600.png", name: "Grinning", keywords: "smile happy joy laugh excited face teeth" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/smiling-face-with-heart-eyes_1f60d.png", name: "Heart Eyes", keywords: "love adore crush like red romantic romance face beauty cute" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/partying-face_1f973.png", name: "Party Face", keywords: "celebration birthday horn hat confetti happy whistle party" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/thinking-face_1f914.png", name: "Thinking", keywords: "hmm wonder ponder ask question puzzle suspect query search" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/exploding-head_1f92f.png", name: "Mind Blown", keywords: "shock crazy amazing explosion head bomb wow surprise mindblown" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/face-screaming-in-fear_1f631.png", name: "Scared", keywords: "scream ghost panic afraid shock blue gasp terror" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shushing-face_1f92b.png", name: "Shush", keywords: "quiet silence secret finger mouth whisper hush silent" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/winking-face_1f609.png", name: "Wink", keywords: "flirt blink sneaky playful cheek eye" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/woozy-face_1f974.png", name: "Woozy", keywords: "drunk dizzy wavy tired sick wasted tipsy" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/face-with-tears-of-joy_1f602.png", name: "Joy", keywords: "laugh cry tears funny lol hilarious tear joy laughing" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/loudly-crying-face_1f62d.png", name: "Sobbing", keywords: "sob tear sad weep unhappy depression depression cry" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sleeping-face_1f634.png", name: "Sleeping", keywords: "sleep snore tired zzz rest dream asleep bed" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/nerd-face_1f913.png", name: "Nerd Face", keywords: "glasses geek dork smart study school brain intelligent" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/zany-face_1f92a.png", name: "Zany Face", keywords: "crazy goofy wild tongue silly eye wacky" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/face-with-rolling-eyes_1f644.png", name: "Roll Eyes", keywords: "whatever annoy bored meh roll sigh rolling dismissive" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hot-face_1f975.png", name: "Hot Face", keywords: "heat summer sweat red tongue thirsty burn boil warm" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cold-face_1f976.png", name: "Cold Face", keywords: "ice freeze blue winter snow teeth shiver frost chilly" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/face-vomiting_1f92e.png", name: "Vomit Face", keywords: "sick barf puke green disgust throw up stomach" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/drooling-face_1f924.png", name: "Drool Face", keywords: "drool saliva sleep delicious hungry mouth asleep" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rolling-on-the-floor-laughing_1f923.png", name: "ROFL", keywords: "laugh rolling floor hilarious funny lol wheel rofl" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/angry-face_1f620.png", name: "Angry", keywords: "mad rage annoy red steam furious temper anger" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/face-with-symbols-on-mouth_1f92c.png", name: "Swearing", keywords: "curse swear bad words anger mouth block censor angry" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/face-without-mouth_1f636.png", name: "Mouthless", keywords: "quiet silent blank mute empty speech expressionless" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/zipper-mouth-face_1f910.png", name: "Zipper Mouth", keywords: "silent zip secret lock quiet seal hush shut" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/squinting-face-with-tongue_1f61d.png", name: "Squint Tongue", keywords: "goofy wild joke playful tease wink silly" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/face-with-monocle_1f9d0.png", name: "Monocle", keywords: "fancy rich smart class check inspect gentleman wealthy" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/face-with-thermometer_1f912.png", name: "Sick", keywords: "fever ill cold flu temperature mercury medicine health" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/face-with-head-bandage_1f915.png", name: "Bandage", keywords: "hurt ouch accident head pain injury hospital medical" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/nauseated-face_1f922.png", name: "Nauseous", keywords: "sick green disgust throw up vomit motion sea illness" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sneezing-face_1f927.png", name: "Sneeze", keywords: "cold flu tissue allergies achoo nose blow sick" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pleading-face_1f97a.png", name: "Pleading", keywords: "beg puppy eyes cute please sad mercy request emotional" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/saluting-face_1fae1.png", name: "Salute", keywords: "respect army soldier military honor salute respect" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/smirking-face_1f60f.png", name: "Smirk", keywords: "sly smug grin flirt sneaky cheek smugness" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/lying-face_1f925.png", name: "Liar", keywords: "lie pinocchio nose fake long truth dishonest untruthful" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/yawning-face_1f971.png", name: "Yawn", keywords: "tired sleep gap bored morning wake yawning" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/face-with-hand-over-mouth_1f92d.png", name: "Oops", keywords: "gasp shock mistake secret giggle laugh cover surprise" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/face-with-peeking-eye_1fae3.png", name: "Peek", keywords: "look hide scared watch peek spy cover shy" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/face-with-open-eyes-and-hand-over-mouth_1fae2.png", name: "Gasp", keywords: "shock surprise gasp omg wide amaze startled" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/neutral-face_1f610.png", name: "Neutral", keywords: "poker flat boring blank meh indifferent pokerface" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/expressionless-face_1f611.png", name: "Expressionless", keywords: "straight line bored blank flat sigh sleep straight" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/grimacing-face_1f62c.png", name: "Grimace", keywords: "eek awkward nervous tense worry ouch grimacing" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/relieved-face_1f60c.png", name: "Relieved", keywords: "sigh calm peace happy content safe relax relief" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pensive-face_1f614.png", name: "Pensive", keywords: "sad thoughtful regret sorry lonely depressed thinking" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/confused-face_1f615.png", name: "Confused", keywords: "huh puzzle wonder weird stray lost puzzle" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/astonished-face_1f632.png", name: "Astonished", keywords: "shock wow open mouth surprise dizzy amaze astonished" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/flushed-face_1f633.png", name: "Flushed", keywords: "blush embarrassed shy red cheek shock surprise" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/worried-face_1f61f.png", name: "Worried", keywords: "sad stress nervous fear stray anxious worry" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/frowning-face_2639-fe0f.png", name: "Frown", keywords: "sad unhappy pout grief down turn frowning" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crying-face_1f622.png", name: "Sad Cry", keywords: "tear weep sadness grief down water unhappy cry" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/smiling-face-with-sunglasses_1f60e.png", name: "Sunglasses", keywords: "cool shade sun style summer chill boss sunnies" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cowboy-hat-face_1f920.png", name: "Cowboy", keywords: "west hat sheriff country yeehaw horse cattle" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/clown-face_1f921.png", name: "Clown", keywords: "circus makeup joker silly funny birthday paint red nose" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/skull_1f480.png", name: "Skull", keywords: "death dead skeleton bones spooky halloween pirate head" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ghost_1f47b.png", name: "Ghost", keywords: "spooky halloween phantom fright white scary phantom boo" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/alien_1f47d.png", name: "Alien", keywords: "space ufo martian extra terrestrial galaxy green sci-fi" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/robot_1f916.png", name: "Robot", keywords: "bot machine compute tech wire metallic android AI" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/brain_1f9e0.png", name: "Brain", keywords: "mind think smart logic head anatomy intelligence genius" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bone_1f9b4.png", name: "Bone", keywords: "dog skeleton calcium white raw anatomy dog toy bone" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bear_1f43b.png", name: "Bear", keywords: "grizzly polar forest wild animal brown cub teddy" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/363/tiger-face_1f42f.png", name: "Tiger", keywords: "cat roar wild jungle stripe orange feline strip" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fox_1f98a.png", name: "Fox", keywords: "sly wild orange forest clever animal woodland" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/364/cat-face_1f431.png", name: "Cat", keywords: "meow kitten pet whiskers domestic animal kitty feline" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/mouse-face_1f42d.png", name: "Mouse", keywords: "rat squeak cheese rodent pest animal mice" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rabbit-face_1f430.png", name: "Rabbit", keywords: "bunny hop carrot pet easter long ear animal" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/koala_1f428.png", name: "Koala", keywords: "eucalyptus bear marsupial australia gray wild cute" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/panda_1f43c.png", name: "Panda", keywords: "bear china bamboo black white wild cub bamboo" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pig-face_1f437.png", name: "Pig Face", keywords: "pork oink farm bacon pink snout pig sow" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/frog_1f438.png", name: "Frog", keywords: "toad leap green pond amphibian water animal ribbit" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/monkey-face_1f435.png", name: "Monkey", keywords: "ape banana jungle tree climb primate wild chimps" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/penguin_1f427.png", name: "Penguin", keywords: "ice bird tuxedo flightless arctic snow wing cold" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bird_1f426.png", name: "Bird", keywords: "fly nest chirp wing feather sky avian wings" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/owl_1f989.png", name: "Owl", keywords: "night wise hoot bird hunter feather wild nocturn" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bat_1f987.png", name: "Bat", keywords: "night vampire spooky cave wings halloween flying animal" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/horse-face_1f434.png", name: "Horse", keywords: "stallion pony neigh ride farm cowboy race equestrian" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dog-face_1f436.png", name: "Dog", keywords: "bark puppy pet hound canine domestic animal puppy pup" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/spider_1f577-fe0f.png", name: "Spider", keywords: "web insect bug crawl spooky halloween eight legs tarantula" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/scorpion_1f982.png", name: "Scorpion", keywords: "sting desert venom pinch crawl sand bug arachnid" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/octopus_1f419.png", name: "Octopus", keywords: "tentacles sea ocean deep water ink purple kraken marine" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fish_1f41f.png", name: "Fish", keywords: "swim scale fin water river sea aquatic marine" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/tropical-fish_1f420.png", name: "Tropical Fish", keywords: "nemo coral reef colorful warm ocean pet aquarium" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shark_1f988.png", name: "Shark", keywords: "teeth jaw ocean predator fin deep fish wild marine" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dolphin_1f42c.png", name: "Dolphin", keywords: "ocean marine mammal jump sea water splash intelligent flipper" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crocodile_1f40a.png", name: "Crocodile", keywords: "alligator jaw swamp green scales reptile wild gator" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/leopard_1f406.png", name: "Leopard", keywords: "spotted cat wild jungle hunter speed cheetah feline" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/zebra_1f993.png", name: "Zebra", keywords: "stripe black white africa horse safari wild stripes" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/gorilla_1f98d.png", name: "Gorilla", keywords: "ape silverback primate strong jungle wild beast kong" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/orangutan_1f9a7.png", name: "Orangutan", keywords: "ape ginger red primate jungle hair climb orange" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/elephant_1f418.png", name: "Elephant", keywords: "trunk tusk safari africa heavy gray beast mammoth" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rhinoceros_1f98f.png", name: "Rhino", keywords: "horn heavy armor safari wild grey rhino" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hippopotamus_1f99b.png", name: "Hippo", keywords: "swamp heavy river africa grey wild hippo" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/camel_1f42a.png", name: "Camel", keywords: "hump desert sand ride caravan dry egypt dromedary" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/giraffe_1f992.png", name: "Giraffe", keywords: "tall neck spots africa safari yellow wild tall" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/kangaroo_1f998.png", name: "Kangaroo", keywords: "jump pouch hop australia joey wild animal marsupial" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sloth_1f9a5.png", name: "Sloth", keywords: "slow tree lazy branch climb forest furry animal slowpoke" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/swan_1f9a2.png", name: "Swan", keywords: "white bird elegant lake pond grace feathers goose cygnet" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/peacock_1f99a.png", name: "Peacock", keywords: "feathers blue colorful fan display pride bird green" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dragon-face_1f432.png", name: "Dragon", keywords: "monster myth fire scale wings lizard beast spitfire" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/unicorn_1f984.png", name: "Unicorn", keywords: "magic horse horn rainbow fantasy fairy horse magical" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/butterfly_1f98b.png", name: "Butterfly", keywords: "wings insect colorful fly caterpillar garden paint butterfly" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/snake_1f40d.png", name: "Snake", keywords: "hiss venom slither reptile scaled crawl wild serpent" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/turtle_1f422.png", name: "Turtle", keywords: "shell slow green reptile pond sea beach tortoise" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/spouting-whale_1f433.png", name: "Whale", keywords: "blowhole sea ocean mammal blue heavy aquatic spouting" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sunflower_1f33b.png", name: "Sunflower", keywords: "yellow flower plant seed summer sun garden blossom" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cherry-blossom_1f338.png", name: "Flower", keywords: "pink flower spring sakura blossom tree bloom petal cherry" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/evergreen-tree_1f332.png", name: "Pine", keywords: "pine forest nature wood christmas tree needle evergreen" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cactus_1f335.png", name: "Cactus", keywords: "desert prick spike sand dry hot spine green plant" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/four-leaf-clover_1f340.png", name: "Clover", keywords: "luck green irish leaf shamrock st patrick 4-leaf" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/mushroom_1f344.png", name: "Mushroom", keywords: "fungus spore toadstool forest cooking red organic shroom" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/first-quarter-moon_1f313.png", name: "Moon", keywords: "night sky space crescent astronomy dark phase orbit moon" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sun-with-face_1f31e.png", name: "Sun", keywords: "day light hot summer morning heat solar bright star face" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ringed-planet_1fa90.png", name: "Planet", keywords: "saturn space orbit gravity cosmos galaxy science ringed" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/globe-showing-americas_1f30e.png", name: "Globe", keywords: "earth world map geography land ocean sphere continent earth" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/volcano_1f30b.png", name: "Volcano", keywords: "lava eruption fire mountain ash smoke tectonic magma island" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hamburger_1f354.png", name: "Hamburger", keywords: "burger fast food meat cheese beef bun restaurant junk" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/red-apple_1f34e.png", name: "Apple", keywords: "fruit red sweet healthy crisp orchard tree juice snack" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/watermelon_1f349.png", name: "Watermelon", keywords: "fruit slice seed sweet red green summer melon juicy water" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/banana_1f34c.png", name: "Banana", keywords: "fruit yellow peel monkey potassium sweet tropical slip banana" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/strawberry_1f353.png", name: "Strawberry", keywords: "fruit red sweet berry summer seed organic dessert berry" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cherries_1f352.png", name: "Cherries", keywords: "fruit red pair sweet stem stone juicy seed cherry" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pizza_1f355.png", name: "Pizza", keywords: "slice cheese pepperoni fast food slice crust italian slice" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/doughnut_1f369.png", name: "Donut", keywords: "sweet pastry dessert frosting sprinkle glaze hole pink doughnut" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/taco_1f32e.png", name: "Taco", keywords: "mexican shell meat cheese lettuce salsa tortilla crunch spicy" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sushi_1f363.png", name: "Sushi", keywords: "raw fish rice seaweed salmon roll japanese oriental seafood" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/french-fries_1f35f.png", name: "Fries", keywords: "french fries potato salty fast food restaurant red box fry" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hot-beverage_2615.png", name: "Coffee", keywords: "coffee hot tea caffeine morning mug cup steam drink" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hot-dog_1f32d.png", name: "Hot Dog", keywords: "sausage bun mustard fast food meat grill cookout frank" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sandwich_1f96a.png", name: "Sandwich", keywords: "bread lunch ham cheese lettuce picnic snack deli wrap" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pretzel_1f968.png", name: "Pretzel", keywords: "salt twist baked bread brown knot bakery snack" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pancakes_1f95e.png", name: "Pancakes", keywords: "syrup butter hot breakfast sweet stack flour batter pancake" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/waffle_1f9c7.png", name: "Waffle", keywords: "syrup grid honey sweet breakfast butter toaster flour grid" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cheese-wedge_1f9c0.png", name: "Cheese", keywords: "dairy yellow slice holes mouse dairy wedge swiss cheddar" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/meat-on-bone_1f356.png", name: "Meat", keywords: "pork bone raw steak dog farm carnivorous ribs beef" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/poultry-leg_1f357.png", name: "Chicken Leg", keywords: "drumstick bird turkey fried roast meat farm poultry drum" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cut-of-meat_1f969.png", name: "Steak", keywords: "beef raw red meat marble grill tbone cow steak porkchop" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bacon_1f953.png", name: "Bacon", keywords: "pork strip salty breakfast meat sizzling fat strip bacon" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/burrito_1f32f.png", name: "Burrito", keywords: "wrap bean tortilla meat rice cheese mexican spicy lunch" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/stuffed-flatbread_1f959.png", name: "Flatbread", keywords: "pita naan sandwich wrap pocket bread stuffed gyros" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/falafel_1f9c6.png", name: "Falafel", keywords: "chickpea vegetarian deep fry ball middle eastern snack" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/egg_1f95a.png", name: "Egg", keywords: "boiled white yolk shell breakfast poultry nesting protein" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cooking_1f373.png", name: "Pan", keywords: "fry pan egg cook chef stove kitchen steel frying skillet" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shallow-pan-of-food_1f958.png", name: "Paella", keywords: "rice seafood shrimp spanish saffron dinner skillet pan" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pot-of-food_1f372.png", name: "Pot", keywords: "soup stew cook boil steam chef kitchen hot dinner casserol" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bowl-with-spoon_1f963.png", name: "Bowl", keywords: "cereal soup eat breakfast oatmeal kitchen wooden bowl" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/green-salad_1f957.png", name: "Salad", keywords: "lettuce tomato healthy diet green vegetable organic leaf bowl" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/butter_1f9c8.png", name: "Butter", keywords: "dairy fat yellow grease cook bake toast margarine block" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/salt_1f9c2.png", name: "Salt", keywords: "season pepper shaker spice sodium savory mineral cook shaker" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/canned-food_1f96b.png", name: "Canned Food", keywords: "tin preserve soup store pantry emergency pantry raw tin" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bento-box_1f371.png", name: "Bento", keywords: "lunch japanese compartment sushi meal box dividing bento" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rice-cracker_1f358.png", name: "Rice Cracker", keywords: "senbei seaweed salty crunch baked snack japanese cracker" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rice-ball_1f359.png", name: "Rice Ball", keywords: "onigiri seaweed triangular snack japanese lunch riceball" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cooked-rice_1f35a.png", name: "Rice", keywords: "white bowl cereal grain steam hot meal side cooked" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/curry-rice_1f35b.png", name: "Curry", keywords: "spicy indian rice bowl sauce dinner hot yellow curry" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/steaming-bowl_1f35c.png", name: "Noodles", keywords: "ramen soup hot bowl chopstick broth asian wheat noodle" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/spaghetti_1f35d.png", name: "Spaghetti", keywords: "pasta noodle red sauce tomato italian fork twist pasta" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/roasted-sweet-potato_1f360.png", name: "Sweet Potato", keywords: "yam roast root yellow purple sweet baked potato" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/oden_1f362.png", name: "Oden", keywords: "stew skewer fishcake daikon broth japanese winter oden" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fried-shrimp_1f364.png", name: "Shrimp", keywords: "tempura tail deep fry seafood gold crunch crispy shrimp" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fish-cake-with-swirl_1f365.png", name: "Fish Cake", keywords: "narutomaki pink swirl steam soup ramen side fishcake" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/moon-cake_1f96e.png", name: "Moon Cake", keywords: "mid autumn pastry sweet lotus seed traditional bakery moon" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dango_1f361.png", name: "Dango", keywords: "mochi sweet skewer pink white green dessert stick dango" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/dumpling_1f95f.png", name: "Dumpling", keywords: "gyoza potsticker wrap meat dough steamed dim sum" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fortune-cookie_1f960.png", name: "Fortune Cookie", keywords: "paper crack folded sweet desert prophecy lucky luck fortune" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/takeout-box_1f961.png", name: "Takeout", keywords: "box paper oyster asian box deliver noodles pack takeout" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crab_1f980.png", name: "Crab", keywords: "claws ocean beach red shell seafood walk animal crab" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/364/lobster_1f99e.png", name: "Lobster", keywords: "claws red ocean seafood deep water tail marine lobster" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shrimp_1f990.png", name: "Shrimp", keywords: "seafood pink raw ocean water tail marine crustacean prawn" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/squid_1f991.png", name: "Squid", keywords: "tentacles ocean sea deep water ink pink soft squid" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/oyster_1f9aa.png", name: "Oyster", keywords: "pearl shell ocean raw sea salt mollusk food oyster" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/soft-ice-cream_1f366.png", name: "Soft Ice Cream", keywords: "cone vanilla dairy swirl cold summer sweet lick icecream" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shaved-ice_1f367.png", name: "Shaved Ice", keywords: "snow cone rainbow syrup cup ice cold dessert slushy" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ice-cream_1f368.png", name: "Ice Cream", keywords: "scoop cold bowl sweet dessert vanilla dairy strawberry scoop" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cookie_1f36a.png", name: "Cookie", keywords: "biscuit chocolate chip sweet bake milk bakery round cookie" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/birthday-cake_1f382.png", name: "Cake", keywords: "party candle birthday sweet celebration slice bake cream cake" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shortcake_1f370.png", name: "Shortcake", keywords: "strawberry slice cake sweet dessert cream bakery shortcake" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cupcake_1f9c1.png", name: "Cupcake", keywords: "muffin frosting sprinkle liner sweet dessert single cake" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pie_1f967.png", name: "Pie", keywords: "crust fruit apple meat slice dessert baked lattice filling" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/chocolate-bar_1f36b.png", name: "Chocolate", keywords: "cocoa sweet brown bar foil candy wrapper dark chocolate" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/candy_1f36c.png", name: "Candy", keywords: "sweet wrapper hard wrap twist sugar colorful chew sweets" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/lollipop_1f36d.png", name: "Lollipop", keywords: "sucker stick candy swirl round sugar lick lollipop" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/custard_1f36e.png", name: "Custard", keywords: "pudding flan caramel sweet yellow cream gelatin flan" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/honey-pot_1f36f.png", name: "Honey", keywords: "bee sweet honey pot jar yellow drip bear honeypot" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/baby-bottle_1f37c.png", name: "Baby Bottle", keywords: "milk formula drink feed newborn nipple glass newborn" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/glass-of-milk_1f95b.png", name: "Milk", keywords: "dairy calcium drink white glass cow fresh milk" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/teacup-without-handle_1f375.png", name: "Tea", keywords: "green match hot brew steam cup leaf drink teacup" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sake_1f376.png", name: "Sake", keywords: "japanese alcohol wine decanter cup hot brew rice sake" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bottle-with-popping-cork_1f37e.png", name: "Champagne", keywords: "wine fizz pop cork party cheer toast bottle celebration" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/wine-glass_1f377.png", name: "Wine", keywords: "red grapes alcohol glass stems vine cellar pour wine" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cocktail-glass_1f378.png", name: "Cocktail", keywords: "martini olive glass alcohol fancy club bar drink martini" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/tropical-drink_1f379.png", name: "Tropical Drink", keywords: "beach coconut straw orange juice summer pool resort tropical" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/beer-mug_1f37a.png", name: "Beer", keywords: "froth pint glass alcohol pub bar draft drink brew" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/clinking-glasses_1f942.png", name: "Cheers", keywords: "toast party drink celebrate cheer alcohol glass cheers" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/tumbler-glass_1f943.png", name: "Whiskey", keywords: "bourbon scotch alcohol brown ice rock shot glass bourbon" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/cup-with-straw_1f964.png", name: "Juice Box", keywords: "soda juice fast food paper soft drink cup straw lid" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/mate_1f9c9.png", name: "Mate", keywords: "argentina gourd straw tea herbal hot caffeine drink mate" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ice_1f9ca.png", name: "Ice", keywords: "cube cold freeze water clear solid cool glacio icecube" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/chopsticks_1f962.png", name: "Chopsticks", keywords: "wood utensil eat asian sushi noodles rice pair chopstick" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fork-and-knife-with-plate_1f37d-fe0f.png", name: "Plate", keywords: "plate dinner eat food meal table setting kitchen dish" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fork-and-knife_1f374.png", name: "Cutlery", keywords: "fork knife silver metal eat food meal dinner kitchen silverware" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/spoon_1f944.png", name: "Spoon", keywords: "soup cereal metal scoop eat kitchen utensil spoon" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/363/kitchen-knife_1f52a.png", name: "Knife", keywords: "cleaver cook slice chop butcher metal steel chef knife" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/trophy_1f3c6.png", name: "Trophy", keywords: "win prize award gold cup first place champion gold" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/star_2b50.png", name: "Star", keywords: "yellow gold sky shine rating space review light golden" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/joystick_1f579-fe0f.png", name: "Joystick", keywords: "game retro play controller stick arcade input game" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/game-die_1f3b2.png", name: "Dice", keywords: "dice roll board random luck play casino board game" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/soccer-ball_26bd.png", name: "Soccer", keywords: "football ball sport goal pitch kick match team play" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/man-lifting-weights-light-skin-tone_1f3cb-1f3fb-200d-2642-fe0f.png", name: "Fitness", keywords: "weights barbell gym workout lift muscle power strong fit lift" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/basketball_1f3c0.png", name: "Basketball", keywords: "hoop ball court orange bounce sport team dribble basket" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/american-football_1f3c8.png", name: "Football", keywords: "nfl ball oval sport pass laces stadium brown rugby" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/tennis_1f3be.png", name: "Tennis", keywords: "racket green ball court net match volley set ball" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/baseball_26be.png", name: "Baseball", keywords: "glove bat red seams ball sport pitch field soft" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/volleyball_1f3d0.png", name: "Volleyball", keywords: "ball beach court net sport set pass team volley" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/364/pool-8-ball_1f3b1.png", name: "8-Ball", keywords: "billiards pool cue ball black number pocket table cue" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/boxing-glove_1f94a.png", name: "Boxing", keywords: "fight punch red glove spar match ring athlete boxer" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/skis_1f3bf.png", name: "Skis", keywords: "snow ski downhill slope winter poles bindings ski" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ice-skate_26f8-fe0f.png", name: "Ice Skate", keywords: "blade ice winter rink figure hockey lace glide skate" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/bow-and-arrow_1f3f9.png", name: "Archery", keywords: "bullseye target arrow shoot hunt tension range sport bow" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fishing-pole_1f3a3.png", name: "Fishing", keywords: "pole rod hook line lake river fish reel water hook" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/direct-hit_1f3af.png", name: "Darts", keywords: "target bullseye board arrow shoot aim accuracy match dart" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/video-game_1f3ae.png", name: "Controller", keywords: "playpad buttons console console play tech digital gamer pads" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/slot-machine_1f3b0.png", name: "Slot Machine", keywords: "casino gamble win money jackpots spin slots bet luck slot" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pistol_1f52b.png", name: "Water Gun", keywords: "toy squirt green water spray summer pool beach child gun" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/musical-notes_1f3b6.png", name: "Music", keywords: "melody tune sing audio sound song rhythm beats note" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/guitar_1f3b8.png", name: "Guitar", keywords: "string music rock acoustic electric band play audio instrument" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/saxophone_1f3b7.png", name: "Saxophone", keywords: "brass jazz music band wind blow instrument sax" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/trumpet_1f3ba.png", name: "Trumpet", keywords: "brass music horn blow audio blast fanfares orchestra instrument" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/violin_1f3bb.png", name: "Violin", keywords: "bow strings music classic audio orchestra instrument violin" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/drum_1f941.png", name: "Drums", keywords: "beat sticks music rhythm percussion rock band instrument drum" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/popcorn_1f37f.png", name: "Popcorn", keywords: "movie cinema theater snack corn salted bucket striped popcorn" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/microphone_1f3a4.png", name: "Microphone", keywords: "sing speak voice audio stand tech stage vocal mic" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/headphone_1f3a7.png", name: "Headphones", keywords: "music ear sound listen audio beat wire tech headset" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/clapper-board_1f3ac.png", name: "Clapper", keywords: "director movie scene slate action film board produce clapper" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/movie-camera_1f3a5.png", name: "Camera", keywords: "film video lens tape record cinema theater shoot movie" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ticket_1f3ab.png", name: "Ticket", keywords: "admit show pass coupon event cinema entry sports raffle" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/364/artist-palette_1f3a8.png", name: "Palette", keywords: "paint brush color draw art design artist canvas palette" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/paintbrush_1f58c-fe0f.png", name: "Brush", keywords: "paint wall art color stroke hair handle artist brush" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crayon_1f58d-fe0f.png", name: "Crayon", keywords: "wax color draw sketch paper school wax kids kid crayon" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/thread_1f9f5.png", name: "Thread", keywords: "sew needle fabric tailors stitch spool repair fiber needle" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/yarn_1f9f6.png", name: "Yarn", keywords: "knit wool ball string crochet cat toy hobby weave yarn" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/puzzle-piece_1f9e9.png", name: "Puzzle", keywords: "jigsaw fit piece link game problem brain missing solved piece" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crown_1f451.png", name: "Crown", keywords: "gold king queen royal prince princess empire jewelry wealth" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/heart-suit_2665-fe0f.png", name: "Heart", keywords: "love life blood beat red romantic card deck game heart" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/balloon_1f388.png", name: "Balloon", keywords: "party helium string fly air round rubber toy gift birthday balloon" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/sparkles_2728.png", name: "Sparkles", keywords: "magic star shine clean glint yellow twinkle bright light sparkles" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/television_1f4fa.png", name: "TV", keywords: "tv screen monitor remote broadcast tube show video antenna tv" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/money-bag_1f4b0.png", name: "Money", keywords: "bag dollar cash gold coin wealth bank deposit rich dollar" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/light-bulb_1f4a1.png", name: "Lightbulb", keywords: "idea shine lamp glass yellow wire innovate brain invent light" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/books_1f4da.png", name: "Books", keywords: "study read school pages learn paper library text stack book" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/rocket_1f680.png", name: "Rocket", keywords: "space launch fire speed ship craft orbit engine boost astronaut rocket" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/microscope_1f52c.png", name: "Microscope", keywords: "lens science lab test biology tiny view cell zoom medical" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/400/camera-with-flash_1f4f8.png", name: "Camera", keywords: "photo lens picture snap shutter memory zoom digital flash" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crystal-ball_1f52e.png", name: "Magic Ball", keywords: "magic fortune witch future glass prediction purple wizard crystal" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ring_1f48d.png", name: "Ring", keywords: "diamond jewelry gem gold propose wedding engagement finger metal band" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/high-heeled-shoe_1f460.png", name: "Heels", keywords: "red fashion shoe dress leg pump model foot heel high" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/jeans_1f456.png", name: "Jeans", keywords: "denim pants blue fashion clothes waist legs casual jeans" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/necktie_1f454.png", name: "Tie", keywords: "suit neck business collar formal work executive attire dress necktie" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/glasses_1f453.png", name: "Glasses", keywords: "spectacles eyes vision view optical frames lens face specs" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/watch_231a.png", name: "Watch", keywords: "time clock wrist wristband hand dial analog digital seconds watch" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/mobile-phone_1f4f1.png", name: "Phone", keywords: "cell screen display smart tech device call call app message phone" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/telephone-receiver_1f4de.png", name: "Telephone", keywords: "wire landline retro classic call ring sound dial talk telephone" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/desktop-computer_1f5a5-fe0f.png", name: "Computer", keywords: "pc monitor screen compute tech work office mouse key screen monitor" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/video-camera_1f4f9.png", name: "Video", keywords: "film tape lens camcorder record memory cinema portable video" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/radio_1f4fb.png", name: "Radio", keywords: "fm am dial audio music tune aerial broadcast speaker retro radio" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/compass_1f9ed.png", name: "Compass", keywords: "north south direction needle map navigate explore hike ocean compass" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/stopwatch_23f1-fe0f.png", name: "Stopwatch", keywords: "time seconds click chronometer fast sprint athletic speed interval timer" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/amphora_1f3fa.png", name: "Amphora", keywords: "clay pot jar antique roman greek ancient vase vessel oil wine clay" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/pill_1f48a.png", name: "Pill", keywords: "capsule medicine drug sick doctor pharmacy dose cure capsule pill" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/syringe_1f489.png", name: "Syringe", keywords: "needle medical doctor nurse lab blood vaccine injection hurt sharp injection" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/microbe_1f9a0.png", name: "Microbe", keywords: "germ virus bacteria biology lab green cells illness sick virus germ" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/telescope_1f52d.png", name: "Telescope", keywords: "lens space astronomy stars orbit spy magnification tube tripod sky" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/flying-saucer_1f6f8.png", name: "UFO", keywords: "alien space craft ship disc hover green beam abduction sci-fi disc" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/crossed-swords_2694-fe0f.png", name: "Swords", keywords: "fight duel battle metal steel knight weapon blade shield clash" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ninja_light-skin-tone_1f977-1f3fb_1f3fb.png", name: "Ninja", keywords: "stealth spy sword weapon black shadow mask warrior martial arts shadow" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/detective_light-skin-tone_1f575-1f3fb_1f3fb.png", name: "Detective", keywords: "spy investigator look magnify lens coat hat search secret case spy" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/anchor_2693.png", name: "Anchor", keywords: "boat ship heavy iron ocean sea port dock naval drop metal port" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fire_1f525.png", name: "Fire", keywords: "flame hot burn spark element red orange match campfire" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/gear_2699-fe0f.png", name: "Gear", keywords: "setting cog metal steel machine engine configure system control" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/magic-wand_1fa84.png", name: "Wand", keywords: "magic spell wizard witch star sparkling wand fairy fantasy" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/speech-balloon_1f4ac.png", name: "Chat", keywords: "balloon talk dialogue bubble message discuss comment chat speak" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/lipstick_1f484.png", name: "Lipstick", keywords: "makeup cosmetics beauty red pink lips salon stylish fashion" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/magnifying-glass-tilted-right_1f50e.png", name: "Search", keywords: "zoom find locate magnifying glass investigate check inspect seek" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/gem-stone_1f48e.png", name: "Diamond", keywords: "gem jewel stone precious shiny blue crystal rich wealth diamond" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/airplane_2708-fe0f.png", name: "Airplane", keywords: "jet fly sky trip wing engine airport pilot travel plane" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/automobile_1f697.png", name: "Car", keywords: "drive road wheel motor travel commute vehicle sedan red auto" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/shopping-bags_1f6cd-fe0f.png", name: "Shopping", keywords: "mall bags paper gift buy retail store handle clothes boutique" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/363/tent_26fa.png", name: "Tent", keywords: "camp forest outdoor woods sleep shelter active wood trail nature" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/stadium_1f3df-fe0f.png", name: "Stadium", keywords: "arena sport football match concert stands lights pitch lawn field arena" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/ferris-wheel_1f3a1.png", name: "Ferris Wheel", keywords: "fair carnival ride heights wheel rotating park sky lights fairground" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/roller-coaster_1f3a2.png", name: "Coaster", keywords: "track theme park drop loops speed scream active cart ride coaster" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/classical-building_1f3db-fe0f.png", name: "Museum", keywords: "pillars marble ancient bank library history court palace building classic" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/house_1f3e0.png", name: "House", keywords: "home living room roof door family suburban build block neighborhood cottage" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/hospital_1f3e5.png", name: "Hospital", keywords: "medical doctor emergency cross building red clinic care sick clinic" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/police-car_1f693.png", name: "Police", keywords: "emergency siren siren cop vehicle chase street law red blue light patrol" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/fire-engine_1f692.png", name: "Fire Truck", keywords: "emergency red water engine hose firefighter brigade truck vehicle hose truck" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/337/helicopter_1f681.png", name: "Helicopter", keywords: "chopper rotor blades fly sky engine lift rescue transport pilot chopper" },
+            { url: "https://em-content.zobj.net/source/microsoft-teams/364/speedboat_1f6a4.png", name: "Boat", keywords: "motor wave speed water lake sea ocean ride engine splash speedboat" }
         ];
 
         const globalImageCache = new Set();
@@ -938,13 +991,13 @@
             const [shouldAnimate, setShouldAnimate] = React.useState(!isCached);
 
             React.useEffect(() => {
-                if (isCached) {
+                if (globalImageCache.has(src)) {
                     setLoaded(true);
                     setHasError(false);
                     setShouldAnimate(false);
                     return;
                 }
-                if (isFailedCached) {
+                if (globalImageErrorCache.has(src)) {
                     setLoaded(true);
                     setHasError(true);
                     setShouldAnimate(false);
@@ -989,16 +1042,22 @@
             }, [src]);
 
             const spinnerColorClass = purpleSpinner ? "text-brand-500" : "text-white/40";
+            
+            // Synchronous layout calculation to eliminate frame-flickering
+            const isCurrentlyCached = globalImageCache.has(src);
+            const isCurrentlyFailed = globalImageErrorCache.has(src);
+            const showLoader = !isCurrentlyCached && !isCurrentlyFailed && !loaded;
+            const showError = isCurrentlyFailed || (loaded && hasError);
 
             return (
                 <div className={`relative ${sizeClassName} flex items-center justify-center`}>
-                    {!loaded ? (
+                    {showLoader ? (
                         <div className="absolute inset-0 flex items-center justify-center">
                             <svg className={`sleek-spinner ${spinnerSize} ${spinnerColorClass} drop-shadow-sm`} viewBox="25 25 50 50">
                                 <circle cx="50" cy="50" r="20" fill="none" strokeWidth="6" stroke="currentColor" strokeLinecap="round"></circle>
                             </svg>
                         </div>
-                    ) : hasError ? (
+                    ) : showError ? (
 						<div className="absolute inset-0 flex items-center justify-center">
 							<svg xmlns="http://www.w3.org/2000/svg" id="failed" viewBox="0 0 24 24" data-name="failed" className={`${sizeClassName === "w-8 h-8" ? "w-[21px] h-[21px]" : `${className.replace('group-hover:scale-110', '').replace('scale-110', '')} scale-[0.8]`} fill-current text-red-400`}>
 								<path d="m9 10c0 1.105-.895 2-2 2s-2-.895-2-2 .895-2 2-2 2 .895 2 2zm10.5 4c-.828 0-1.5.672-1.5 1.5v2.172l-3.682-3.682c-1.28-1.28-3.356-1.28-4.636 0l-6.097 6.097c-.359-.433-.585-.982-.585-1.587v-10c0-1.378 1.122-2.5 2.5-2.5h3c.829 0 1.5-.671 1.5-1.5s-.671-1.5-1.5-1.5h-3c-3.033 0-5.5 2.467-5.5 5.5v10c0 3.032 2.467 5.5 5.5 5.5h10c3.032 0 5.5-2.468 5.5-5.5v-3c0-.828-.672-1.5-1.5-1.5zm4.5-8c0 3.314-2.686 6-6 6s-6-2.686-6-6 2.686-6 6-6 6 2.686 6 6zm-7-1c0 .553.448 1 1 1s1-.447 1-1v-2c0-.553-.448-1-1-1s-1 .447-1 1zm2.5 3.5c0-.828-.672-1.5-1.5-1.5s-1.5.672-1.5 1.5.672 1.5 1.5 1.5 1.5-.672 1.5-1.5z"/>
@@ -1007,9 +1066,14 @@
 					) : (
                         <img 
                             src={src} 
-                            className={`${className} ${(shouldAnimate && !isCached) ? 'animate-fade-in' : ''}`} 
+                            className={`${className} ${(shouldAnimate && !isCurrentlyCached) ? 'animate-fade-in' : ''}`} 
                             alt={alt} 
                             draggable="false" 
+                            onError={(e) => {
+                                e.target.style.display = 'none';
+                                globalImageErrorCache.add(src);
+                                setHasError(true);
+                            }}
                         />
                     )}
                 </div>
@@ -1153,7 +1217,7 @@
                 const rawFilename = urlParts[urlParts.length - 1]; 
                 const cleanFilename = rawFilename.split('_')[0].replace(/[-_]/g, ' '); 
                 
-                const combinedText = `${iconObj.name.toLowerCase()} ${cleanFilename}`;
+                const combinedText = `${iconObj.name.toLowerCase()} ${cleanFilename} ${iconObj.keywords || ''}`.toLowerCase();
                 
                 return queryTokens.every(token => combinedText.includes(token));
             });
@@ -1648,13 +1712,24 @@
                         }
                     }
                     
-                    const onlineData = docSnaps.filter(snap => snap.exists).map(doc => ({ id: doc.id, ...doc.data() }));
+                    const savedComms = JSON.parse(localStorage.getItem('saved_communigories') || '{}');
+                    const onlineData = docSnaps.filter(snap => snap.exists).map(doc => {
+                        const localData = savedComms[doc.id] || {};
+                        return { 
+                            id: doc.id, 
+                            ...doc.data(), 
+                            savedAt: localData.savedAt || (doc.data().createdAt?.toDate ? doc.data().createdAt.toDate().getTime() : 0)
+                        };
+                    });
                     const onlineIds = onlineData.map(c => c.id);
                     
-                    const savedData = Object.values(JSON.parse(localStorage.getItem('saved_communigories') || '{}'))
-                        .filter(s => !onlineIds.includes(s.id));
+                    const savedData = Object.values(savedComms)
+                        .filter(s => !onlineIds.includes(s.id))
+                        .map(s => ({ ...s, savedAt: s.savedAt || 0 }));
                         
-                    return [...onlineData, ...savedData];
+                    const combined = [...onlineData, ...savedData];
+                    combined.sort((a, b) => (b.savedAt || 0) - (a.savedAt || 0));
+                    return combined;
                 }
                 return [];
             };
@@ -1801,6 +1876,18 @@
                         payload.edits = firebase.firestore.FieldValue.increment(1);
                         await db.collection('communigories').doc(editId).update(payload);
                         
+                        const savedComms = JSON.parse(localStorage.getItem('saved_communigories') || '{}');
+                        if (savedComms[editId]) {
+                            savedComms[editId] = {
+                                ...savedComms[editId],
+                                name: capitalizedName,
+                                icon: selectedIcon,
+                                words: wordsArray
+                            };
+                            localStorage.setItem('saved_communigories', JSON.stringify(savedComms));
+                            window.dispatchEvent(new Event('storage'));
+                        }
+
                         setCategories(prev => prev.map(c => c.id === editId ? { ...c, ...payload, edits: (c.edits || 0) + 1 } : c));
                         setCategoriesCache(prev => {
                             const updateArr = (arr) => arr ? arr.map(c => c.id === editId ? { ...c, ...payload, edits: (c.edits || 0) + 1 } : c) : null;
@@ -1818,7 +1905,7 @@
                         saveMyId(newDocId);
                         
                         const savedComms = JSON.parse(localStorage.getItem('saved_communigories') || '{}');
-                        savedComms[newDocId] = { id: newDocId, name: payload.name, icon: payload.icon, words: payload.words, useLocal: true, useOnline: true };
+                        savedComms[newDocId] = { id: newDocId, name: payload.name, icon: payload.icon, words: payload.words, useLocal: true, useOnline: true, savedAt: Date.now() };
                         localStorage.setItem('saved_communigories', JSON.stringify(savedComms));
                         
                         let downloaded = [];
@@ -1897,7 +1984,7 @@
 
             const handleAddToLibrary = async (cat) => {
                 const savedComms = JSON.parse(localStorage.getItem('saved_communigories') || '{}');
-                savedComms[cat.id] = { id: cat.id, name: cat.name, icon: cat.icon, words: cat.words, useLocal: true, useOnline: true };
+                savedComms[cat.id] = { id: cat.id, name: cat.name, icon: cat.icon, words: cat.words, useLocal: true, useOnline: true, savedAt: Date.now() };
                 localStorage.setItem('saved_communigories', JSON.stringify(savedComms));
                 
                 let downloaded = [];
