@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="f_vovPG5F0fSlBF405RthRa9nx-2krtUjjF9oyWBFp0" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self' https://impostiq.github.io">
     <meta property="og:site_name" content="Impostiq">
     <meta name="apple-mobile-web-app-title" content="Impostiq">
     <meta name="description" content="A social deduction game similar to Spyfall. Players receive a secret word, but the Imposter receives nothing. Players must question each other to find the spy without revealing the word.">
@@ -765,6 +764,9 @@
         <p>Players can long-press (hold for 600ms) any category card to preview 8 example words. Standard categories include: Mystery Mode (Dice Emoji Image), Supercell, Celebs, Movies, Food, Brands, Technology, TV, Jobs, Mythology, Sport, Places, Instruments, Superheroes, Animals, Countries, Video Games, Science, Clothing, Home, People, Historical Figures, Board Games, Famous Landmarks, Music, School, Christmas (Seasonal), and Halloween (Seasonal). Players can also infinitely expand this list by adding custom user-generated categories via the Communigories vault.</p>
         
         <p><strong>Communigories (Community Categories Vault):</strong> A dynamic global community vault hosted at `/communigories` where players can create, share, and discover custom user-generated categories.</p>
+        <ul>
+            <li><strong>Custom Item Nouns:</strong> Custom categories dynamically loaded from the vault support specific noun overrides up to 15 characters (such as "Players" or "Shows"). When loaded, the system contextually displays these custom labels (e.g., "120 Shows" or "20 Players") instead of "Words" in the category details modal, preserving a tailored experience.</li>
+        </ul>
         <ul>
             <li><strong>Seamless Integration:</strong> When a user saves a category from the vault, it is stored in `localStorage`. When the game loads, it seamlessly merges these custom arrays into the active word bank.</li>
             <li><strong>Online Syncing:</strong> When a host creates an online lobby, their locally saved Communigories upload a temporary reference to the Firebase lobby document. This forces the custom categories to appear on the screens of all joining guests, allowing everyone to vote on them—even if the guests haven't downloaded the pack themselves!</li>
@@ -2879,7 +2881,7 @@
             );
         };
 
-        const WaitingRoom = ({ lobbyData, lobbyPlayers, user, lobbyId, onStartGame, onStartMission, onLeaveLobby, audioManager, onConfusionVote, season, displayCategories, wordBank, customCategoryNames = {} }) => {
+        const WaitingRoom = ({ lobbyData, lobbyPlayers, user, lobbyId, onStartGame, onStartMission, onLeaveLobby, audioManager, onConfusionVote, season, displayCategories, wordBank, customCategoryNames = {}, customCategoryNouns = {} }) => {
             const isHost = user.uid === lobbyData.hostId;
             const MIN_PLAYERS = 3;
             const [inspectedCategory, setInspectedCategory] = useState(null);
@@ -3112,7 +3114,7 @@
 
             return (
                  <div className="flex flex-col h-[100dvh] relative z-10">
-                    <CategoryInfoModal category={inspectedCategory} onClose={() => setInspectedCategory(null)} wordBank={wordBank} customCategoryNames={customCategoryNames} />
+                    <CategoryInfoModal category={inspectedCategory} onClose={() => setInspectedCategory(null)} wordBank={wordBank} customCategoryNames={customCategoryNames} customCategoryNouns={customCategoryNouns} />
                     
                     <CategorySelectionModal 
                         isOpen={isCategoryModalOpen}
@@ -4665,7 +4667,7 @@
             );
         };
         
-        const CategoryInfoModal = ({ category, onClose, wordBank, customCategoryNames = {} }) => {
+        const CategoryInfoModal = ({ category, onClose, wordBank, customCategoryNames = {}, customCategoryNouns = {} }) => {
             if (!category || !wordBank) return null;
             
             const categoryWords = wordBank[category];
@@ -4675,6 +4677,7 @@
             const remainingCount = categoryWords.length - 8;
             const icon = CATEGORY_ICONS[category];
             const catName = customCategoryNames[category] || category;
+            const itemNoun = customCategoryNouns[category] || 'Words';
 
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
@@ -4858,648 +4861,648 @@
 			);
 		};
 
-        const SetupScreen = ({ onStartGame, audioManager, onBack, displayCategories, wordBank, customCategoryNames = {} }) => {
-    const DEFAULT_PLAYERS = [{ name: 'Player 1', audioData: null }, { name: 'Player 2', audioData: null }, { name: 'Player 3', audioData: null }];
-    const MIN_PLAYERS = 3;
-    
-    const [playerError, setPlayerError] = useState('');
-    const playerErrorRef = useRef('');
-    
-    const [players, setPlayers] = useState(() => {
-        try {
-            const saved = localStorage.getItem('imposter_players');
-            if (saved) {
-                let parsed = JSON.parse(saved);
-                if (Array.isArray(parsed) && parsed.length > 0) {
-                    if (typeof parsed[0] === 'string') {
-                        parsed = parsed.map(name => ({ name, audioData: null }));
-                    }
-                    return parsed;
-                }
-            }
-            return DEFAULT_PLAYERS;
-        } catch {
-            return DEFAULT_PLAYERS;
-        }
-    });
+        const SetupScreen = ({ onStartGame, audioManager, onBack, displayCategories, wordBank, customCategoryNames = {}, customCategoryNouns = {} }) => {
+			const DEFAULT_PLAYERS = [{ name: 'Player 1', audioData: null }, { name: 'Player 2', audioData: null }, { name: 'Player 3', audioData: null }];
+			const MIN_PLAYERS = 3;
+			
+			const [playerError, setPlayerError] = useState('');
+			const playerErrorRef = useRef('');
+			
+			const [players, setPlayers] = useState(() => {
+				try {
+					const saved = localStorage.getItem('imposter_players');
+					if (saved) {
+						let parsed = JSON.parse(saved);
+						if (Array.isArray(parsed) && parsed.length > 0) {
+							if (typeof parsed[0] === 'string') {
+								parsed = parsed.map(name => ({ name, audioData: null }));
+							}
+							return parsed;
+						}
+					}
+					return DEFAULT_PLAYERS;
+				} catch {
+					return DEFAULT_PLAYERS;
+				}
+			});
 
-    const [selectedCategory, setSelectedCategory] = useState(() => {
-        try {
-            const saved = localStorage.getItem('imposter_category');
-            if (saved) return JSON.parse(saved);
-            return 'Mystery Mode';
-        } catch {
-            return 'Mystery Mode';
-        }
-    });
+			const [selectedCategory, setSelectedCategory] = useState(() => {
+				try {
+					const saved = localStorage.getItem('imposter_category');
+					if (saved) return JSON.parse(saved);
+					return 'Mystery Mode';
+				} catch {
+					return 'Mystery Mode';
+				}
+			});
 
-    const [speakCategory, setSpeakCategory] = useState(() => {
-        const saved = localStorage.getItem('imposter_speak_category');
-        return saved !== null ? JSON.parse(saved) : false;
-    });
-    const [isFakeWordMode, setIsFakeWordMode] = useState(() => {
-        const saved = localStorage.getItem('imposter_fake_word_mode');
-        return saved !== null ? JSON.parse(saved) : false;
-    });
-    const [newPlayerName, setNewPlayerName] = useState('');
-    const [timerMinutes, setTimerMinutes] = useState(() => {
-        const saved = localStorage.getItem('imposter_timerMinutes');
-        return saved !== null ? JSON.parse(saved) : 3;
-    });
-    const [timerEnabled, setTimerEnabled] = useState(() => {
-        const saved = localStorage.getItem('imposter_timerEnabled');
-        return saved !== null ? JSON.parse(saved) : true;
-    });
+			const [speakCategory, setSpeakCategory] = useState(() => {
+				const saved = localStorage.getItem('imposter_speak_category');
+				return saved !== null ? JSON.parse(saved) : false;
+			});
+			const [isFakeWordMode, setIsFakeWordMode] = useState(() => {
+				const saved = localStorage.getItem('imposter_fake_word_mode');
+				return saved !== null ? JSON.parse(saved) : false;
+			});
+			const [newPlayerName, setNewPlayerName] = useState('');
+			const [timerMinutes, setTimerMinutes] = useState(() => {
+				const saved = localStorage.getItem('imposter_timerMinutes');
+				return saved !== null ? JSON.parse(saved) : 3;
+			});
+			const [timerEnabled, setTimerEnabled] = useState(() => {
+				const saved = localStorage.getItem('imposter_timerEnabled');
+				return saved !== null ? JSON.parse(saved) : true;
+			});
 
-    const [inspectedCategory, setInspectedCategory] = useState(null);
-    const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
-    const [enableTwoImposters, setEnableTwoImposters] = useState(() => {
-        const saved = localStorage.getItem('imposter_enableTwoImposters');
-        return saved !== null ? JSON.parse(saved) : false;
-    });
-    
-    const [isRecording, setIsRecording] = useState(false);
-    const [recordedAudioData, setRecordedAudioData] = useState(null);
-    const [showMicTooltip, setShowMicTooltip] = useState(false);
-    const [showMicPermissionModal, setShowMicPermissionModal] = useState(false);
-    const [isMicPermissionDenied, setIsMicPermissionDenied] = useState(false);
+			const [inspectedCategory, setInspectedCategory] = useState(null);
+			const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+			const [enableTwoImposters, setEnableTwoImposters] = useState(() => {
+				const saved = localStorage.getItem('imposter_enableTwoImposters');
+				return saved !== null ? JSON.parse(saved) : false;
+			});
+			
+			const [isRecording, setIsRecording] = useState(false);
+			const [recordedAudioData, setRecordedAudioData] = useState(null);
+			const [showMicTooltip, setShowMicTooltip] = useState(false);
+			const [showMicPermissionModal, setShowMicPermissionModal] = useState(false);
+			const [isMicPermissionDenied, setIsMicPermissionDenied] = useState(false);
 
-    const holdTimerRef = useRef(null);
-    const holdSpeedRef = useRef(300);
-    const isHoldingRef = useRef(false);
+			const holdTimerRef = useRef(null);
+			const holdSpeedRef = useRef(300);
+			const isHoldingRef = useRef(false);
 
-    const mediaRecorderRef = useRef(null);
-    const audioChunksRef = useRef([]);
-    const micTooltipTimer = useRef(null);
-    const playerPressTimerRef = useRef(null);
+			const mediaRecorderRef = useRef(null);
+			const audioChunksRef = useRef([]);
+			const micTooltipTimer = useRef(null);
+			const playerPressTimerRef = useRef(null);
 
-    if (playerError) playerErrorRef.current = playerError;
+			if (playerError) playerErrorRef.current = playerError;
 
-    useEffect(() => {
-        if (playerError) {
-            const timer = setTimeout(() => setPlayerError(''), 4000);
-            return () => clearTimeout(timer);
-        }
-    }, [playerError]);
+			useEffect(() => {
+				if (playerError) {
+					const timer = setTimeout(() => setPlayerError(''), 4000);
+					return () => clearTimeout(timer);
+				}
+			}, [playerError]);
 
-    useEffect(() => {
-        if (wordBank && selectedCategory !== 'Mystery Mode' && !displayCategories.includes(selectedCategory)) {
-            setSelectedCategory('Mystery Mode');
-        }
-    }, [displayCategories, selectedCategory, wordBank]);
+			useEffect(() => {
+				if (wordBank && selectedCategory !== 'Mystery Mode' && !displayCategories.includes(selectedCategory)) {
+					setSelectedCategory('Mystery Mode');
+				}
+			}, [displayCategories, selectedCategory, wordBank]);
 
-    useEffect(() => { 
-        try {
-            localStorage.setItem('imposter_players', JSON.stringify(players)); 
-        } catch (e) {
-            console.error("Storage limit reached! Falling back to saving names only.");
-            localStorage.setItem('imposter_players', JSON.stringify(players.map(p => ({ name: p.name, audioData: null }))));
-        }
-    }, [players]);
+			useEffect(() => { 
+				try {
+					localStorage.setItem('imposter_players', JSON.stringify(players)); 
+				} catch (e) {
+					console.error("Storage limit reached! Falling back to saving names only.");
+					localStorage.setItem('imposter_players', JSON.stringify(players.map(p => ({ name: p.name, audioData: null }))));
+				}
+			}, [players]);
 
-    useEffect(() => { localStorage.setItem('imposter_category', JSON.stringify(selectedCategory)); }, [selectedCategory]);
-    useEffect(() => { localStorage.setItem('imposter_speak_category', JSON.stringify(speakCategory)); }, [speakCategory]);
-    useEffect(() => { localStorage.setItem('imposter_fake_word_mode', JSON.stringify(isFakeWordMode)); }, [isFakeWordMode]);
-    useEffect(() => { localStorage.setItem('imposter_timerMinutes', JSON.stringify(timerMinutes)); }, [timerMinutes]);
-    useEffect(() => { localStorage.setItem('imposter_timerEnabled', JSON.stringify(timerEnabled)); }, [timerEnabled]);
-    useEffect(() => { localStorage.setItem('imposter_enableTwoImposters', JSON.stringify(enableTwoImposters)); }, [enableTwoImposters]);
+			useEffect(() => { localStorage.setItem('imposter_category', JSON.stringify(selectedCategory)); }, [selectedCategory]);
+			useEffect(() => { localStorage.setItem('imposter_speak_category', JSON.stringify(speakCategory)); }, [speakCategory]);
+			useEffect(() => { localStorage.setItem('imposter_fake_word_mode', JSON.stringify(isFakeWordMode)); }, [isFakeWordMode]);
+			useEffect(() => { localStorage.setItem('imposter_timerMinutes', JSON.stringify(timerMinutes)); }, [timerMinutes]);
+			useEffect(() => { localStorage.setItem('imposter_timerEnabled', JSON.stringify(timerEnabled)); }, [timerEnabled]);
+			useEffect(() => { localStorage.setItem('imposter_enableTwoImposters', JSON.stringify(enableTwoImposters)); }, [enableTwoImposters]);
 
-    useEffect(() => {
-        const syncMicStatus = async () => {
-            if (navigator.permissions && navigator.permissions.query) {
-                try {
-                    const result = await navigator.permissions.query({ name: 'microphone' });
-                    
-                    const updateUI = (state) => {
-                        if (state === 'granted') {
-                            setIsMicPermissionDenied(false);
-                            localStorage.removeItem('imposter_mic_denied');
-                        } else if (state === 'denied') {
-                            setIsMicPermissionDenied(true);
-                            localStorage.setItem('imposter_mic_denied', 'true');
-                            setRecordedAudioData(null);
-                        }
-                      };
+			useEffect(() => {
+				const syncMicStatus = async () => {
+					if (navigator.permissions && navigator.permissions.query) {
+						try {
+							const result = await navigator.permissions.query({ name: 'microphone' });
+							
+							const updateUI = (state) => {
+								if (state === 'granted') {
+									setIsMicPermissionDenied(false);
+									localStorage.removeItem('imposter_mic_denied');
+								} else if (state === 'denied') {
+									setIsMicPermissionDenied(true);
+									localStorage.setItem('imposter_mic_denied', 'true');
+									setRecordedAudioData(null);
+								}
+							  };
 
-                      updateUI(result.state);
+							  updateUI(result.state);
 
-                      result.onchange = () => updateUI(result.state);
-                  } catch (e) {
-                      if (localStorage.getItem('imposter_mic_denied') === 'true') {
-                          setIsMicPermissionDenied(true);
-                      }
-                  }
-              }
-          };
+							  result.onchange = () => updateUI(result.state);
+						  } catch (e) {
+							  if (localStorage.getItem('imposter_mic_denied') === 'true') {
+								  setIsMicPermissionDenied(true);
+							  }
+						  }
+					  }
+				  };
 
-          syncMicStatus();
+				  syncMicStatus();
 
-          const handleVisibility = () => {
-              if (document.visibilityState === 'visible') syncMicStatus();
-          };
+				  const handleVisibility = () => {
+					  if (document.visibilityState === 'visible') syncMicStatus();
+				  };
 
-          document.addEventListener('visibilitychange', handleVisibility);
-          return () => document.removeEventListener('visibilitychange', handleVisibility);
-      }, []);
+				  document.addEventListener('visibilitychange', handleVisibility);
+				  return () => document.removeEventListener('visibilitychange', handleVisibility);
+			  }, []);
 
-      const handleTimerChange = (increment) => {
-          setTimerMinutes(prev => {
-              const next = prev + increment;
-              const boundedNext = increment > 0 ? Math.min(15, next) : Math.max(1, next);
-              if (prev !== boundedNext) {
-                  if (audioManager) audioManager.playSound('uiClick');
-                  if (navigator.vibrate) navigator.vibrate(5);
-              }
-              return boundedNext;
-          });
-      };
+			  const handleTimerChange = (increment) => {
+				  setTimerMinutes(prev => {
+					  const next = prev + increment;
+					  const boundedNext = increment > 0 ? Math.min(15, next) : Math.max(1, next);
+					  if (prev !== boundedNext) {
+						  if (audioManager) audioManager.playSound('uiClick');
+						  if (navigator.vibrate) navigator.vibrate(5);
+					  }
+					  return boundedNext;
+				  });
+			  };
 
-      const stopTimerHold = () => {
-          isHoldingRef.current = false;
-          if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
-      };
+			  const stopTimerHold = () => {
+				  isHoldingRef.current = false;
+				  if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+			  };
 
-      const startTimerHold = (increment) => {
-          stopTimerHold(); 
-          isHoldingRef.current = true;
-          handleTimerChange(increment); 
-          holdSpeedRef.current = 400; 
-          const tick = () => {
-              if (!isHoldingRef.current) return;
-              handleTimerChange(increment);
-              holdSpeedRef.current = Math.max(70, holdSpeedRef.current * 0.8);
-              holdTimerRef.current = setTimeout(tick, holdSpeedRef.current);
-          };
-          holdTimerRef.current = setTimeout(tick, holdSpeedRef.current);
-      };
+			  const startTimerHold = (increment) => {
+				  stopTimerHold(); 
+				  isHoldingRef.current = true;
+				  handleTimerChange(increment); 
+				  holdSpeedRef.current = 400; 
+				  const tick = () => {
+					  if (!isHoldingRef.current) return;
+					  handleTimerChange(increment);
+					  holdSpeedRef.current = Math.max(70, holdSpeedRef.current * 0.8);
+					  holdTimerRef.current = setTimeout(tick, holdSpeedRef.current);
+				  };
+				  holdTimerRef.current = setTimeout(tick, holdSpeedRef.current);
+			  };
 
-      const handleMicClick = async () => {
-          if (isRecording) {
-              mediaRecorderRef.current.stop();
-              setIsRecording(false);
-              if (audioManager) audioManager.resumeAllMusic();
-              return;
-          }
+			  const handleMicClick = async () => {
+				  if (isRecording) {
+					  mediaRecorderRef.current.stop();
+					  setIsRecording(false);
+					  if (audioManager) audioManager.resumeAllMusic();
+					  return;
+				  }
 
-          if (isMicPermissionDenied) {
-              setShowMicPermissionModal(true);
-              return;
-          }
+				  if (isMicPermissionDenied) {
+					  setShowMicPermissionModal(true);
+					  return;
+				  }
 
-          try {
-              const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-              
-              setIsMicPermissionDenied(false);
-              localStorage.removeItem('imposter_mic_denied');
-              if (showMicPermissionModal) setShowMicPermissionModal(false);
-              
-              audioChunksRef.current = [];
-              const mediaRecorder = new MediaRecorder(stream);
-              mediaRecorderRef.current = mediaRecorder;
-              mediaRecorder.start();
-              setIsRecording(true);
-              setRecordedAudioData(null);
+				  try {
+					  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+					  
+					  setIsMicPermissionDenied(false);
+					  localStorage.removeItem('imposter_mic_denied');
+					  if (showMicPermissionModal) setShowMicPermissionModal(false);
+					  
+					  audioChunksRef.current = [];
+					  const mediaRecorder = new MediaRecorder(stream);
+					  mediaRecorderRef.current = mediaRecorder;
+					  mediaRecorder.start();
+					  setIsRecording(true);
+					  setRecordedAudioData(null);
 
-              mediaRecorder.ondataavailable = event => audioChunksRef.current.push(event.data);
-              mediaRecorder.onstop = () => {
-                  const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-                  const reader = new FileReader();
-                  reader.readAsDataURL(audioBlob);
-                  reader.onloadend = () => setRecordedAudioData(reader.result);
-                  stream.getTracks().forEach(track => track.stop());
-              };
+					  mediaRecorder.ondataavailable = event => audioChunksRef.current.push(event.data);
+					  mediaRecorder.onstop = () => {
+						  const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+						  const reader = new FileReader();
+						  reader.readAsDataURL(audioBlob);
+						  reader.onloadend = () => setRecordedAudioData(reader.result);
+						  stream.getTracks().forEach(track => track.stop());
+					  };
 
-              if (audioManager) audioManager.pauseAllMusic();
+					  if (audioManager) audioManager.pauseAllMusic();
 
-              setTimeout(() => {
-                  if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
-                      mediaRecorderRef.current.stop();
-                      setIsRecording(false);
-                      if (audioManager) audioManager.resumeAllMusic();
-                  }
-              }, 3500);
-          } catch (err) {
-              console.error("Mic blocked:", err);
-              setIsMicPermissionDenied(true);
-              localStorage.setItem('imposter_mic_denied', 'true');
-              setShowMicPermissionModal(true);
-          }
-      };
-      
-      const addPlayer = () => {
-          const trimmedName = newPlayerName.trim();
-          if (!trimmedName) {
-              setPlayerError('Please enter a player name.');
-              return;
-          }
-          const isDuplicate = players.some(p => p.name.toLowerCase() === trimmedName.toLowerCase());
-          if (isDuplicate) {
-              setPlayerError('That player name is already in use.');
-              return;
-          }
+					  setTimeout(() => {
+						  if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
+							  mediaRecorderRef.current.stop();
+							  setIsRecording(false);
+							  if (audioManager) audioManager.resumeAllMusic();
+						  }
+					  }, 3500);
+				  } catch (err) {
+					  console.error("Mic blocked:", err);
+					  setIsMicPermissionDenied(true);
+					  localStorage.setItem('imposter_mic_denied', 'true');
+					  setShowMicPermissionModal(true);
+				  }
+			  };
+			  
+			  const addPlayer = () => {
+				  const trimmedName = newPlayerName.trim();
+				  if (!trimmedName) {
+					  setPlayerError('Please enter a player name.');
+					  return;
+				  }
+				  const isDuplicate = players.some(p => p.name.toLowerCase() === trimmedName.toLowerCase());
+				  if (isDuplicate) {
+					  setPlayerError('That player name is already in use.');
+					  return;
+				  }
 
-          audioManager.playSound('uiClick');
+				  audioManager.playSound('uiClick');
 
-          setPlayers([...players, { name: trimmedName, audioData: recordedAudioData }]);
-          setNewPlayerName('');
-          setRecordedAudioData(null);
-          setPlayerError('');
-          if (navigator.vibrate) navigator.vibrate(10);
-      };
+				  setPlayers([...players, { name: trimmedName, audioData: recordedAudioData }]);
+				  setNewPlayerName('');
+				  setRecordedAudioData(null);
+				  setPlayerError('');
+				  if (navigator.vibrate) navigator.vibrate(10);
+			  };
 
-      const removePlayer = (index) => {
-          if (players.length > MIN_PLAYERS) {
-              audioManager.playSound('uiClick');
-              setPlayers(players.filter((_, i) => i !== index));
-              if (navigator.vibrate) navigator.vibrate(10);
-          }
-      };
+			  const removePlayer = (index) => {
+				  if (players.length > MIN_PLAYERS) {
+					  audioManager.playSound('uiClick');
+					  setPlayers(players.filter((_, i) => i !== index));
+					  if (navigator.vibrate) navigator.vibrate(10);
+				  }
+			  };
 
-      const handleCategorySelect = (cat) => {
-          setSelectedCategory(cat);
-          if (navigator.vibrate) navigator.vibrate(5);
-      };
-      
-      const handlePlayerPress = (player) => {
-          if (player.audioData) {
-              playerPressTimerRef.current = setTimeout(() => {
-                  const audio = new Audio(player.audioData);
-                  if (audioManager && audioManager.isMuted) audio.muted = true;
-                  audio.play().catch(e => console.error("Failed to play custom audio:", e));
-                  if (navigator.vibrate) navigator.vibrate(20);
-              }, 300);
-          }
-      };
+			  const handleCategorySelect = (cat) => {
+				  setSelectedCategory(cat);
+				  if (navigator.vibrate) navigator.vibrate(5);
+			  };
+			  
+			  const handlePlayerPress = (player) => {
+				  if (player.audioData) {
+					  playerPressTimerRef.current = setTimeout(() => {
+						  const audio = new Audio(player.audioData);
+						  if (audioManager && audioManager.isMuted) audio.muted = true;
+						  audio.play().catch(e => console.error("Failed to play custom audio:", e));
+						  if (navigator.vibrate) navigator.vibrate(20);
+					  }, 300);
+				  }
+			  };
 
-      const handlePlayerRelease = () => {
-          if (playerPressTimerRef.current) {
-              clearTimeout(playerPressTimerRef.current);
-          }
-      };
+			  const handlePlayerRelease = () => {
+				  if (playerPressTimerRef.current) {
+					  clearTimeout(playerPressTimerRef.current);
+				  }
+			  };
 
-      const handleMicPress = () => {
-          micTooltipTimer.current = setTimeout(() => setShowMicTooltip(true), 500);
-      };
-      const handleMicRelease = () => {
-          clearTimeout(micTooltipTimer.current);
-          setShowMicTooltip(false);
-      };
+			  const handleMicPress = () => {
+				  micTooltipTimer.current = setTimeout(() => setShowMicTooltip(true), 500);
+			  };
+			  const handleMicRelease = () => {
+				  clearTimeout(micTooltipTimer.current);
+				  setShowMicTooltip(false);
+			  };
 
-      const handleStartClick = () => {
-          if (players.length >= MIN_PLAYERS) {
-              const isRandomMode = selectedCategory === 'Mystery Mode';
-              if (navigator.vibrate) navigator.vibrate(30);
-              audioManager.playSound(isRandomMode ? 'startRandomMission' : 'startMission');
-              onStartGame(players, isRandomMode ? [] : [selectedCategory], timerEnabled ? timerMinutes * 60 : null, isRandomMode, speakCategory, enableTwoImposters, isFakeWordMode);
-          }
-      };
+			  const handleStartClick = () => {
+				  if (players.length >= MIN_PLAYERS) {
+					  const isRandomMode = selectedCategory === 'Mystery Mode';
+					  if (navigator.vibrate) navigator.vibrate(30);
+					  audioManager.playSound(isRandomMode ? 'startRandomMission' : 'startMission');
+					  onStartGame(players, isRandomMode ? [] : [selectedCategory], timerEnabled ? timerMinutes * 60 : null, isRandomMode, speakCategory, enableTwoImposters, isFakeWordMode);
+				  }
+			  };
 
-      const rawCatName = customCategoryNames[selectedCategory] || selectedCategory;
-      const catName = smartCapitalize(rawCatName);
-      const displayIcon = selectedCategory === 'Mystery Mode' ? "https://em-content.zobj.net/source/microsoft-teams/337/game-die_1f3b2.png" : CATEGORY_ICONS[selectedCategory];
-      const isCustomCategory = selectedCategory !== 'Mystery Mode' && !AUDIO_URLS.categories[selectedCategory];
-      const hasCustomCategoriesLocal = displayCategories.some(cat => cat !== 'Mystery Mode' && !AUDIO_URLS.categories[cat]);
-      const showCustomWarningLocal = selectedCategory === 'Mystery Mode' && hasCustomCategoriesLocal;
+			  const rawCatName = customCategoryNames[selectedCategory] || selectedCategory;
+			  const catName = smartCapitalize(rawCatName);
+			  const displayIcon = selectedCategory === 'Mystery Mode' ? "https://em-content.zobj.net/source/microsoft-teams/337/game-die_1f3b2.png" : CATEGORY_ICONS[selectedCategory];
+			  const isCustomCategory = selectedCategory !== 'Mystery Mode' && !AUDIO_URLS.categories[selectedCategory];
+			  const hasCustomCategoriesLocal = displayCategories.some(cat => cat !== 'Mystery Mode' && !AUDIO_URLS.categories[cat]);
+			  const showCustomWarningLocal = selectedCategory === 'Mystery Mode' && hasCustomCategoriesLocal;
 
-      useEffect(() => {
-          if (isCustomCategory && speakCategory) {
-              setSpeakCategory(false);
-          }
-      }, [isCustomCategory, speakCategory]);
+			  useEffect(() => {
+				  if (isCustomCategory && speakCategory) {
+					  setSpeakCategory(false);
+				  }
+			  }, [isCustomCategory, speakCategory]);
 
-      return (
-          <div className="flex flex-col h-[100dvh] relative z-10">
-              {showMicPermissionModal && <MicPermissionModal onClose={() => setShowMicPermissionModal(false)} />}
-              <div className="absolute top-6 left-6 z-20">
-                   <button onClick={onBack} className="glass-btn w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all">
-                      <FaIcon name="icon-chevron-left" className="" />
-                  </button>
-              </div>
-              
-              <CategoryInfoModal category={inspectedCategory} onClose={() => setInspectedCategory(null)} wordBank={wordBank} customCategoryNames={customCategoryNames} />
-              
-              <CategorySelectionModal 
-                  isOpen={isCategoryModalOpen}
-                  onClose={() => setIsCategoryModalOpen(false)}
-                  isOnline={false}
-                  displayCategories={displayCategories}
-                  onSelect={handleCategorySelect}
-                  currentSelection={selectedCategory}
-                  onInspect={setInspectedCategory}
-                  audioManager={audioManager}
-                  season={currentSeason}
-                  customCategoryNames={customCategoryNames}
-              />
+			  return (
+				  <div className="flex flex-col h-[100dvh] relative z-10">
+					  {showMicPermissionModal && <MicPermissionModal onClose={() => setShowMicPermissionModal(false)} />}
+					  <div className="absolute top-6 left-6 z-20">
+						   <button onClick={onBack} className="glass-btn w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all">
+							  <FaIcon name="icon-chevron-left" className="" />
+						  </button>
+					  </div>
+					  
+					  <CategoryInfoModal category={inspectedCategory} onClose={() => setInspectedCategory(null)} wordBank={wordBank} customCategoryNames={customCategoryNames} customCategoryNouns={customCategoryNouns} />
+					  
+					  <CategorySelectionModal 
+						  isOpen={isCategoryModalOpen}
+						  onClose={() => setIsCategoryModalOpen(false)}
+						  isOnline={false}
+						  displayCategories={displayCategories}
+						  onSelect={handleCategorySelect}
+						  currentSelection={selectedCategory}
+						  onInspect={setInspectedCategory}
+						  audioManager={audioManager}
+						  season={currentSeason}
+						  customCategoryNames={customCategoryNames}
+					  />
 
-              <div className="flex-1 overflow-y-auto no-scrollbar pb-28 [overflow-anchor:none]">
-                  <div className="max-w-lg mx-auto p-6 pt-28">
-                      <div className="mb-10 text-center">
-                          <SeasonalTitle season={currentSeason} className="text-5xl font-display font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 mb-2 drop-shadow-lg tracking-tight" />
-                          <div className="subtle-shine-container inline-flex items-center gap-2 px-3 py-1 rounded-[0.5rem] bg-white/5 border border-white/5 backdrop-blur-md">
-                              <span className="text-white/50 text-[11px] font-display font-semibold tracking-widest uppercase">Local Game</span>
-                          </div>
-                      </div>
+					  <div className="flex-1 overflow-y-auto no-scrollbar pb-28 [overflow-anchor:none]">
+						  <div className="max-w-lg mx-auto p-6 pt-28">
+							  <div className="mb-10 text-center">
+								  <SeasonalTitle season={currentSeason} className="text-5xl font-display font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 mb-2 drop-shadow-lg tracking-tight" />
+								  <div className="subtle-shine-container inline-flex items-center gap-2 px-3 py-1 rounded-[0.5rem] bg-white/5 border border-white/5 backdrop-blur-md">
+									  <span className="text-white/50 text-[11px] font-display font-semibold tracking-widest uppercase">Local Game</span>
+								  </div>
+							  </div>
 
-                      <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
-                          <div className="text-center py-3 bg-black/50 border-b border-white/5">
-                              <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
-                                  <FaIcon name="icon-user-plus" className=" text-brand-400 mr-1" /> Add Players
-                              </h2>
-                          </div>
-                          <div>
-                              <div className="p-4 bg-black/20 border-b border-white/5">
-                                  <div className="flex flex-col gap-3">
-                                  <div>
-                                      <div className="flex items-center gap-3 bg-slate-950/50 rounded-xl border border-white/5 focus-within:border-brand-500/50 focus-within:bg-slate-950/80 transition-colors pr-4 relative z-10">
-                                          <input
-                                              type="text"
-                                              value={newPlayerName}
-                                              onChange={(e) => {
-                                                  setNewPlayerName([...e.target.value].slice(0, 25).join(''));
-                                                  if (playerError) setPlayerError('');
-                                              }}
-                                              onKeyDown={(e) => e.key === 'Enter' && addPlayer()}
-                                              placeholder="Enter name..."
-                                              maxLength="25"
-                                              className="flex-1 bg-transparent px-5 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none placeholder:text-white/20 font-display font-semibold text-lg text-white min-w-0"
-                                          />
-                                          {newPlayerName.trim() && <PlayerAvatar name={newPlayerName.trim()} className="w-8 h-8" />}
-                                      </div>
-                                      
-                                      <div className={`grid transition-all duration-300 ease-in-out relative z-0 ${playerError ? 'grid-rows-[1fr] opacity-100 mt-2' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
-                                          <div className="overflow-hidden">
-                                              <div className="flex items-center justify-center gap-2 text-red-400 text-sm font-medium">
-                                                  <FaIcon name="icon-circle-exclamation" className=" text-xs flex-shrink-0 mt-[1px]" />
-                                                  <span className="truncate">{playerError || playerErrorRef.current}</span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              <div className="flex gap-3 relative">
-                                  <button 
-                                      onClick={handleMicClick}
-                                      onMouseDown={handleMicPress}
-                                      onMouseUp={handleMicRelease}
-                                      onMouseLeave={handleMicRelease}
-                                      onTouchStart={handleMicPress}
-                                      onTouchEnd={handleMicRelease}
-                                      className={`flex-1 flex items-center justify-center rounded-xl font-bold transition-all shadow-lg active:scale-95 border border-white/5 h-14 ${isMicPermissionDenied ? 'bg-red-500/20' : isRecording ? 'bg-red-500 animate-pulse' : (recordedAudioData ? 'bg-green-500' : 'bg-white/10 hover:bg-white/20')}`}
-                                  >
-                                      <FaIcon name={isMicPermissionDenied ? 'icon-no-microphone' : (recordedAudioData && !isRecording ? 'icon-check' : 'icon-microphone')} className={`text-white text-lg ${isMicPermissionDenied ? 'text-red-400/70' : (isRecording ? '' : 'opacity-70')}`} />
-                                  </button>
-                                  
-                                  <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-xs bg-slate-800 text-white text-xs rounded-md px-3 py-2 shadow-lg z-20 pointer-events-none transition-opacity duration-300 ease-in-out ${showMicTooltip ? 'opacity-100' : 'opacity-0'}`}>
-                                      Record a custom "It's your turn" voice note!
-                                      <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"></div>
-                                  </div>
-                                  
-                                  <button 
-                                      onClick={addPlayer}
-                                      className="bg-brand-600 hover:bg-brand-500 flex-1 flex items-center justify-center rounded-xl font-bold transition shadow-lg shadow-brand-900/20 active:scale-95 border border-white/5 h-14"
-                                  >
-                                      <FaIcon name="icon-plus-button" className=" text-white text-lg" />
-                                  </button>
-                              </div>
-                                  </div>
-                              </div>
-                          <div className="p-4 max-h-[320px] overflow-y-auto no-scrollbar">
-                              <div className="grid grid-cols-1 gap-3">
-                              {players.map((p, i) => (
-                                  <div
-                                      key={i}
-                                      className={`flex items-center min-w-0 gap-3 px-4 h-[58px] rounded-xl animate-fadeIn transition-all cursor-pointer border ${
-                                          p.audioData 
-                                              ? 'bg-white/5 border-brand-500/50 hover:bg-brand-500/10' 
-                                              : 'bg-white/5 border-transparent hover:bg-white/10'
-                                      }`}
-                                      onMouseDown={() => handlePlayerPress(p)}
-                                      onMouseUp={handlePlayerRelease}
-                                      onMouseLeave={handlePlayerRelease}
-                                      onTouchStart={() => handlePlayerPress(p)}
-                                      onTouchEnd={handlePlayerRelease}
-                                  >
-                                      <PlayerAvatar name={p.name} className="w-7 h-7 flex-shrink-0" />
-                                      <span className={`flex-1 min-w-0 truncate font-bold ${p.audioData ? 'text-brand-200' : 'text-white/80'}`}>
-                                          {p.name}
-                                      </span>
-                                      <button
-                                          onClick={(e) => { e.stopPropagation(); removePlayer(i); }}
-                                          disabled={players.length <= MIN_PLAYERS}
-                                          className={`w-7 h-7 flex-shrink-0 flex items-center justify-center rounded-full text-xs transition-colors
-                                              ${players.length > MIN_PLAYERS
-                                                  ? (p.audioData ? 'bg-brand-500/10 text-brand-300/70 hover:bg-red-500/20 hover:text-red-400' : 'bg-white/5 text-white/40 hover:bg-red-500/20 hover:text-red-400')
-                                                  : 'opacity-20 cursor-not-allowed'
-                                              }`}
-                                      >
-                                          <FaIcon name="icon-xmark" className="" />
-                                      </button>
-                                  </div>
-                              ))}
-                              </div>
-                          </div>
-                        </div>
-                      </section>
+							  <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
+								  <div className="text-center py-3 bg-black/50 border-b border-white/5">
+									  <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
+										  <FaIcon name="icon-user-plus" className=" text-brand-400 mr-1" /> Add Players
+									  </h2>
+								  </div>
+								  <div>
+									  <div className="p-4 bg-black/20 border-b border-white/5">
+										  <div className="flex flex-col gap-3">
+										  <div>
+											  <div className="flex items-center gap-3 bg-slate-950/50 rounded-xl border border-white/5 focus-within:border-brand-500/50 focus-within:bg-slate-950/80 transition-colors pr-4 relative z-10">
+												  <input
+													  type="text"
+													  value={newPlayerName}
+													  onChange={(e) => {
+														  setNewPlayerName([...e.target.value].slice(0, 25).join(''));
+														  if (playerError) setPlayerError('');
+													  }}
+													  onKeyDown={(e) => e.key === 'Enter' && addPlayer()}
+													  placeholder="Enter name..."
+													  maxLength="25"
+													  className="flex-1 bg-transparent px-5 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none placeholder:text-white/20 font-display font-semibold text-lg text-white min-w-0"
+												  />
+												  {newPlayerName.trim() && <PlayerAvatar name={newPlayerName.trim()} className="w-8 h-8" />}
+											  </div>
+											  
+											  <div className={`grid transition-all duration-300 ease-in-out relative z-0 ${playerError ? 'grid-rows-[1fr] opacity-100 mt-2' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
+												  <div className="overflow-hidden">
+													  <div className="flex items-center justify-center gap-2 text-red-400 text-sm font-medium">
+														  <FaIcon name="icon-circle-exclamation" className=" text-xs flex-shrink-0 mt-[1px]" />
+														  <span className="truncate">{playerError || playerErrorRef.current}</span>
+													  </div>
+												  </div>
+											  </div>
+										  </div>
+									  <div className="flex gap-3 relative">
+										  <button 
+											  onClick={handleMicClick}
+											  onMouseDown={handleMicPress}
+											  onMouseUp={handleMicRelease}
+											  onMouseLeave={handleMicRelease}
+											  onTouchStart={handleMicPress}
+											  onTouchEnd={handleMicRelease}
+											  className={`flex-1 flex items-center justify-center rounded-xl font-bold transition-all shadow-lg active:scale-95 border border-white/5 h-14 ${isMicPermissionDenied ? 'bg-red-500/20' : isRecording ? 'bg-red-500 animate-pulse' : (recordedAudioData ? 'bg-green-500' : 'bg-white/10 hover:bg-white/20')}`}
+										  >
+											  <FaIcon name={isMicPermissionDenied ? 'icon-no-microphone' : (recordedAudioData && !isRecording ? 'icon-check' : 'icon-microphone')} className={`text-white text-lg ${isMicPermissionDenied ? 'text-red-400/70' : (isRecording ? '' : 'opacity-70')}`} />
+										  </button>
+										  
+										  <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-xs bg-slate-800 text-white text-xs rounded-md px-3 py-2 shadow-lg z-20 pointer-events-none transition-opacity duration-300 ease-in-out ${showMicTooltip ? 'opacity-100' : 'opacity-0'}`}>
+											  Record a custom "It's your turn" voice note!
+											  <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"></div>
+										  </div>
+										  
+										  <button 
+											  onClick={addPlayer}
+											  className="bg-brand-600 hover:bg-brand-500 flex-1 flex items-center justify-center rounded-xl font-bold transition shadow-lg shadow-brand-900/20 active:scale-95 border border-white/5 h-14"
+										  >
+											  <FaIcon name="icon-plus-button" className=" text-white text-lg" />
+										  </button>
+									  </div>
+										  </div>
+									  </div>
+								  <div className="p-4 max-h-[320px] overflow-y-auto no-scrollbar">
+									  <div className="grid grid-cols-1 gap-3">
+									  {players.map((p, i) => (
+										  <div
+											  key={i}
+											  className={`flex items-center min-w-0 gap-3 px-4 h-[58px] rounded-xl animate-fadeIn transition-all cursor-pointer border ${
+												  p.audioData 
+													  ? 'bg-white/5 border-brand-500/50 hover:bg-brand-500/10' 
+													  : 'bg-white/5 border-transparent hover:bg-white/10'
+											  }`}
+											  onMouseDown={() => handlePlayerPress(p)}
+											  onMouseUp={handlePlayerRelease}
+											  onMouseLeave={handlePlayerRelease}
+											  onTouchStart={() => handlePlayerPress(p)}
+											  onTouchEnd={handlePlayerRelease}
+										  >
+											  <PlayerAvatar name={p.name} className="w-7 h-7 flex-shrink-0" />
+											  <span className={`flex-1 min-w-0 truncate font-bold ${p.audioData ? 'text-brand-200' : 'text-white/80'}`}>
+												  {p.name}
+											  </span>
+											  <button
+												  onClick={(e) => { e.stopPropagation(); removePlayer(i); }}
+												  disabled={players.length <= MIN_PLAYERS}
+												  className={`w-7 h-7 flex-shrink-0 flex items-center justify-center rounded-full text-xs transition-colors
+													  ${players.length > MIN_PLAYERS
+														  ? (p.audioData ? 'bg-brand-500/10 text-brand-300/70 hover:bg-red-500/20 hover:text-red-400' : 'bg-white/5 text-white/40 hover:bg-red-500/20 hover:text-red-400')
+														  : 'opacity-20 cursor-not-allowed'
+													  }`}
+											  >
+												  <FaIcon name="icon-xmark" className="" />
+											  </button>
+										  </div>
+									  ))}
+									  </div>
+								  </div>
+								</div>
+							  </section>
 
-                      <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
-                          <div className="text-center py-3 bg-black/50 border-b border-white/5">
-                              <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
-                                  <FaIcon name="icon-gear" className=" text-brand-400 mr-1" /> Game Settings
-                              </h2>
-                          </div>
-                          <div className="p-4 flex flex-col gap-3 max-h-[400px] overflow-y-auto no-scrollbar [overflow-anchor:none]">
-                              <button
-                                  onClick={() => { setIsCategoryModalOpen(true); audioManager.playSound('uiClick'); }}
-								  className="w-full bg-black/20 hover:bg-white/5 border border-white/5 rounded-[1.5rem] p-4 flex items-center gap-4 transition-all active:scale-95 group"
-                              >
-                                  <div className="w-12 h-12 rounded-xl bg-brand-500/20 flex items-center justify-center flex-shrink-0 relative overflow-hidden">
-                                      <FaIcon key={displayIcon} name={displayIcon} sizeClass="text-3xl" className={`transition-transform text-brand-400 drop-shadow-md ${displayIcon && displayIcon.includes('supercell') ? 'scale-[0.75]' : ''}`} purpleSpinner={true} />
-                                  </div>
-                                  <div className="text-left flex-1 min-w-0">
-                                      <h3 className="text-white font-display font-bold text-lg leading-tight line-clamp-2 break-words pr-2">{catName}</h3>
-                                      <p className="text-white/40 text-xs mt-1">Tap to change</p>
-                                  </div>
-                                  <FaIcon name="icon-chevron-right" className=" text-white/20 group-hover:text-white/50 transition-colors flex-shrink-0" />
-                              </button>
+							  <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
+								  <div className="text-center py-3 bg-black/50 border-b border-white/5">
+									  <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
+										  <FaIcon name="icon-gear" className=" text-brand-400 mr-1" /> Game Settings
+									  </h2>
+								  </div>
+								  <div className="p-4 flex flex-col gap-3 max-h-[400px] overflow-y-auto no-scrollbar [overflow-anchor:none]">
+									  <button
+										  onClick={() => { setIsCategoryModalOpen(true); audioManager.playSound('uiClick'); }}
+										  className="w-full bg-black/20 hover:bg-white/5 border border-white/5 rounded-[1.5rem] p-4 flex items-center gap-4 transition-all active:scale-95 group"
+									  >
+										  <div className="w-12 h-12 rounded-xl bg-brand-500/20 flex items-center justify-center flex-shrink-0 relative overflow-hidden">
+											  <FaIcon key={displayIcon} name={displayIcon} sizeClass="text-3xl" className={`transition-transform text-brand-400 drop-shadow-md ${displayIcon && displayIcon.includes('supercell') ? 'scale-[0.75]' : ''}`} purpleSpinner={true} />
+										  </div>
+										  <div className="text-left flex-1 min-w-0">
+											  <h3 className="text-white font-display font-bold text-lg leading-tight line-clamp-2 break-words pr-2">{catName}</h3>
+											  <p className="text-white/40 text-xs mt-1">Tap to change</p>
+										  </div>
+										  <FaIcon name="icon-chevron-right" className=" text-white/20 group-hover:text-white/50 transition-colors flex-shrink-0" />
+									  </button>
 
-                              <div className="flex items-center justify-between bg-black/20 border border-white/5 rounded-[1.5rem] p-4 transition-all">
-                                  <div className="flex items-center gap-4 pr-4">
-                                      <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400 flex-shrink-0">
-                                          <FaIcon name="icon-masks-theater" className=" text-lg" />
-                                      </div>
-                                      <div>
-                                          <h3 className="font-bold text-white/90 text-sm">Fake Word Mode</h3>
-                                          <p className="text-white/40 text-xs mt-1 leading-relaxed">One agent gets a different word. They don't know it's fake.</p>
-                                      </div>
-                                  </div>
-                                  <button 
-                                      onClick={() => {
-                                          setIsFakeWordMode(!isFakeWordMode);
-                                          audioManager.playSound(!isFakeWordMode ? 'switchOn' : 'switchOff');
-                                          if(navigator.vibrate) navigator.vibrate(10);
-                                      }}
-                                      className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${isFakeWordMode ? 'bg-yellow-500/80' : 'bg-white/10'}`}
-                                  >
-                                      <div className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isFakeWordMode ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} />
-                                  </button>
-                              </div>
+									  <div className="flex items-center justify-between bg-black/20 border border-white/5 rounded-[1.5rem] p-4 transition-all">
+										  <div className="flex items-center gap-4 pr-4">
+											  <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400 flex-shrink-0">
+												  <FaIcon name="icon-masks-theater" className=" text-lg" />
+											  </div>
+											  <div>
+												  <h3 className="font-bold text-white/90 text-sm">Fake Word Mode</h3>
+												  <p className="text-white/40 text-xs mt-1 leading-relaxed">One agent gets a different word. They don't know it's fake.</p>
+											  </div>
+										  </div>
+										  <button 
+											  onClick={() => {
+												  setIsFakeWordMode(!isFakeWordMode);
+												  audioManager.playSound(!isFakeWordMode ? 'switchOn' : 'switchOff');
+												  if(navigator.vibrate) navigator.vibrate(10);
+											  }}
+											  className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${isFakeWordMode ? 'bg-yellow-500/80' : 'bg-white/10'}`}
+										  >
+											  <div className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isFakeWordMode ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} />
+										  </button>
+									  </div>
 
-                              <Tooltip 
-                                  className={`flex items-center justify-between bg-black/20 border border-white/5 rounded-[1.5rem] p-4 transition-all duration-300 ${players.length < 10 ? 'opacity-50' : ''}`}
-                                  text={players.length < 10 ? "Requires 10 or more players" : (isFakeWordMode ? "Add a second fake word card" : "Add a second spy to the mission")}
-                                  isDisabled={players.length < 10}
-                              >
-                                  <div className="flex items-center gap-4 pr-4">
-                                      <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 flex-shrink-0">
-                                          <FaIcon name="icon-user-secret" className=" text-lg" />
-                                      </div>
-                                      <div>
-                                          <h3 className="font-bold text-white/90 text-sm">{isFakeWordMode ? 'Second Fake Word' : 'Second Imposter'}</h3>
-                                          <p className="text-white/40 text-xs mt-1 leading-relaxed">Adds a second rogue agent when 10+ players are in the lobby.</p>
-                                      </div>
-                                  </div>
-                                  <button 
-                                      onClick={() => {
-                                          if (players.length >= 10) {
-                                              setEnableTwoImposters(!enableTwoImposters);
-                                              audioManager.playSound(!enableTwoImposters ? 'switchOn' : 'switchOff');
-                                              if(navigator.vibrate) navigator.vibrate(10);
-                                          }
-                                      }}
-                                      disabled={players.length < 10}
-                                      className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${enableTwoImposters ? 'bg-orange-500/80' : 'bg-white/10'} ${players.length < 10 ? 'cursor-not-allowed' : ''}`}
-                                  >
-                                      <div className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${enableTwoImposters ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} />
-                                  </button>
-                              </Tooltip>
+									  <Tooltip 
+										  className={`flex items-center justify-between bg-black/20 border border-white/5 rounded-[1.5rem] p-4 transition-all duration-300 ${players.length < 10 ? 'opacity-50' : ''}`}
+										  text={players.length < 10 ? "Requires 10 or more players" : (isFakeWordMode ? "Add a second fake word card" : "Add a second spy to the mission")}
+										  isDisabled={players.length < 10}
+									  >
+										  <div className="flex items-center gap-4 pr-4">
+											  <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 flex-shrink-0">
+												  <FaIcon name="icon-user-secret" className=" text-lg" />
+											  </div>
+											  <div>
+												  <h3 className="font-bold text-white/90 text-sm">{isFakeWordMode ? 'Second Fake Word' : 'Second Imposter'}</h3>
+												  <p className="text-white/40 text-xs mt-1 leading-relaxed">Adds a second rogue agent when 10+ players are in the lobby.</p>
+											  </div>
+										  </div>
+										  <button 
+											  onClick={() => {
+												  if (players.length >= 10) {
+													  setEnableTwoImposters(!enableTwoImposters);
+													  audioManager.playSound(!enableTwoImposters ? 'switchOn' : 'switchOff');
+													  if(navigator.vibrate) navigator.vibrate(10);
+												  }
+											  }}
+											  disabled={players.length < 10}
+											  className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${enableTwoImposters ? 'bg-orange-500/80' : 'bg-white/10'} ${players.length < 10 ? 'cursor-not-allowed' : ''}`}
+										  >
+											  <div className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${enableTwoImposters ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} />
+										  </button>
+									  </Tooltip>
 
-                              <div className={`flex flex-col bg-black/20 border border-white/5 rounded-[1.5rem] p-4 transition-all duration-300`}>
-                                  <div className="flex items-center justify-between">
-                                      <div className="flex items-center gap-4 pr-4">
-                                          <div className="w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400 flex-shrink-0">
-                                              <FaIcon name="icon-clock" className=" text-lg" />
-                                          </div>
-                                          <div>
-                                              <h3 className="font-bold text-white/90 text-sm">Countdown Timer</h3>
-                                              <p className="text-white/40 text-xs mt-1 leading-relaxed">Sets a time limit for discussion. When disabled, the game is untimed.</p>
-                                          </div>
-                                      </div>
-                                      <button 
-                                          onClick={() => {
-                                              stopTimerHold();
-                                              setTimerEnabled(!timerEnabled);
-                                              audioManager.playSound(!timerEnabled ? 'switchOn' : 'switchOff');
-                                              if(navigator.vibrate) navigator.vibrate(10);
-                                          }}
-                                          className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${timerEnabled ? 'bg-sky-500/80' : 'bg-white/10'}`}
-                                      >
-                                          <div className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${timerEnabled ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} />
-                                      </button>
-                                  </div>
-                                  <div className={`transition-all duration-300 ease-in-out overflow-hidden ${timerEnabled ? 'opacity-100 max-h-[100px] mt-4' : 'opacity-0 max-h-0 mt-0'}`}>
-                                      <div className="flex items-center justify-between bg-black/20 rounded-xl p-2 border border-white/5 mx-1">
-                                          <button 
-                                              onMouseDown={() => startTimerHold(-1)}
-                                              onMouseUp={stopTimerHold}
-                                              onMouseLeave={stopTimerHold}
-                                              onTouchStart={(e) => { e.preventDefault(); e.stopPropagation(); startTimerHold(-1); }}
-                                              onTouchEnd={(e) => { e.preventDefault(); e.stopPropagation(); stopTimerHold(); }}
-                                              onTouchCancel={stopTimerHold}
-                                              onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); return false; }}
-                                              style={{ WebkitTouchCallout: 'none' }}
-                                              className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 active:scale-95 transition-all text-white/70 hover:text-white select-none touch-none"
-                                          >
-                                              <FaIcon name="icon-minus" className="pointer-events-none" />
-                                          </button>
-                                          <div className="flex items-center gap-2">
-                                              <span className="font-display text-2xl font-bold text-white tabular-nums min-w-[32px] text-center">{timerMinutes}</span>
-                                              <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest">MIN</span>
-                                          </div>
-                                          <button 
-                                              onMouseDown={() => startTimerHold(1)}
-                                              onMouseUp={stopTimerHold}
-                                              onMouseLeave={stopTimerHold}
-                                              onTouchStart={(e) => { e.preventDefault(); e.stopPropagation(); startTimerHold(1); }}
-                                              onTouchEnd={(e) => { e.preventDefault(); e.stopPropagation(); stopTimerHold(); }}
-                                              onTouchCancel={stopTimerHold}
-                                              onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); return false; }}
-                                              style={{ WebkitTouchCallout: 'none' }}
-                                              className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 active:scale-95 transition-all text-white/70 hover:text-white select-none touch-none"
-                                          >
-                                              <FaIcon name="icon-plus" className="pointer-events-none" />
-                                          </button>
-                                      </div>
-                                  </div>
-                              </div>
+									  <div className={`flex flex-col bg-black/20 border border-white/5 rounded-[1.5rem] p-4 transition-all duration-300`}>
+										  <div className="flex items-center justify-between">
+											  <div className="flex items-center gap-4 pr-4">
+												  <div className="w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400 flex-shrink-0">
+													  <FaIcon name="icon-clock" className=" text-lg" />
+												  </div>
+												  <div>
+													  <h3 className="font-bold text-white/90 text-sm">Countdown Timer</h3>
+													  <p className="text-white/40 text-xs mt-1 leading-relaxed">Sets a time limit for discussion. When disabled, the game is untimed.</p>
+												  </div>
+											  </div>
+											  <button 
+												  onClick={() => {
+													  stopTimerHold();
+													  setTimerEnabled(!timerEnabled);
+													  audioManager.playSound(!timerEnabled ? 'switchOn' : 'switchOff');
+													  if(navigator.vibrate) navigator.vibrate(10);
+												  }}
+												  className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${timerEnabled ? 'bg-sky-500/80' : 'bg-white/10'}`}
+											  >
+												  <div className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${timerEnabled ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} />
+											  </button>
+										  </div>
+										  <div className={`transition-all duration-300 ease-in-out overflow-hidden ${timerEnabled ? 'opacity-100 max-h-[100px] mt-4' : 'opacity-0 max-h-0 mt-0'}`}>
+											  <div className="flex items-center justify-between bg-black/20 rounded-xl p-2 border border-white/5 mx-1">
+												  <button 
+													  onMouseDown={() => startTimerHold(-1)}
+													  onMouseUp={stopTimerHold}
+													  onMouseLeave={stopTimerHold}
+													  onTouchStart={(e) => { e.preventDefault(); e.stopPropagation(); startTimerHold(-1); }}
+													  onTouchEnd={(e) => { e.preventDefault(); e.stopPropagation(); stopTimerHold(); }}
+													  onTouchCancel={stopTimerHold}
+													  onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); return false; }}
+													  style={{ WebkitTouchCallout: 'none' }}
+													  className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 active:scale-95 transition-all text-white/70 hover:text-white select-none touch-none"
+												  >
+													  <FaIcon name="icon-minus" className="pointer-events-none" />
+												  </button>
+												  <div className="flex items-center gap-2">
+													  <span className="font-display text-2xl font-bold text-white tabular-nums min-w-[32px] text-center">{timerMinutes}</span>
+													  <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest">MIN</span>
+												  </div>
+												  <button 
+													  onMouseDown={() => startTimerHold(1)}
+													  onMouseUp={stopTimerHold}
+													  onMouseLeave={stopTimerHold}
+													  onTouchStart={(e) => { e.preventDefault(); e.stopPropagation(); startTimerHold(1); }}
+													  onTouchEnd={(e) => { e.preventDefault(); e.stopPropagation(); stopTimerHold(); }}
+													  onTouchCancel={stopTimerHold}
+													  onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); return false; }}
+													  style={{ WebkitTouchCallout: 'none' }}
+													  className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 active:scale-95 transition-all text-white/70 hover:text-white select-none touch-none"
+												  >
+													  <FaIcon name="icon-plus" className="pointer-events-none" />
+												  </button>
+											  </div>
+										  </div>
+									  </div>
 
-                              <Tooltip
-                                  className={`flex items-center justify-between bg-black/20 border border-white/5 rounded-[1.5rem] p-4 transition-all ${isCustomCategory ? 'opacity-50' : ''}`}
-                                  text={isCustomCategory ? "Voice lines are unavailable for custom categories" : ""}
-                                  isDisabled={isCustomCategory}
-                              >
-                                  <div className="flex items-center gap-4 pr-4">
-                                      <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 flex-shrink-0">
-                                          <FaIcon name="icon-bullhorn" className=" text-lg" />
-                                      </div>
-                                      <div>
-                                          <h3 className="font-bold text-white/90 text-sm">Speak Category</h3>
-                                          <p className="text-white/40 text-xs mt-1 leading-relaxed">Announces the chosen category name when the mission begins.</p>
-                                      </div>
-                                  </div>
-                                  <button 
-                                      onClick={() => {
-                                          if (!isCustomCategory) {
-                                              setSpeakCategory(!speakCategory);
-                                              audioManager.playSound(!speakCategory ? 'switchOn' : 'switchOff');
-                                              if(navigator.vibrate) navigator.vibrate(10);
-                                          }
-                                      }}
-                                      disabled={isCustomCategory}
-                                      className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${speakCategory ? 'bg-purple-500/80' : 'bg-white/10'} ${isCustomCategory ? 'cursor-not-allowed' : ''}`}
-                                  >
-                                      <div className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${speakCategory ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} />
-                                  </button>
-                              </Tooltip>
-                          </div>
-                          <div 
-                              className={`grid transition-all duration-400 ease-out bg-black/50 border-t ${
-                                  showCustomWarningLocal && speakCategory 
-                                      ? 'grid-rows-[1fr] border-white/5 opacity-100' 
-                                      : 'grid-rows-[0fr] border-transparent opacity-0'
-                              }`}
-                          >
-                              <div className="overflow-hidden">
-                                  <div className={`text-center py-3 transform transition-all duration-400 ease-out ${
-                                      showCustomWarningLocal && speakCategory 
-                                          ? 'translate-y-0' 
-                                          : '-translate-y-4'
-                                  }`}>
-                                      <p className="text-xs text-white/60 font-semibold px-4">
-                                          If a custom category is selected, <strong className="text-white/90">Speak Category</strong> will be skipped.
-                                      </p>
-                                  </div>
-                              </div>
-                          </div>
-                      </section>
-                  </div>
-              </div>
+									  <Tooltip
+										  className={`flex items-center justify-between bg-black/20 border border-white/5 rounded-[1.5rem] p-4 transition-all ${isCustomCategory ? 'opacity-50' : ''}`}
+										  text={isCustomCategory ? "Voice lines are unavailable for custom categories" : ""}
+										  isDisabled={isCustomCategory}
+									  >
+										  <div className="flex items-center gap-4 pr-4">
+											  <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 flex-shrink-0">
+												  <FaIcon name="icon-bullhorn" className=" text-lg" />
+											  </div>
+											  <div>
+												  <h3 className="font-bold text-white/90 text-sm">Speak Category</h3>
+												  <p className="text-white/40 text-xs mt-1 leading-relaxed">Announces the chosen category name when the mission begins.</p>
+											  </div>
+										  </div>
+										  <button 
+											  onClick={() => {
+												  if (!isCustomCategory) {
+													  setSpeakCategory(!speakCategory);
+													  audioManager.playSound(!speakCategory ? 'switchOn' : 'switchOff');
+													  if(navigator.vibrate) navigator.vibrate(10);
+												  }
+											  }}
+											  disabled={isCustomCategory}
+											  className={`group flex-shrink-0 w-12 h-7 rounded-full p-1 cursor-pointer transition-all duration-300 ${speakCategory ? 'bg-purple-500/80' : 'bg-white/10'} ${isCustomCategory ? 'cursor-not-allowed' : ''}`}
+										  >
+											  <div className={`w-5 h-5 group-active:w-6 bg-white rounded-full shadow-md transform transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${speakCategory ? 'translate-x-5 group-active:translate-x-4' : 'translate-x-0'}`} />
+										  </button>
+									  </Tooltip>
+								  </div>
+								  <div 
+									  className={`grid transition-all duration-400 ease-out bg-black/50 border-t ${
+										  showCustomWarningLocal && speakCategory 
+											  ? 'grid-rows-[1fr] border-white/5 opacity-100' 
+											  : 'grid-rows-[0fr] border-transparent opacity-0'
+									  }`}
+								  >
+									  <div className="overflow-hidden">
+										  <div className={`text-center py-3 transform transition-all duration-400 ease-out ${
+											  showCustomWarningLocal && speakCategory 
+												  ? 'translate-y-0' 
+												  : '-translate-y-4'
+										  }`}>
+											  <p className="text-xs text-white/60 font-semibold px-4">
+												  If a custom category is selected, <strong className="text-white/90">Speak Category</strong> will be skipped.
+											  </p>
+										  </div>
+									  </div>
+								  </div>
+							  </section>
+						  </div>
+					  </div>
 
-              <div className="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-[#020617] via-[#020617] to-transparent z-50">
-                  <div className="max-w-lg mx-auto pb-[env(safe-area-inset-bottom)]">
-                      <button
-                          onClick={handleStartClick}
-                          disabled={players.length < MIN_PLAYERS}
-                          className="w-full bg-white text-slate-950 font-display font-bold text-lg py-5 rounded-[1.5rem] disabled:opacity-50 disabled:shadow-none active:scale-[0.98] transition-all flex items-center justify-center gap-3 relative overflow-hidden group"
-                      >
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-200/50 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                          <span className="relative z-10 flex items-center gap-3">
-                              <FaIcon name="icon-play" className=" text-sm" /> START MISSION
-                          </span>
-                      </button>
-                  </div>
-              </div>
-          </div>
-      );
-  };
+					  <div className="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-[#020617] via-[#020617] to-transparent z-50">
+						  <div className="max-w-lg mx-auto pb-[env(safe-area-inset-bottom)]">
+							  <button
+								  onClick={handleStartClick}
+								  disabled={players.length < MIN_PLAYERS}
+								  className="w-full bg-white text-slate-950 font-display font-bold text-lg py-5 rounded-[1.5rem] disabled:opacity-50 disabled:shadow-none active:scale-[0.98] transition-all flex items-center justify-center gap-3 relative overflow-hidden group"
+							  >
+								  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-200/50 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+								  <span className="relative z-10 flex items-center gap-3">
+									  <FaIcon name="icon-play" className=" text-sm" /> START MISSION
+								  </span>
+							  </button>
+						  </div>
+					  </div>
+				  </div>
+			  );
+		  };
 
         const CardRevealScreen = ({ player, word, onNext, isLastPlayer, audioManager, onAcknowledge, isOnline, onConfused }) => {
             const [step, setStep] = useState(isOnline ? 'reveal' : 'handover'); 
@@ -6793,6 +6796,7 @@
             const [wordBank, setWordBank] = useState(null);
             const [customCategories, setCustomCategories] = useState({});
             const [customCategoryNames, setCustomCategoryNames] = useState({});
+            const [customCategoryNouns, setCustomCategoryNouns] = useState({});
 
             const baseWordBankRef = useRef(null);
 
@@ -6800,6 +6804,7 @@
                 let updatedBank = { ...baseBank };
                 let updatedCustomCats = {};
                 let updatedNames = {};
+                let updatedNouns = {};
                 
                 const savedComms = JSON.parse(localStorage.getItem('saved_communigories') || '{}');
                 Object.keys(savedComms).forEach(id => {
@@ -6811,6 +6816,7 @@
                     }
                     updatedCustomCats[cat.id] = cat.icon;
                     updatedNames[cat.id] = cat.name;
+                    updatedNouns[cat.id] = cat.itemNoun || '';
                     CATEGORY_ICONS[cat.id] = cat.icon;
                 });
                 
@@ -6823,6 +6829,7 @@
                 });
                 
                 setCustomCategoryNames(prev => prev ? { ...prev, ...updatedNames } : updatedNames);
+                setCustomCategoryNouns(prev => prev ? { ...prev, ...updatedNouns } : updatedNouns);
             };
 
             useEffect(() => {
@@ -7385,6 +7392,18 @@
                                 return changed ? newNames : prev;
                             });
 
+                            setCustomCategoryNouns(prev => {
+                                const newNouns = { ...prev };
+                                let changed = false;
+                                data.lobbyCustomCategories.forEach(c => {
+                                    if (c.itemNoun && newNouns[c.id] !== c.itemNoun) {
+                                        newNouns[c.id] = c.itemNoun;
+                                        changed = true;
+                                    }
+                                });
+                                return changed ? newNouns : prev;
+                            });
+
                             data.lobbyCustomCategories.forEach(customCat => {
                                 if (customCat.words && customCat.icon) {
                                     CATEGORY_ICONS[customCat.id] = customCat.icon;
@@ -7411,6 +7430,10 @@
                                             setCustomCategoryNames(prev => {
                                                 if(prev[customCat.id] && prev[customCat.id] !== customCat.id) return prev;
                                                 return {...prev, [customCat.id]: catData.name || catData.title || customCat.name || customCat.id};
+                                            });
+                                            setCustomCategoryNouns(prev => {
+                                                if(prev[customCat.id]) return prev;
+                                                return {...prev, [customCat.id]: catData.itemNoun || ''};
                                             });
                                         }
                                     });
@@ -7709,7 +7732,7 @@
                 const savedComms = JSON.parse(localStorage.getItem('saved_communigories') || '{}');
                 const onlineCustomCats = Object.values(savedComms)
                     .filter(c => c.useOnline !== false)
-                    .map(c => ({ id: c.id, name: c.name, icon: c.icon, words: c.words }));
+                    .map(c => ({ id: c.id, name: c.name, icon: c.icon, words: c.words, itemNoun: c.itemNoun || '' }));
 
                 await lobbyRef.set({
                     hostId: user.uid, 
@@ -8109,7 +8132,7 @@
 
                 if (gameMode === 'local') {
                     switch (localGameState) {
-                        case 'setup': return <SetupScreen onStartGame={startLocalGame} audioManager={audioManagerRef.current} onBack={handleBackToHome} displayCategories={displayCategories} wordBank={wordBank} customCategoryNames={customCategoryNames} />;
+                        case 'setup': return <SetupScreen onStartGame={startLocalGame} audioManager={audioManagerRef.current} onBack={handleBackToHome} displayCategories={displayCategories} wordBank={wordBank} customCategoryNames={customCategoryNames} customCategoryNouns={customCategoryNouns} />;
                         case 'pass':
                             const isFakeWordPlayer = localGameData.isFakeWordMode && localGameData.fakeWordPlayerIndices.includes(localCurrentPlayerIndex);
                             const isImposter = !localGameData.isFakeWordMode && localGameData.imposterIndices.includes(localCurrentPlayerIndex);
@@ -8136,7 +8159,7 @@
                     const onlineState = lobbyData.gameState;
                     
                     if (onlineState === 'waiting' || (onlineState === 'reveal' && meAsPlayer?.hasSeenCard)) {
-                         return <WaitingRoom lobbyData={lobbyData} lobbyPlayers={lobbyPlayers} user={user} lobbyId={lobbyId} onStartGame={handleStartGameOnline} onStartMission={handleStartMissionOnline} onLeaveLobby={() => isHost ? handleBackToHome() : setShowExitConfirmModal(true)} audioManager={audioManagerRef.current} onConfusionVote={handleConfusionVote} season={currentSeason} displayCategories={onlineDisplayCategories} wordBank={wordBank} customCategoryNames={customCategoryNames} />;
+                         return <WaitingRoom lobbyData={lobbyData} lobbyPlayers={lobbyPlayers} user={user} lobbyId={lobbyId} onStartGame={handleStartGameOnline} onStartMission={handleStartMissionOnline} onLeaveLobby={() => isHost ? handleBackToHome() : setShowExitConfirmModal(true)} audioManager={audioManagerRef.current} onConfusionVote={handleConfusionVote} season={currentSeason} displayCategories={onlineDisplayCategories} wordBank={wordBank} customCategoryNames={customCategoryNames} customCategoryNouns={customCategoryNouns} />;
                     }
                     if (onlineState === 'reveal' && !meAsPlayer?.hasSeenCard) {
                         const isFakeWordPlayerOnline = lobbyData.isFakeWordMode && lobbyData.fakeWordPlayerIds?.includes(user.uid);
