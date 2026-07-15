@@ -146,6 +146,7 @@
                     cursor: {
                         default: "url('https://impostiq.github.io/images/cursors/default.cur'), default",
                         pointer: "url('https://impostiq.github.io/images/cursors/pointer.cur'), pointer",
+                        help: "url('https://impostiq.github.io/images/cursors/help.cur'), help",
                         text: "url('https://impostiq.github.io/images/cursors/text.cur'), text",
                         'not-allowed': "url('https://impostiq.github.io/images/cursors/not-allowed.cur'), not-allowed",
                     },
@@ -223,6 +224,10 @@
         
         button:not(:disabled), a, [role="button"], .cursor-pointer { 
             cursor: url('https://impostiq.github.io/images/cursors/pointer.cur'), pointer !important; 
+        }
+        
+        .cursor-help {
+            cursor: url('https://impostiq.github.io/images/cursors/help.cur'), help !important;
         }
         
         input, textarea, .cursor-text { 
@@ -619,6 +624,13 @@
                 }
             };
 
+            // Safely clear the auto-close timer only on true unmount to prevent leaks
+            useEffect(() => {
+                return () => {
+                    clearTimeout(timerRef.current);
+                };
+            }, []);
+
             useEffect(() => {
                 const handleCloseEvents = (e) => {
                     if (e && e.type === 'mousedown' && containerRef.current && containerRef.current.contains(e.target)) {
@@ -648,7 +660,6 @@
                         document.removeEventListener('touchstart', handleCloseEvents);
                         document.removeEventListener('scroll', handleCloseEvents, { capture: true });
                     }
-                    clearTimeout(timerRef.current);
                     clearTimeout(fadeTimerRef.current);
                 };
             }, [isVisible]);
@@ -656,7 +667,7 @@
             return (
                 <div 
                     ref={containerRef} 
-                    className="w-8 h-8 inline-flex items-center justify-center flex-shrink-0"
+                    className="w-8 h-8 inline-flex items-center justify-center flex-shrink-0 cursor-help"
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                     onClick={handleTouchOrClick}
@@ -2448,7 +2459,7 @@
                                                 <div className="flex items-center gap-3 flex-shrink-0">
                                                     <span className="text-xs font-bold text-white/30 tracking-wider select-none">{[...newCatNoun].length}/15</span>
                                                     <Tooltip text="Define a custom name for your items (e.g. 'Players' or 'Shows') to display in the category details. Leave empty to use the default 'Words'.">
-                                                        <div className="w-full h-full flex items-center justify-center text-white/30 hover:text-white/80 transition-all cursor-pointer">
+                                                        <div className="w-full h-full flex items-center justify-center text-white/30 hover:text-white/80 transition-all cursor-help">
                                                             <svg xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" className="w-[18px] h-[18px] fill-current">
                                                                 <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,20a1,1,0,1,1,1-1A1,1,0,0,1,12,20Zm1.93-7.494A1.982,1.982,0,0,0,13,14.257V15a1,1,0,0,1-2,0v-.743a3.954,3.954,0,0,1,1.964-3.5,2,2,0,0,0,1-2.125,2.024,2.024,0,0,0-1.6-1.595A2,2,0,0,0,10,9,1,1,0,0,1,8,9a4,4,0,1,1,5.93,3.505Z"/>
                                                             </svg>
