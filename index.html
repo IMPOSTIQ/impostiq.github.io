@@ -1315,8 +1315,8 @@
                 spyScaleClass = spyMapping[cleanName].size;
             }
 
-            const isAlreadyCached = globalAvatarCache.has(avatarUrl);
-            const [isLoaded, setIsLoaded] = useState(isAlreadyCached);
+            const isCurrentlyCached = globalAvatarCache.has(avatarUrl);
+            const [isLoaded, setIsLoaded] = useState(isCurrentlyCached);
             const imgRef = useRef(null);
 
             useEffect(() => {
@@ -1342,23 +1342,23 @@
                 setIsLoaded(true);
             };
 
+            const showImage = isCurrentlyCached || isLoaded;
+
             return (
                 <div className={`flex-shrink-0 flex items-center justify-center bg-white/5 border border-white/5 overflow-hidden w-4 h-4 rounded-[0.5rem] relative ${className}`}>
-                    {}
-                    <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out ${(!isLoaded && !isAlreadyCached) ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                    <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out ${!showImage ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                         <svg className="sleek-spinner w-[60%] h-[60%] text-white/60 drop-shadow-sm" viewBox="25 25 50 50">
 							<circle cx="50" cy="50" r="20" fill="none" strokeWidth="6" stroke="currentColor" strokeLinecap="round"></circle>
 						</svg>
                     </div>
 										
-                    {}
                     <img
                         ref={imgRef}
                         src={avatarUrl}
                         alt={`${name}'s avatar`}
                         draggable="false"
                         onLoad={handleLoad}
-                        className={`w-full h-full object-contain transition-opacity duration-300 ${(isLoaded || isAlreadyCached) ? 'opacity-100' : 'opacity-0'} ${isSpy ? `${spyScaleClass} drop-shadow-sm` : ''}`}
+                        className={`w-full h-full object-contain transition-opacity duration-300 ${showImage ? 'opacity-100' : 'opacity-0'} ${isSpy ? `${spyScaleClass} drop-shadow-sm` : ''}`}
                         onError={handleError}
                     />
                 </div>
@@ -4501,7 +4501,8 @@
 						src={name} 
 						alt="icon" 
 						draggable="false" 
-						onError={() => {
+						onError={(e) => {
+							e.target.style.display = 'none';
 							globalCategoryErrorCache.add(name);
 							setFailedUrls(prev => ({ ...prev, [name]: true }));
 						}} 
