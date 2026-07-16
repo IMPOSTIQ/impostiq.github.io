@@ -4668,49 +4668,66 @@
         };
         
         const CategoryInfoModal = ({ category, onClose, wordBank, customCategoryNames = {}, customCategoryNouns = {} }) => {
-            if (!category || !wordBank) return null;
-            
-            const categoryWords = wordBank[category];
-            if (!categoryWords) return null;
-            
-            const examples = categoryWords.slice(0, 8).join(", ");
-            const remainingCount = categoryWords.length - 8;
-            const icon = CATEGORY_ICONS[category];
-            const catName = customCategoryNames[category] || category;
-            const itemNoun = customCategoryNouns[category] || 'Words';
+			if (!category || !wordBank) return null;
+			
+			const categoryWords = wordBank[category];
+			if (!categoryWords) return null;
+			
+			const examples = categoryWords.slice(0, 8).join(", ");
+			const remainingCount = categoryWords.length - 8;
+			const icon = CATEGORY_ICONS[category];
+			const catName = customCategoryNames[category] || category;
+			const itemNoun = customCategoryNouns[category] || 'Words';
 
-            return (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose}></div>
-                    <div className="relative w-full max-w-sm glass-panel rounded-3xl p-6 border border-white/5 shadow-2xl animate-slide-up transform transition-all">
-                        <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10">
-                            <FaIcon name="icon-xmark" className="" />
-                        </button>
-                        
-                        <div className="flex flex-col items-center text-center mb-3 mt-2">
-                            <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 bg-brand-500/20 ring-1 ring-white/10">
-                                <FaIcon key={icon} name={icon} sizeClass="text-3xl" className="text-brand-400 w-11 h-11" purpleSpinner={true} />
-                            </div>
-                            <h2 className="text-2xl font-display font-bold text-white leading-tight line-clamp-3 px-2 break-words">{catName}</h2>
-                            <p className="text-white/40 text-xs font-bold tracking-widest uppercase mt-1">Category Info</p>
-                        </div>
-                        
-                        <div className="bg-black/20 border border-white/5 rounded-2xl overflow-hidden flex flex-col w-full">
-                            <div className="text-center py-2.5 bg-[#060913] border-b border-white/5 flex items-center justify-center gap-1.5 flex-shrink-0">
-                                <FaIcon name="icon-list-ul" className="text-brand-400 text-xs" />
-                                <h3 className="text-xs font-bold tracking-wider text-white/80 uppercase">Examples</h3>
-                            </div>
-                            <div className="overflow-y-auto no-scrollbar max-h-36 px-4 pt-2.5 pb-2.5">
-                                <p className="text-white/90 text-sm leading-relaxed mb-0">
-                                    {examples}{remainingCount > 0 ? `, and ${remainingCount < 10 ? remainingCount : `${Math.floor(remainingCount / 10) * 10}+`} more` : ''}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-        
+			const countText = `${categoryWords.length} ${smartCapitalize(itemNoun)}`;
+			const [showCount, setShowCount] = useState(false);
+
+			useEffect(() => {
+				const interval = setInterval(() => {
+					setShowCount(prev => !prev);
+				}, 6000);
+				return () => clearInterval(interval);
+			}, []);
+
+			return (
+				<div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
+					<div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose}></div>
+					<div className="relative w-full max-w-sm glass-panel rounded-3xl p-6 border border-white/5 shadow-2xl animate-slide-up transform transition-all">
+						<button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10">
+							<FaIcon name="icon-xmark" className="" />
+						</button>
+						
+						<div className="flex flex-col items-center text-center mb-3 mt-2">
+							<div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 bg-brand-500/20 ring-1 ring-white/10">
+								<FaIcon key={icon} name={icon} sizeClass="text-3xl" className="text-brand-400 w-11 h-11" purpleSpinner={true} />
+							</div>
+							<h2 className="text-2xl font-display font-bold text-white leading-tight line-clamp-3 px-2 break-words">{catName}</h2>
+							<div className="relative h-4 mt-1.5 flex items-center justify-center w-full">
+								<span className={`absolute transition-opacity duration-[1500ms] ease-in-out text-white/40 text-xs font-bold tracking-widest uppercase text-center truncate w-full ${showCount ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+									{countText}
+								</span>
+								<span className={`absolute transition-opacity duration-[1500ms] ease-in-out text-white/40 text-xs font-bold tracking-widest uppercase text-center truncate w-full ${!showCount ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+									Category Info
+								</span>
+							</div>
+						</div>
+						
+						<div className="bg-black/20 border border-white/5 rounded-2xl overflow-hidden flex flex-col w-full">
+							<div className="text-center py-2.5 bg-[#060913] border-b border-white/5 flex items-center justify-center gap-1.5 flex-shrink-0">
+								<FaIcon name="icon-list-ul" className="text-brand-400 text-xs" />
+								<h3 className="text-xs font-bold tracking-wider text-white/80 uppercase">Examples</h3>
+							</div>
+							<div className="overflow-y-auto no-scrollbar max-h-36 px-4 pt-2.5 pb-2.5">
+								<p className="text-white/90 text-sm leading-relaxed mb-0">
+									{examples}{remainingCount > 0 ? `, and ${remainingCount < 10 ? remainingCount : `${Math.floor(remainingCount / 10) * 10}+`} more` : ''}
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			);
+		};
+				
         const RemovedModal = ({ onClose }) => {
             return (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 animate-fadeIn">
