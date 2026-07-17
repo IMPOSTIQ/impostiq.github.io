@@ -2368,13 +2368,13 @@
                         <div className="flex flex-col gap-3">
                             <button
                                 onClick={() => onVote('knows')}
-                                className="w-full bg-green-500/80 hover:bg-green-500 text-white font-display font-bold py-4 rounded-xl active:scale-95 transition-all"
+                                className="w-full bg-green-600 hover:bg-green-500 text-white font-display font-bold py-3 rounded-xl active:scale-95 transition-all"
                             >
                                 Yes, I know the word
                             </button>
                             <button
                                 onClick={() => onVote('confused')}
-                                className="w-full bg-red-500/80 hover:bg-red-500 text-white font-display font-bold py-4 rounded-xl active:scale-95 transition-all"
+                                className="w-full bg-red-600 hover:bg-red-500 text-white font-display font-bold py-3 rounded-xl active:scale-95 transition-all"
                             >
                                 No, me neither
                             </button>
@@ -2390,13 +2390,13 @@
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose}></div>
                     <div className="relative w-full max-w-sm glass-panel rounded-3xl p-8 border border-white/5 shadow-2xl animate-slide-up text-center">
                         <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6 bg-red-500/20 ring-1 ring-white/10 mx-auto">
-                            <FaIcon name="icon-triangle-exclamation" className=" text-4xl text-red-400 animate-pulse" />
+                            <FaIcon name="icon-triangle-exclamation" className=" text-4xl text-red-400" />
                         </div>
                         <h2 className="text-2xl font-display font-bold text-white mb-2">Agent Confusion Detected</h2>
                         <p className="text-white/60 mb-8">An agent has reported they do not recognize the secret word. A secret poll is now active. Maintain your cover.</p>
                         <button
                             onClick={onClose}
-                            className="w-full bg-white/10 hover:bg-white/20 text-white font-display font-bold py-4 rounded-xl active:scale-95 transition-all"
+                            className="w-full bg-white/10 hover:bg-white/20 text-white font-display font-bold py-3 rounded-xl active:scale-95 transition-all"
                         >
                             DISMISS
                         </button>
@@ -2420,7 +2420,7 @@
                         <p className="text-white/60 mb-8">A new word and imposter have been selected.</p>
                         <button
                             onClick={onClose}
-                            className="w-full bg-white/10 hover:bg-white/20 text-white font-display font-bold py-4 rounded-xl active:scale-95 transition-all"
+                            className="w-full bg-white/10 hover:bg-white/20 text-white font-display font-bold py-3 rounded-xl active:scale-95 transition-all"
                         >
                             GOT IT
                         </button>
@@ -3835,13 +3835,13 @@
             ), 
             "icon-circle-question": (props) => (
                 <svg viewBox="0 0 24 24" width="0.8em" {...props}>
-                    <path fill="currentColor" d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,20a1,1,0,1,1,1-1A1,1,0,0,1,12,20Zm1.93-7.494A1.982,1.982,0,0,0,13,14.257V15a1,1,0,0,1-2,0v-.743a3.954,3.954,0,0,1,1.964-3.5,2,2,0,0,0,1-2.125,2.024,2.024,0,0,0-1.6-1.595A2,2,0,0,0,10,9,1,1,0,0,1,8,9a4,4,0,1,1,5.93,3.505Z" />
-                </svg>
+                    <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,21a9,9,0,1,1,9-9A9.01,9.01,0,0,1,12,21Z"/><circle cx="12.005" cy="17.5" r="1.5"/><path d="M12.757,4.987a4.25,4.25,0,0,0-5,4.181,1.5,1.5,0,0,0,3,0,1.248,1.248,0,1,1,1.847,1.1,3.323,3.323,0,0,0-2.038,3.158,1.5,1.5,0,0,0,3,0,1.274,1.274,0,0,1,.016-.218,1.852,1.852,0,0,1,.471-.313,4.248,4.248,0,0,0-1.292-7.9Z"/>
+				</svg>
             ), 
             "icon-circle-question-modal": (props) => (
-                <svg viewBox="0 0 25 25" width="1em" {...props}>
-                    <path fill="currentColor" d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,20a1,1,0,1,1,1-1A1,1,0,0,1,12,20Zm1.93-7.494A1.982,1.982,0,0,0,13,14.257V15a1,1,0,0,1-2,0v-.743a3.954,3.954,0,0,1,1.964-3.5,2,2,0,0,0,1-2.125,2.024,2.024,0,0,0-1.6-1.595A2,2,0,0,0,10,9,1,1,0,0,1,8,9a4,4,0,1,1,5.93,3.505Z" />
-                </svg>
+                <svg viewBox="0 0 24 24" width="1.1em" {...props}>
+                    <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,21a9,9,0,1,1,9-9A9.01,9.01,0,0,1,12,21Z"/><circle cx="12.005" cy="17.5" r="1.5"/><path d="M12.757,4.987a4.25,4.25,0,0,0-5,4.181,1.5,1.5,0,0,0,3,0,1.248,1.248,0,1,1,1.847,1.1,3.323,3.323,0,0,0-2.038,3.158,1.5,1.5,0,0,0,3,0,1.274,1.274,0,0,1,.016-.218,1.852,1.852,0,0,1,.471-.313,4.248,4.248,0,0,0-1.292-7.9Z"/>
+				</svg>
             ), 
             "icon-mode": (props) => (
                 <svg viewBox="0 0 25 25" width="0.8em" {...props}>
@@ -4054,8 +4054,9 @@
                 </svg>
             ), 
             "icon-circle-exclamation": (props) => (
-                <svg viewBox="0 0 540 510" width="1.1em" {...props}>
-                    <path fill="currentColor" d="M256,512c141.385,0,256-114.615,256-256S397.385,0,256,0S0,114.615,0,256C0.153,397.322,114.678,511.847,256,512zM234.667,128c0-11.782,9.551-21.333,21.333-21.333c11.782,0,21.333,9.551,21.333,21.333v170.667c0,11.782-9.551,21.333-21.333,21.333c-11.782,0-21.333-9.551-21.333-21.333V128zM256,384c11.782,0,21.333,9.551,21.333,21.333s-9.551,21.333-21.333,21.333c-11.782,0-21.333-9.551-21.333-21.333S244.218,384,256,384z" />
+                <svg viewBox="0 0 512 512" width="1.1em" {...props}>
+                    <path d="M256 0C114.615 0 0 114.615 0 256s114.615 256 256 256 256-114.615 256-256C511.847 114.678 397.322.153 256 0m0 448c-106.039 0-192-85.961-192-192S149.961 64 256 64s192 85.961 192 192c-.118 105.99-86.01 191.882-192 192"/><path d="M256 321.941c17.673 0 32-14.327 32-32V140.608c0-17.673-14.327-32-32-32s-32 14.327-32 32v149.333c0 17.673 14.327 32 32 32"/>
+					<circle cx="256.107" cy="373.333" r="32" />
                 </svg>
             ), 
             "icon-rotate": (props) => (
@@ -4069,7 +4070,7 @@
                 </svg>
             ),
             "icon-triangle-exclamation": (props) => (
-                <svg viewBox="0 0 24 24" width="1em" {...props}>
+                <svg viewBox="0 0 24 24" width="1.1em" {...props}>
                     <path fill="currentColor" d="M13.5,10.5v5c0,.83-.67,1.5-1.5,1.5s-1.5-.67-1.5-1.5v-5c0-.83,.67-1.5,1.5-1.5s1.5,.67,1.5,1.5Zm-1.5,8.5c-.83,0-1.5,.67-1.5,1.5s.67,1.5,1.5,1.5,1.5-.67,1.5-1.5-.67-1.5-1.5-1.5Zm11.05-4.19L15.31,2.73c-.75-1.08-1.99-1.73-3.31-1.73s-2.56,.65-3.34,1.78L.99,14.76c-1.09,1.56-1.29,3.45-.52,4.92,.77,1.48,2.34,2.32,4.32,2.32h1.72c.83,0,1.5-.67,1.5-1.5s-.67-1.5-1.5-1.5h-1.72c-.48,0-1.33-.09-1.66-.71-.25-.48-.13-1.17,.35-1.87L11.15,4.44c.28-.4,.69-.44,.85-.44s.57,.04,.82,.39l7.74,12.08c.45,.64,.57,1.34,.32,1.82-.32,.62-1.18,.71-1.66,.71h-1.72c-.83,0-1.5,.67-1.5,1.5s.67,1.5,1.5,1.5h1.72c1.97,0,3.55-.85,4.32-2.32,.77-1.47,.57-3.36-.48-4.87Z" />
                 </svg>
             ), 
@@ -4847,7 +4848,7 @@
                             </button>
                             <button 
                                 onClick={onCancel}
-                                className="w-full bg-white/10 hover:bg-white/20 text-white/80 py-3 rounded-xl font-display font-bold text-base active:scale-95 transition-all"
+                                className="w-full bg-white/10 hover:bg-white/20 text-white/90 py-3 rounded-xl font-display font-bold text-base active:scale-95 transition-all"
                             >
                                 Cancel
                             </button>
