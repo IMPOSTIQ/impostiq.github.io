@@ -3254,7 +3254,7 @@
                             <section className="mb-6 glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                 <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                     <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
-                                        <FaIcon name={lobbyData.gameState === 'reveal' ? 'icon-list-ol' : 'icon-users'} className="text-brand-400 mr-1" /> 
+                                        <FaIcon name={lobbyData.gameState === 'reveal' ? 'icon-list-ol' : 'icon-users'} className={`text-brand-400 ${lobbyData.gameState === 'reveal' ? 'mr-1' : 'mr-1.5'}`} /> 
                                         {lobbyData.gameState === 'reveal' ? 'Mission Turn Order' : 'Agents'}
                                     </h2>
                                 </div>
@@ -3334,7 +3334,7 @@
                                 <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
                                 <div className="text-center py-3 bg-black/50 border-b border-white/5">
                                     <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
-                                        <FaIcon name="icon-gear" className=" text-brand-400 mr-1" /> Game Settings
+                                        <FaIcon name="icon-gear" className="text-brand-400 mr-1 -translate-y-[1px]" /> Game Settings
                                     </h2>
                                 </div>
                                 <div className="p-4 flex flex-col gap-3 max-h-[400px] overflow-y-auto no-scrollbar [overflow-anchor:none]">
@@ -4234,10 +4234,15 @@
                 </svg>
             ), 
             "icon-gear": (props) => (
-                <svg viewBox="0 0 512 512" width="0.8em" {...props}>
-                    <path fill="currentColor" d="M34.283,384c17.646,30.626,56.779,41.148,87.405,23.502c0.021-0.012,0.041-0.024,0.062-0.036l9.493-5.483c17.92,15.332,38.518,27.222,60.757,35.072V448c0,35.346,28.654,64,64,64s64-28.654,64-64v-10.944c22.242-7.863,42.841-19.767,60.757-35.115l9.536,5.504c30.633,17.673,69.794,7.167,87.467-23.467c17.673-30.633,7.167-69.794-23.467-87.467l0,0l-9.472-5.461c4.264-23.201,4.264-46.985,0-70.187l9.472-5.461c30.633-17.673,41.14-56.833,23.467-87.467c-17.673-30.633-56.833-41.14-87.467-23.467l-9.493,5.483C362.862,94.638,342.25,82.77,320,74.944V64c0-35.346-28.654-64-64-64s-64,28.654-64,64v10.944c-22.242,7.863-42.841,19.767-60.757,35.115l-9.536-5.525C91.073,86.86,51.913,97.367,34.24,128s-7.167,69.794,23.467,87.467l0,0l9.472,5.461c-4.264,23.201-4.264,46.985,0,70.187l-9.472,5.461C27.158,314.296,16.686,353.38,34.283,384zM256,170.667c47.128,0,85.333,38.205,85.333,85.333S303.128,341.333,256,341.333S170.667,303.128,170.667,256S208.872,170.667,256,170.667z" />
-                </svg>
+            	<svg viewBox="0 0 2048 2048" width="0.9em" {...props}>
+					<path fill="currentColor" d="M 636.471 177.47 C 655.551 176.663 677.783 177.228 697.178 177.228 L 806.821 177.23 L 1141.93 177.238 L 1328.09 177.222 C 1352.84 177.22 1406.51 175.9 1429 179.14 C 1463.37 184.225 1495.76 198.417 1522.8 220.243 C 1538.36 232.908 1551.84 247.924 1562.77 264.748 C 1571.93 278.629 1581.72 296.586 1590.15 311.177 L 1635.97 390.295 L 1777.14 633.843 L 1892.82 833.506 L 1929.72 896.952 C 1937.26 909.927 1946.62 925.149 1953.04 938.539 C 1963.1 959.177 1969.38 981.452 1971.58 1004.31 C 1977.37 1064.9 1958.24 1098.86 1929.55 1148.58 L 1889.13 1218.54 L 1754.25 1452.14 L 1620.8 1683.28 L 1584.99 1745.29 C 1573.89 1764.53 1562.9 1785.47 1548.57 1802.26 C 1512.9 1844.04 1467.27 1866.03 1413.23 1870.89 C 1355.42 1872.67 1289.78 1871.29 1231.33 1871.29 L 891.047 1871.27 L 717.868 1871.28 C 640.672 1871.32 582.374 1878 519.008 1822.72 C 505.777 1811.01 494.234 1797.53 484.71 1782.65 C 475.619 1768.75 466.141 1751.32 457.682 1736.68 L 413.74 1660.87 L 271.273 1415.06 L 155.029 1214.56 L 117.987 1150.74 C 110.162 1137.28 101.984 1123.77 94.9902 1109.83 C 70.2136 1060.46 69.2409 998.679 91.4848 948.23 C 98.0071 933.437 107.259 918.447 115.388 904.363 L 152.367 840.385 L 272.268 632.716 L 420.945 375.195 L 461.08 305.647 C 474.112 283.078 486.42 259.427 503.858 240.018 C 538.169 201.831 585.519 180.477 636.471 177.47 z M 1027.5 1343.71 C 1204.03 1341.74 1345.56 1197.08 1343.68 1020.55 C 1341.79 844.025 1197.21 702.42 1020.68 704.212 C 844.022 706.005 702.292 850.716 704.176 1027.37 C 706.06 1204.03 850.844 1345.69 1027.5 1343.71 z" />
+				</svg>
             ), 
+            "icon-gear-button": (props) => (
+				<svg viewBox="0 0 2048 2048" width="1.1em" {...props}>
+					<path fill="currentColor" d="M 636.471 177.47 C 655.551 176.663 677.783 177.228 697.178 177.228 L 806.821 177.23 L 1141.93 177.238 L 1328.09 177.222 C 1352.84 177.22 1406.51 175.9 1429 179.14 C 1463.37 184.225 1495.76 198.417 1522.8 220.243 C 1538.36 232.908 1551.84 247.924 1562.77 264.748 C 1571.93 278.629 1581.72 296.586 1590.15 311.177 L 1635.97 390.295 L 1777.14 633.843 L 1892.82 833.506 L 1929.72 896.952 C 1937.26 909.927 1946.62 925.149 1953.04 938.539 C 1963.1 959.177 1969.38 981.452 1971.58 1004.31 C 1977.37 1064.9 1958.24 1098.86 1929.55 1148.58 L 1889.13 1218.54 L 1754.25 1452.14 L 1620.8 1683.28 L 1584.99 1745.29 C 1573.89 1764.53 1562.9 1785.47 1548.57 1802.26 C 1512.9 1844.04 1467.27 1866.03 1413.23 1870.89 C 1355.42 1872.67 1289.78 1871.29 1231.33 1871.29 L 891.047 1871.27 L 717.868 1871.28 C 640.672 1871.32 582.374 1878 519.008 1822.72 C 505.777 1811.01 494.234 1797.53 484.71 1782.65 C 475.619 1768.75 466.141 1751.32 457.682 1736.68 L 413.74 1660.87 L 271.273 1415.06 L 155.029 1214.56 L 117.987 1150.74 C 110.162 1137.28 101.984 1123.77 94.9902 1109.83 C 70.2136 1060.46 69.2409 998.679 91.4848 948.23 C 98.0071 933.437 107.259 918.447 115.388 904.363 L 152.367 840.385 L 272.268 632.716 L 420.945 375.195 L 461.08 305.647 C 474.112 283.078 486.42 259.427 503.858 240.018 C 538.169 201.831 585.519 180.477 636.471 177.47 z M 1027.5 1343.71 C 1204.03 1341.74 1345.56 1197.08 1343.68 1020.55 C 1341.79 844.025 1197.21 702.42 1020.68 704.212 C 844.022 706.005 702.292 850.716 704.176 1027.37 C 706.06 1204.03 850.844 1345.69 1027.5 1343.71 z" />
+				</svg>
+			),
             "icon-scale-balanced": (props) => (
                 <svg viewBox="0 0 24 24" width="1.1em" {...props}>
                     <path fill="currentColor" d="M15,13.5c.219,6.249,9.441,5.76,8.937-.431l-2.572-8.575c-.447-1.492-1.795-2.494-3.353-2.494h-4.512v-.5c-.034-1.972-2.967-1.971-3,0v.5H5.988c-1.558,0-2.905,1.002-3.353,2.494L.063,13.069c-.396,2.599,1.85,4.953,4.436,4.931,2.585,.021,4.821-2.323,4.44-4.92L6.583,5h3.917V21H5.5c-1.972,.034-1.971,2.967,0,3h13c1.972-.034,1.971-2.967,0-3h-5V5h3.917l-2.357,8.08c-.039,.136-.06,.278-.06,.42ZM4.521,8.646l1.27,4.354H3.216l1.306-4.354Zm16.263,4.354h-2.576l1.27-4.354,1.306,4.354Z" />
@@ -5375,7 +5380,7 @@
 							  <section className="glass-panel rounded-[2rem] overflow-hidden border border-white/5 shadow-lg">
 								  <div className="text-center py-3 bg-black/50 border-b border-white/5">
 									  <h2 className="text-xs font-bold tracking-widest text-white/80 uppercase">
-										  <FaIcon name="icon-gear" className=" text-brand-400 mr-1" /> Game Settings
+										  <FaIcon name="icon-gear" className="text-brand-400 mr-1 -translate-y-[1px]" /> Game Settings
 									  </h2>
 								  </div>
 								  <div className="p-4 flex flex-col gap-3 max-h-[400px] overflow-y-auto no-scrollbar [overflow-anchor:none]">
@@ -6457,7 +6462,7 @@
             )
         };
 
-        const ResultScreen = ({ lobbyData, lobbyPlayers, onRestart, onBackToHome, onConfirmExit, audioManager, isHost, isLocal }) => {
+        const ResultScreen = ({ lobbyData, lobbyPlayers, onPlayAgain, onChangeSettings, onBackToHome, onConfirmExit, audioManager, isHost, isLocal }) => {
             const { gameResult, imposterIds, imposterIndices, fakeWordPlayerIds, fakeWordPlayerIndices, secretWord, fakeWord, turnOrder, players } = lobbyData;
             const isFakeWordMode = lobbyData.isFakeWordMode;
             
@@ -6539,7 +6544,7 @@
 
             return (
                 <div className={`flex flex-col h-[100dvh] relative z-10 animate-fadeIn ${ambientBgClass} transition-colors duration-1000`}>
-                    <div className="flex-1 overflow-y-auto no-scrollbar pb-40">
+                    <div className="flex-1 overflow-y-auto no-scrollbar pb-64">
                         <div className="max-w-lg mx-auto p-6 pt-16">
                             <div className="mb-8 text-center">
                                 <h1 className="text-4xl font-display font-black text-white mb-2 drop-shadow-lg tracking-tight">Mission Report</h1>
@@ -6620,17 +6625,29 @@
                     <div className="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-[#020617] via-[#020617] to-transparent z-50">
                         <div className="max-w-lg mx-auto pb-[env(safe-area-inset-bottom)] flex flex-col gap-3">
                             {isHost ? (
-                                <button 
-                                    onClick={() => {
-                                        if(navigator.vibrate) navigator.vibrate(20);
-                                        onRestart();
-                                    }}
-                                    disabled={notAllPlayersPresent}
-                                    className="w-full bg-white text-slate-950 py-5 rounded-[1.5rem] font-display font-bold text-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
-                                >
-                                    <FaIcon name="icon-rotate-right" className=" text-lg" />
-                                    {notAllPlayersPresent ? 'WAITING FOR PLAYERS' : 'PLAY AGAIN'}
-                                </button>
+                                <>
+                                    <button 
+                                        onClick={() => {
+                                            if(navigator.vibrate) navigator.vibrate(20);
+                                            onPlayAgain();
+                                        }}
+                                        disabled={notAllPlayersPresent}
+                                        className="w-full bg-white text-slate-950 py-5 rounded-[1.5rem] font-display font-bold text-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                                    >
+                                        <FaIcon name="icon-rotate-right" className=" text-lg" />
+                                        {notAllPlayersPresent ? 'WAITING FOR PLAYERS' : 'PLAY AGAIN'}
+                                    </button>
+                                    <button 
+                                        onClick={() => {
+                                            if(navigator.vibrate) navigator.vibrate(10);
+                                            onChangeSettings();
+                                        }}
+                                        disabled={notAllPlayersPresent}
+                                        className="w-full bg-white/5 backdrop-blur-md hover:bg-white/10 text-white/70 py-5 rounded-[1.5rem] font-display font-bold text-base active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        <FaIcon name="icon-gear-button" className="text-lg translate-y-[0px]" /> CHANGE SETTINGS
+                                    </button>
+                                </>
                             ) : (
                                 <button
                                     disabled={true}
@@ -7513,7 +7530,10 @@
                         }
 
                         if (previousData && data.gameState !== previousData.gameState) {
-                            if (previousData.gameState === 'waiting' && data.gameState === 'reveal') {
+                            if (previousData.gameState === 'result' && data.gameState === 'reveal') {
+                                setLobbyPlayers(prev => prev.map(p => ({ ...p, hasSeenCard: false })));
+                            }
+                            if ((previousData.gameState === 'waiting' || previousData.gameState === 'result') && data.gameState === 'reveal') {
                                 audioManagerRef.current.playSound(data.isRandomMode ? 'startRandomMission' : 'startMission');
                             }
                             if (previousData.gameState === 'result' && data.gameState === 'waiting') {
@@ -7626,8 +7646,7 @@
                     }
                     if (
                         user && lobbyId &&
-                        (previousGameStateRef.current === 'result' || previousGameStateRef.current === 'reveal' || previousGameStateRef.current === 'imposterGuess') &&
-                        lobbyData.gameState === 'waiting'
+                        (lobbyData.gameState === 'result' || lobbyData.gameState === 'waiting' || lobbyData.gameState === 'reveal')
                     ) {
                         db.collection('lobbies').doc(lobbyId).collection('players').doc(user.uid).update({
                             hasSeenCard: firebase.firestore.FieldValue.delete(),
@@ -7731,13 +7750,27 @@
                 } catch(e) {}
             };
 
-            const handleLocalRestart = () => {
-                audioManagerRef.current.playSound('playAgain');
+            const handleLocalPlayAgain = () => {
+                if (localGameData.players.length < 3) return;
+                const isRandomMode = localGameData.category === 'Mystery Mode' || !localGameData.category;
+                const enableTwo = (localGameData.imposterIndices && localGameData.imposterIndices.length > 1) || 
+                                  (localGameData.fakeWordPlayerIndices && localGameData.fakeWordPlayerIndices.length > 1);
+                
+                audioManagerRef.current.playSound(isRandomMode ? 'startRandomMission' : 'startMission');
+                startLocalGame(
+                    localGameData.players, 
+                    isRandomMode ? [] : [localGameData.category], 
+                    localGameData.duration, 
+                    isRandomMode, 
+                    localGameData.speakCategory, 
+                    enableTwo, 
+                    localGameData.isFakeWordMode
+                );
+            };
+
+            const handleLocalChangeSettings = () => {
+                audioManagerRef.current.playSound('uiClick');
                 setLocalGameState('setup');
-                setLocalGameData({
-                    players: [], imposterIndices: [], fakeWordPlayerIndices: [], secretWord: '', fakeWord: '', isFakeWordMode: false,
-                    duration: null, firstPlayer: '', category: '', speakCategory: false
-                });
             };
             
             const deleteLobby = async (lobbyIdToDelete) => {
@@ -8134,6 +8167,88 @@
                 }
             };
             
+            const handlePlayAgainOnline = async () => {
+                if (!lobbyData || user.uid !== lobbyData.hostId || lobbyData.gameState !== 'result') return;
+                if (lobbyPlayers.length < 3) return;
+
+                const voteCounts = {};
+                lobbyPlayers.forEach(p => {
+                    if (p.categoryVote) voteCounts[p.categoryVote] = (voteCounts[p.categoryVote] || 0) + 1;
+                });
+                const maxVotes = Math.max(0, ...Object.values(voteCounts));
+                const leaders = Object.keys(voteCounts).filter(k => voteCounts[k] === maxVotes);
+                
+                let finalCategory = 'Mystery Mode';
+                let isRandomMode = true;
+
+                if (maxVotes > 0) {
+                    if (leaders.length === 1) {
+                        finalCategory = leaders[0];
+                    } else {
+                        finalCategory = leaders[Math.floor(Math.random() * leaders.length)];
+                    }
+                    isRandomMode = finalCategory === 'Mystery Mode';
+                }
+
+                const validCategories = Object.keys(activeWordBank);
+
+                if (isRandomMode) {
+                    finalCategory = validCategories[Math.floor(Math.random() * validCategories.length)];
+                } 
+                else if (!activeWordBank[finalCategory]) {
+                    finalCategory = 'Movies';
+                }
+
+                const wordsForCategory = activeWordBank[finalCategory] || [];
+                if (wordsForCategory.length === 0) {
+                    finalCategory = 'Movies';
+                }
+
+                const actualWords = activeWordBank[finalCategory];
+                const availableWords = actualWords.filter(word => !(lobbyData.usedWords || []).includes(word));
+                
+                let wordPool = availableWords.length > 0 ? availableWords : actualWords;
+                const secretWord = wordPool[Math.floor(Math.random() * wordPool.length)];
+                
+                const mappedPlayers = lobbyPlayers.map(p => ({name: p.name, id: p.id}));
+                const turnOrderList = shuffleArray(mappedPlayers);
+                
+                const numRoguePlayers = lobbyData.enableTwoImposters && lobbyPlayers.length >= 10 ? 2 : 1;
+                
+                const allPlayerIds = turnOrderList.map(p => p.id);
+                const shuffledPlayerIds = shuffleArray([...allPlayerIds]);
+                const roguePlayerIds = shuffledPlayerIds.slice(0, numRoguePlayers);
+
+                let updatePayload = {
+                    secretWord,
+                    turnOrder: turnOrderList,
+                    category: finalCategory, 
+                    isRandomMode: isRandomMode,
+                    gameState: 'reveal',
+                    usedWords: firebase.firestore.FieldValue.arrayUnion(secretWord),
+                    gameResult: firebase.firestore.FieldValue.delete(),
+                    votingRecord: firebase.firestore.FieldValue.delete(),
+                    missionStartTime: firebase.firestore.FieldValue.delete(),
+                    duration: firebase.firestore.FieldValue.delete(),
+                    lastRestartReason: firebase.firestore.FieldValue.delete(),
+                    pendingResult: firebase.firestore.FieldValue.delete(),
+                    failedGuessers: firebase.firestore.FieldValue.delete()
+                };
+
+                if (lobbyData.isFakeWordMode) {
+                    wordPool = wordPool.filter(w => w !== secretWord);
+                    const fakeWord = wordPool.length > 0 ? wordPool[Math.floor(Math.random() * wordPool.length)] : secretWord;
+                    updatePayload.fakeWord = fakeWord;
+                    updatePayload.fakeWordPlayerIds = roguePlayerIds;
+                    updatePayload.imposterIds = []; 
+                } else {
+                    updatePayload.imposterIds = roguePlayerIds;
+                    updatePayload.fakeWordPlayerIds = []; 
+                }
+
+                await db.collection('lobbies').doc(lobbyId).update(updatePayload);
+            };
+
             const handleRestartOnline = async () => {
                 if (!lobbyData || user.uid !== lobbyData.hostId || lobbyData.gameState !== 'result') return;
                 
@@ -8214,7 +8329,7 @@
                         case 'result': 
                             return <ResultScreen 
                                 isLocal={true} lobbyData={localGameData} lobbyPlayers={localGameData.players} 
-                                onRestart={handleLocalRestart} onBackToHome={handleBackToHome} audioManager={audioManagerRef.current} isHost={true} 
+                                onPlayAgain={handleLocalPlayAgain} onChangeSettings={handleLocalChangeSettings} onBackToHome={handleBackToHome} audioManager={audioManagerRef.current} isHost={true} 
                             />;
                         default: return <SetupScreen onStartGame={startLocalGame} audioManager={audioManagerRef.current} onBack={handleBackToHome} displayCategories={displayCategories} wordBank={wordBank} activeWordBank={activeWordBank} customCategoryNames={customCategoryNames} />;
                     }
@@ -8262,7 +8377,7 @@
                     if (onlineState === 'result') {
                         return <ResultScreen 
                             isLocal={false} lobbyData={lobbyData} lobbyPlayers={lobbyPlayers}
-                            onRestart={handleRestartOnline} onBackToHome={handleBackToHome} 
+                            onPlayAgain={handlePlayAgainOnline} onChangeSettings={handleRestartOnline} onBackToHome={handleBackToHome} 
                             onConfirmExit={() => setShowExitConfirmModal(true)}
                             audioManager={audioManagerRef.current} isHost={isHost}
                         />;
