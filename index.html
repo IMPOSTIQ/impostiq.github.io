@@ -69,14 +69,6 @@
     
     <script>
 		(function() {
-			const isBot = /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent);
-			if (isBot) return; 
-			
-			const favicon = document.getElementById('dynamic-favicon');
-			if (!favicon) return;
-
-			let iconToLoad = "https://impostiq.github.io/images/favicon192.png";
-			
 			const getSeasonalInfo = () => {
 				const now = new Date();
 				const month = now.getMonth() + 1;
@@ -88,7 +80,29 @@
 			};
 
 			const season = getSeasonalInfo();
-			
+
+			const ogImages = {
+				halloween: "https://impostiq.github.io/images/ogimagehalloween.png",
+				christmas: "https://impostiq.github.io/images/ogimagechristmas.png"
+			};
+
+			if (ogImages[season]) {
+				const ogImg = document.getElementById('og-image');
+				const twitterImg = document.getElementById('twitter-image');
+				const ogSecure = document.querySelector('meta[property="og:image:secure_url"]');
+				if (ogImg) ogImg.content = ogImages[season];
+				if (twitterImg) twitterImg.content = ogImages[season];
+				if (ogSecure) ogSecure.content = ogImages[season];
+			}
+
+			const isBot = /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent);
+			if (isBot) return; 
+
+			const favicon = document.getElementById('dynamic-favicon');
+			if (!favicon) return;
+
+			let iconToLoad = "https://impostiq.github.io/images/favicon192.png";
+
 			if (season !== 'default') {
 				const cacheBuster = "?v=" + season + "-" + new Date().getFullYear(); 
 				const images = {
@@ -2429,6 +2443,33 @@
             );
         };
 
+        const renderFormattedShareText = (text) => {
+            if (!text) return null;
+            const emojiMap = {
+                '🎁': 'https://em-content.zobj.net/source/microsoft-teams/337/wrapped-gift_1f381.png',
+                '🎅🏻': 'https://em-content.zobj.net/source/microsoft-teams/337/santa-claus_light-skin-tone_1f385-1f3fb_1f3fb.png',
+                '🎅': 'https://em-content.zobj.net/source/microsoft-teams/337/santa-claus_light-skin-tone_1f385-1f3fb_1f3fb.png',
+                '🎃': 'https://em-content.zobj.net/source/microsoft-teams/337/jack-o-lantern_1f383.png',
+                '👻': 'https://em-content.zobj.net/source/microsoft-teams/337/ghost_1f47b.png'
+            };
+
+            const parts = text.split(/(🎁|🎅🏻|🎅|🎃|👻)/g);
+            return parts.map((part, index) => {
+                if (emojiMap[part]) {
+                    return (
+                        <img 
+                            key={index} 
+                            src={emojiMap[part]} 
+                            alt={part} 
+                            className="inline-block w-[1.15em] h-[1.15em] align-middle -mt-[2px] mx-[1px]" 
+                            draggable="false" 
+                        />
+                    );
+                }
+                return part;
+            });
+        };
+
         const CustomShareModal = ({ shareData, onClose, season }) => {
             const [copied, setCopied] = useState(false);
 
@@ -2504,13 +2545,23 @@
 
                         {}
                         <div className="bg-white/5 border border-white/5 rounded-xl p-3 mb-5 flex gap-3 items-center">
-                            <img src={"https://impostiq.github.io/images/displayimage512.png"} alt="Icon" className="w-10 h-10 rounded-lg flex-shrink-0 bg-black/20" />
+                            <img 
+                                src={
+                                    season === 'halloween'
+                                        ? "https://impostiq.github.io/images/displayimage512halloween.png"
+                                        : season === 'christmas'
+                                        ? "https://impostiq.github.io/images/displayimage512christma.png"
+                                        : "https://impostiq.github.io/images/displayimage512.png"
+                                } 
+                                alt="Icon" 
+                                className="w-10 h-10 rounded-lg flex-shrink-0 bg-black/20 object-cover" 
+                            />
                             <div className="flex flex-col min-w-0">
-                                <h3 className="text-white font-bold text-sm truncate">{shareData.title}</h3>
-                                <p className="text-white/40 text-[10px] truncate">{shareData.text}</p>
+                                <h3 className="text-white font-bold text-sm truncate">{renderFormattedShareText(shareData.title)}</h3>
+                                <p className="text-white/40 text-[10px] truncate">{renderFormattedShareText(shareData.text)}</p>
                             </div>
                         </div>
-
+						
                         {}
                         <div className="flex overflow-x-auto snap-x no-scrollbar gap-4 mb-5 pb-2 sm:pb-0 sm:grid sm:grid-cols-5 sm:gap-3 sm:overflow-visible relative">
                             {shareLinks.map(link => (
@@ -6670,6 +6721,8 @@
                 'https://wallpapers.com/images/high/a-dark-gothic-mansion-stands-atop-a-hill-surrounded-by-mist-and-eerie-trees-tsvco80iv9hdnf7a.webp',
                 'https://cdn.svgator.com/images/2022/12/snow-globe-city-animation.svg',
                 'https://impostiq.github.io/images/displayimage512.png',
+                'https://impostiq.github.io/images/displayimage512christmas.png',
+                'https://impostiq.github.io/images/displayimage512halloween.png',
 				'https://i.ibb.co/ycdC1cdc/supbackg.webp',
 				'https://i.ibb.co/mVTfv4C1/supercell-logo.webp',
                 'https://i.ibb.co/JwRBsVbQ/sponsor-backg.png',
