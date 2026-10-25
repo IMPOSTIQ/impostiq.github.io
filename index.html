@@ -69,6 +69,12 @@
     
     <script>
 		(function() {
+			const isBot = /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent);
+			if (isBot) return; 
+
+			const favicon = document.getElementById('dynamic-favicon');
+			if (!favicon) return;
+
 			const getSeasonalInfo = () => {
 				const now = new Date();
 				const month = now.getMonth() + 1;
@@ -80,27 +86,6 @@
 			};
 
 			const season = getSeasonalInfo();
-
-			const ogImages = {
-				halloween: "https://impostiq.github.io/images/ogimagehalloween.png",
-				christmas: "https://impostiq.github.io/images/ogimagechristmas.png"
-			};
-
-			if (ogImages[season]) {
-				const ogImg = document.getElementById('og-image');
-				const twitterImg = document.getElementById('twitter-image');
-				const ogSecure = document.querySelector('meta[property="og:image:secure_url"]');
-				if (ogImg) ogImg.content = ogImages[season];
-				if (twitterImg) twitterImg.content = ogImages[season];
-				if (ogSecure) ogSecure.content = ogImages[season];
-			}
-
-			const isBot = /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent);
-			if (isBot) return; 
-
-			const favicon = document.getElementById('dynamic-favicon');
-			if (!favicon) return;
-
 			let iconToLoad = "https://impostiq.github.io/images/favicon192.png";
 
 			if (season !== 'default') {
