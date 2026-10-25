@@ -7447,6 +7447,11 @@
                 setIsMuted(newMutedState);
                 try {
                     localStorage.setItem('imposter_isMuted', JSON.stringify(newMutedState));
+                    window.dispatchEvent(new Event('storage'));
+                    const iframe = document.querySelector('iframe[title="Communigories"]');
+                    if (iframe && iframe.contentWindow) {
+                        iframe.contentWindow.postMessage({ type: 'SET_MUTE', isMuted: newMutedState }, '*');
+                    }
                 } catch (error) {
                     console.error("Could not save mute state to local storage:", error);
                 }
