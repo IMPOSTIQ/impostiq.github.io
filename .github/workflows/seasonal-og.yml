@@ -1,0 +1,45 @@
+name: Auto Seasonal OG Image
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-og:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check date and update index.html
+        run: |
+          MONTH=$(date -u +%-m)
+          DAY=$(date -u +%-d)
+
+          if { [ "$MONTH" -eq 10 ] && [ "$DAY" -ge 24 ]; } || { [ "$MONTH" -eq 11 ] && [ "$DAY" -le 7 ]; }; then
+            TARGET_IMAGE="https://impostiq.github.io/images/ogimagehalloween.png"
+          elif { [ "$MONTH" -eq 12 ] && [ "$DAY" -ge 18 ]; } || { [ "$MONTH" -eq 1 ] && [ "$DAY" -le 1 ]; }; then
+            TARGET_IMAGE="https://impostiq.github.io/images/ogimagechristmas.png"
+          else
+            TARGET_IMAGE="https://impostiq.github.io/images/ogimage.png"
+          fi
+
+          echo "Target image: $TARGET_IMAGE"
+
+          sed -i -E "s|content=\"https://impostiq\.github\.io/images/ogimage[a-z]*\.png\"|content=\"$TARGET_IMAGE\"|g" index.html
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet index.html; then
+            echo "No change needed."
+          else
+            git add index.html
+            git commit -m "Auto update seasonal OG preview image"
+            git push
+          fi
