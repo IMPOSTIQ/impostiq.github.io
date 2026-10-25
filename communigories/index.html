@@ -1794,11 +1794,37 @@
                 }
             }, [isMuted]);
 
+            useEffect(() => {
+                const syncMuteState = () => {
+                    try {
+                        const saved = localStorage.getItem('imposter_isMuted');
+                        if (saved !== null) {
+                            setIsMuted(JSON.parse(saved));
+                        }
+                    } catch (e) {}
+                };
+
+                const handleMessage = (event) => {
+                    if (event.data && event.data.type === 'SET_MUTE') {
+                        setIsMuted(Boolean(event.data.isMuted));
+                    }
+                };
+
+                window.addEventListener('storage', syncMuteState);
+                window.addEventListener('message', handleMessage);
+
+                return () => {
+                    window.removeEventListener('storage', syncMuteState);
+                    window.removeEventListener('message', handleMessage);
+                };
+            }, []);
+
             const handleMuteToggle = () => {
                 const newMutedState = !isMuted;
                 setIsMuted(newMutedState);
                 try {
                     localStorage.setItem('imposter_isMuted', JSON.stringify(newMutedState));
+                    window.dispatchEvent(new Event('storage'));
                 } catch (e) {}
             };
             
