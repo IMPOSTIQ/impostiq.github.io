@@ -1308,26 +1308,30 @@
             (seed) => `https://api.dicebear.com/10.x/cameo/svg?backgroundColor=16161a&knotVariant=&hairVariant=bangs,bowl,cap,frame,side,wave&bodyColor=e7799e,e68171,d68f51,5ab972,5ab4a4,5ab0bf,58aae1,889ee4,ae8fe4,e667de&shapeVariant=jaw,round,squircle&seed=${encodeURIComponent(seed)}`
         ];
 
+        let avatarPreloadTimer = null;
         const preloadAllAvatarStyles = (name) => {
             if (!name || !name.trim()) return;
-            const clean = name.trim().toLowerCase();
-            if (clean === 'james bond' || clean === '007') {
-                const spyUrl = clean === 'james bond' ? "https://i.ibb.co/dsFZzTPB/jamesbond.jpg" : "https://i.ibb.co/6cGRkF9h/007.png";
-                if (!globalAvatarCache.has(spyUrl)) {
-                    const img = new Image();
-                    img.onload = () => globalAvatarCache.add(spyUrl);
-                    img.src = spyUrl;
+            clearTimeout(avatarPreloadTimer);
+            avatarPreloadTimer = setTimeout(() => {
+                const clean = name.trim().toLowerCase();
+                if (clean === 'james bond' || clean === '007') {
+                    const spyUrl = clean === 'james bond' ? "https://i.ibb.co/dsFZzTPB/jamesbond.jpg" : "https://i.ibb.co/6cGRkF9h/007.png";
+                    if (!globalAvatarCache.has(spyUrl)) {
+                        const img = new Image();
+                        img.onload = () => globalAvatarCache.add(spyUrl);
+                        img.src = spyUrl;
+                    }
+                    return;
                 }
-                return;
-            }
-            AVATAR_STYLES.forEach((styleFn) => {
-                const url = styleFn(name.trim());
-                if (!globalAvatarCache.has(url)) {
-                    const img = new Image();
-                    img.onload = () => globalAvatarCache.add(url);
-                    img.src = url;
-                }
-            });
+                AVATAR_STYLES.forEach((styleFn) => {
+                    const url = styleFn(name.trim());
+                    if (!globalAvatarCache.has(url)) {
+                        const img = new Image();
+                        img.onload = () => globalAvatarCache.add(url);
+                        img.src = url;
+                    }
+                });
+            }, 120);
         };
 
         const getAvatarUrl = (name, styleIndex = 0) => {
@@ -1355,6 +1359,7 @@
 
             const isCurrentlyCached = globalAvatarCache.has(avatarUrl);
             const [isLoaded, setIsLoaded] = useState(isCurrentlyCached);
+            const [hasError, setHasError] = useState(false);
             const imgRef = useRef(null);
 
             useEffect(() => {
@@ -1362,6 +1367,10 @@
             }, [name]);
 
             useEffect(() => {
+                setHasError(false);
+                if (imgRef.current) {
+                    imgRef.current.style.display = 'block';
+                }
                 if (globalAvatarCache.has(avatarUrl)) {
                     setIsLoaded(true);
                 } else {
@@ -1374,38 +1383,45 @@
             }, [avatarUrl]);
 
             const handleLoad = () => {
+                setHasError(false);
                 globalAvatarCache.add(avatarUrl);
                 setIsLoaded(true);
             };
 
-            const handleError = (e) => {
-                e.target.style.display = 'none';
-                globalAvatarCache.add(avatarUrl);
+            const handleError = () => {
+                globalAvatarCache.delete(avatarUrl);
+                setHasError(true);
                 setIsLoaded(true);
             };
 
-            const showImage = isCurrentlyCached || isLoaded;
+            const showImage = !hasError && (isCurrentlyCached || isLoaded);
 
             return (
                 <div 
                     onClick={onClick}
                     className={`flex-shrink-0 flex items-center justify-center bg-white/5 border border-white/5 overflow-hidden w-4 h-4 rounded-[0.5rem] relative ${onClick ? 'cursor-pointer active:scale-90 transition-transform' : ''} ${className}`}
                 >
-                    <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out ${!showImage ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                    <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out ${!showImage && !hasError ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                         <svg className="sleek-spinner w-[60%] h-[60%] text-white/60 drop-shadow-sm" viewBox="25 25 50 50">
 							<circle cx="50" cy="50" r="20" fill="none" strokeWidth="6" stroke="currentColor" strokeLinecap="round"></circle>
 						</svg>
                     </div>
-										
-                    <img
-                        ref={imgRef}
-                        src={avatarUrl}
-                        alt={`${name}'s avatar`}
-                        draggable="false"
-                        onLoad={handleLoad}
-                        className={`w-full h-full ${isSpy ? 'object-cover' : 'object-contain'} transition-opacity duration-300 ${showImage ? 'opacity-100' : 'opacity-0'}`}
-                        onError={handleError}
-                    />
+
+                    {hasError ? (
+                        <div className="absolute inset-0 flex items-center justify-center text-white/40 text-xs font-bold font-display select-none">
+                            {cleanName.slice(0, 2).toUpperCase()}
+                        </div>
+                    ) : (
+                        <img
+                            ref={imgRef}
+                            src={avatarUrl}
+                            alt={`${name}'s avatar`}
+                            draggable="false"
+                            onLoad={handleLoad}
+                            className={`w-full h-full ${isSpy ? 'object-cover' : 'object-contain'} transition-opacity duration-300 ${showImage ? 'opacity-100' : 'opacity-0'}`}
+                            onError={handleError}
+                        />
+                    )}
                 </div>
             );
         };
