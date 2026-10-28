@@ -53,8 +53,8 @@
 	
     <meta property="og:title" content="Impostiq • Find the Spy" />
     <meta property="og:url" content="https://impostiq.github.io" />
-    <meta property="og:image" id="og-image" content="https://impostiq.github.io/images/ogimagehalloween.png" />
-    <meta property="og:image:secure_url" content="https://impostiq.github.io/images/ogimagehalloween.png" />
+    <meta property="og:image" id="og-image" content="https://impostiq.github.io/images/ogimage.png" />
+    <meta property="og:image:secure_url" content="https://impostiq.github.io/images/ogimage.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -64,7 +64,7 @@
     
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Impostiq • Find the Spy" />
-    <meta name="twitter:image" id="twitter-image" content="https://impostiq.github.io/images/ogimagehalloween.png" />
+    <meta name="twitter:image" id="twitter-image" content="https://impostiq.github.io/images/ogimage.png" />
     <meta name="twitter:description" content="Can you blend in? Find the spy before time runs out. Play with friends online or on one device!" />
     
     <script>
@@ -678,7 +678,7 @@
             <li><strong>Theme:</strong> Dark mode (Deep Slate background #020617) heavily utilizing glassmorphism (translucent panels with blur). Primary brand color is Violet/Purple (#8b5cf6).</li>
             <li><strong>Icons:</strong> The game utilizes custom SVG Flaticon Rounded Interface Solid/Bold icons instead of standard icon fonts to ensure high-performance rendering and a modern aesthetic.</li>
             <li><strong>Role Color Coding:</strong> <strong>Teal</strong> for Agents, <strong>Red</strong> for Imposters, and <strong>Yellow</strong> for Fake Word players or system alerts.</li>
-            <li><strong>Avatars:</strong> Auto-generated using the Dicebear API based on the player's typed name. <em>Easter Egg:</em> Typing "James Bond" or "007" bypasses the generator and assigns a special secret different coloured avatar with similar styling to the auto-generated avatars!</li>
+            <li><strong>Avatars & Interactive Style Selector:</strong> Every player's avatar is generated dynamically using Dicebear 10.x. As soon as a user starts typing their name in the input box, a live rounded square avatar preview block appears on the right edge of the input. As characters are typed, the engine concurrently preloads all 7 custom vector themes (Gaze, Line Face, Marbles, Thumbs, Glyphs, Shape Grid, and Cameo) into the browser cache. Tapping or clicking this preview box triggers a tactile bounce animation, a sound effect, and immediately cycles through the 7 themes with zero lag or download delay. Hovering over the preview on desktop reveals a custom floating tooltip: <em>"Change Avatar Style"</em>, which automatically disappears upon scrolling or cursor exit. In Local Pass &amp; Play mode, every player added to the roster retains their chosen avatar style individually. In Online multiplayer lobbies, the selected avatar style is synchronized to Firebase Firestore and displays on all other participants' screens across the lobby list, category voting tallies, turn order sequence, live player reveals, and the post-match Voting Record screen. <em>Secret Agent Easter Eggs:</em> Entering classified codenames (such as "James Bond" or "007") bypasses the vector generator entirely and displays dedicated classified agent pictures.</li>
             <li><strong>Main Menu Flow & Buttons:</strong> 
                 <ul>
                     <li>Top-Right: Volume/Mute toggle (custom SVG of a speaker with/without soundwaves). State saves permanently to localStorage.</li>
@@ -1039,6 +1039,7 @@
             openInfo: "https://impostiq.github.io/sound/openinf.mp3",
             toggleMode: "https://impostiq.github.io/sound/togglemode.mp3",
             turnOrderReveal: "https://impostiq.github.io/sound/turnorder.mp3",
+            avatarStyle: "https://impostiq.github.io/sound/style.mp3",
             
             alarm: "https://impostiq.github.io/sound/alarm.mp3",
             imposterWin: "https://impostiq.github.io/sound/impwin.mp3",
@@ -1297,35 +1298,75 @@
 
         const globalAvatarCache = new Set();
 
-        const PlayerAvatar = ({ name, className = "" }) => {
+        const AVATAR_STYLES = [
+            (seed) => `https://api.dicebear.com/10.x/gaze/svg?backgroundColor=ececee&bodyColor=c9c9cd,aeaeb4,dcdce0,94949a&eyesVariant=bars,beans,big,dots,grin,happy,small,squint,tall,wide&seed=${encodeURIComponent(seed)}`,
+            (seed) => `https://api.dicebear.com/10.x/line-face/svg?backgroundColor=111113&inkColor=f2f2f4&seed=${encodeURIComponent(seed)}`,
+            (seed) => `https://api.dicebear.com/10.x/marbles/svg?backgroundColor=16161a&inkColor=f4f4f6&topVariant=afro,crimp,flick,spikes,swirl,zigzag&mouthVariant=grin,jagged,line,open,pout,small,smile,smirk,wavy&blendColor=fe9596,fe9a6e,fc9f13,68d54e,18d79b,17d2c7,17cde9,5ac3fe,8eb8fe,aeadfe,d19dfe,fe81ef,fe8fba&sphereColor=fe9596,fe9a6e,fc9f13,68d54e,18d79b,17d2c7,17cde9,5ac3fe,8eb8fe,aeadfe,d19dfe,fe81ef,fe8fba&noseVariant=&seed=${encodeURIComponent(seed)}`,
+            (seed) => `https://api.dicebear.com/10.x/thumbs/svg?backgroundColor=16161c&shapeColor=f2f2f4&eyesVariant=variant02,variant03,variant04,variant05,variant06,variant07,variant08&mouthVariant=variant01,variant02,variant03,variant04&seed=${encodeURIComponent(seed)}`,
+            (seed) => `https://api.dicebear.com/10.x/glyphs/svg?glyphColor=1f1f22&seed=${encodeURIComponent(seed)}`,
+            (seed) => `https://api.dicebear.com/10.x/shape-grid/svg?backgroundColor=16161c&seed=${encodeURIComponent(seed)}`,
+            (seed) => `https://api.dicebear.com/10.x/cameo/svg?backgroundColor=16161a&knotVariant=&hairVariant=bangs,bowl,cap,frame,side,wave&bodyColor=e7799e,e68171,d68f51,5ab972,5ab4a4,5ab0bf,58aae1,889ee4,ae8fe4,e667de&shapeVariant=jaw,round,squircle&seed=${encodeURIComponent(seed)}`
+        ];
+
+        const preloadAllAvatarStyles = (name) => {
+            if (!name || !name.trim()) return;
+            const clean = name.trim().toLowerCase();
+            if (clean === 'james bond' || clean === '007') {
+                const spyUrl = clean === 'james bond' ? "https://i.ibb.co/dsFZzTPB/jamesbond.jpg" : "https://i.ibb.co/6cGRkF9h/007.png";
+                if (!globalAvatarCache.has(spyUrl)) {
+                    const img = new Image();
+                    img.onload = () => globalAvatarCache.add(spyUrl);
+                    img.src = spyUrl;
+                }
+                return;
+            }
+            AVATAR_STYLES.forEach((styleFn) => {
+                const url = styleFn(name.trim());
+                if (!globalAvatarCache.has(url)) {
+                    const img = new Image();
+                    img.onload = () => globalAvatarCache.add(url);
+                    img.src = url;
+                }
+            });
+        };
+
+        const getAvatarUrl = (name, styleIndex = 0) => {
+            if (!name) return "";
+            const cleanName = name.trim().toLowerCase();
+            const spyMapping = {
+                'james bond': "https://i.ibb.co/dsFZzTPB/jamesbond.jpg",
+                '007': "https://i.ibb.co/6cGRkF9h/007.png"
+            };
+            if (spyMapping[cleanName]) {
+                return spyMapping[cleanName];
+            }
+            const idx = (typeof styleIndex === 'number' && styleIndex >= 0 && styleIndex < AVATAR_STYLES.length)
+                ? styleIndex
+                : 0;
+            return AVATAR_STYLES[idx](name.trim());
+        };
+
+        const PlayerAvatar = ({ name, avatarStyle = 0, className = "", onClick }) => {
             if (!name) return null;
             
             const cleanName = name.trim().toLowerCase();
-            
-            const spyMapping = {
-                'james bond': { url: "https://api.dicebear.com/9.x/thumbs/svg?seed=JamesBond&backgroundColor=99b0bf&shapeColor=020617" },
-                '007': { url: "https://api.dicebear.com/9.x/thumbs/svg?seed=Agent007&backgroundColor=99b0bf&shapeColor=0f172a" },
-            };
-            const isSpy = !!spyMapping[cleanName];
-            
-            let avatarUrl = `https://api.dicebear.com/9.x/thumbs/svg?seed=${encodeURIComponent(name)}&backgroundColor=transparent`;
-            let spyScaleClass = '';
-            
-            if (isSpy) {
-                avatarUrl = spyMapping[cleanName].url;
-                spyScaleClass = spyMapping[cleanName].size;
-            }
+            const isSpy = cleanName === 'james bond' || cleanName === '007';
+            const avatarUrl = getAvatarUrl(name, avatarStyle);
 
             const isCurrentlyCached = globalAvatarCache.has(avatarUrl);
             const [isLoaded, setIsLoaded] = useState(isCurrentlyCached);
             const imgRef = useRef(null);
 
             useEffect(() => {
+                preloadAllAvatarStyles(name);
+            }, [name]);
+
+            useEffect(() => {
                 if (globalAvatarCache.has(avatarUrl)) {
                     setIsLoaded(true);
                 } else {
                     setIsLoaded(false);
-                    if (imgRef.current && imgRef.current.complete) {
+                    if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth !== 0) {
                         globalAvatarCache.add(avatarUrl);
                         setIsLoaded(true);
                     }
@@ -1346,7 +1387,10 @@
             const showImage = isCurrentlyCached || isLoaded;
 
             return (
-                <div className={`flex-shrink-0 flex items-center justify-center bg-white/5 border border-white/5 overflow-hidden w-4 h-4 rounded-[0.5rem] relative ${className}`}>
+                <div 
+                    onClick={onClick}
+                    className={`flex-shrink-0 flex items-center justify-center bg-white/5 border border-white/5 overflow-hidden w-4 h-4 rounded-[0.5rem] relative ${onClick ? 'cursor-pointer active:scale-90 transition-transform' : ''} ${className}`}
+                >
                     <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out ${!showImage ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                         <svg className="sleek-spinner w-[60%] h-[60%] text-white/60 drop-shadow-sm" viewBox="25 25 50 50">
 							<circle cx="50" cy="50" r="20" fill="none" strokeWidth="6" stroke="currentColor" strokeLinecap="round"></circle>
@@ -1359,7 +1403,7 @@
                         alt={`${name}'s avatar`}
                         draggable="false"
                         onLoad={handleLoad}
-                        className={`w-full h-full object-contain transition-opacity duration-300 ${showImage ? 'opacity-100' : 'opacity-0'} ${isSpy ? `${spyScaleClass} drop-shadow-sm` : ''}`}
+                        className={`w-full h-full ${isSpy ? 'object-cover' : 'object-contain'} transition-opacity duration-300 ${showImage ? 'opacity-100' : 'opacity-0'}`}
                         onError={handleError}
                     />
                 </div>
@@ -2182,6 +2226,11 @@
             const [isJoining, setIsJoining] = useState(true);
             const [lobbyId, setLobbyId] = useState('');
             const [password, setPassword] = useState('');
+            const [avatarStyle, setAvatarStyle] = useState(() => {
+                try {
+                    return parseInt(localStorage.getItem('imposter_avatar_style') || '0', 10);
+                } catch { return 0; }
+            });
             
             const [username, setUsername] = useState(() => {
                 try {
@@ -2189,6 +2238,16 @@
                     return saved ? JSON.parse(saved) : '';
                 } catch { return ''; }
             });
+
+            const cycleAvatarStyle = (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				const nextStyle = (avatarStyle + 1) % AVATAR_STYLES.length;
+				setAvatarStyle(nextStyle);
+				localStorage.setItem('imposter_avatar_style', nextStyle.toString());
+				if (audioManager) audioManager.playSound('avatarStyle');
+				if (navigator.vibrate) navigator.vibrate(10);
+			};
             
             const [error, setError] = useState('');
             const errorRef = useRef('');
@@ -2231,9 +2290,9 @@
                             setIsLoading(false);
                             return;
                         }
-                        await onJoin(lobbyId.toUpperCase(), password.toUpperCase(), username.trim());
+                        await onJoin(lobbyId.toUpperCase(), password.toUpperCase(), username.trim(), avatarStyle);
                     } else {
-                        await onCreate(username.trim());
+                        await onCreate(username.trim(), avatarStyle);
                     }
                 } catch (e) {
                     setError(e.message);
@@ -2250,11 +2309,11 @@
                     </div>
                     <div className="flex-1 overflow-y-auto no-scrollbar pb-28 [overflow-anchor:none]">
                         <div className="max-w-lg mx-auto p-6 pt-28">
-                             <div class="mb-10 text-center">
-                                <h1 class="text-5xl font-display font-black text-white mb-2 drop-shadow-lg tracking-tight">
+                             <div className="mb-10 text-center">
+                                <h1 className="text-5xl font-display font-black text-white mb-2 drop-shadow-lg tracking-tight">
                                     {isJoining ? 'Join Mission' : 'Create Mission'}
                                 </h1>
-                                <p class="text-white/40 font-semibold tracking-wide">
+                                <p className="text-white/40 font-semibold tracking-wide">
                                     {isJoining ? "Enter an existing lobby's credentials." : "Set up a new private game for your friends."}
                                 </p>
                             </div>
@@ -2270,12 +2329,26 @@
                                         <input
                                                 type="text"
                                                 value={username}
-                                                onChange={(e) => { setUsername([...e.target.value].slice(0, 25).join('')); if (error) setError(''); }}
+                                                onChange={(e) => { 
+                                                    const val = [...e.target.value].slice(0, 25).join('');
+                                                    setUsername(val); 
+                                                    if (error) setError('');
+                                                    preloadAllAvatarStyles(val);
+                                                }}
                                                 placeholder="Enter name..."
                                                 maxLength="25"
                                                 className="flex-1 bg-transparent px-5 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none placeholder:text-white/20 font-display font-semibold text-lg text-white min-w-0"
                                             />
-                                        {username.trim() && <PlayerAvatar name={username} className="w-8 h-8" />}
+                                        {username.trim() && (
+                                            <Tooltip text="Change Avatar Style" showOnHover={true}>
+                                                <PlayerAvatar 
+                                                    name={username} 
+                                                    avatarStyle={avatarStyle} 
+                                                    onClick={cycleAvatarStyle} 
+                                                    className="w-8 h-8" 
+                                                />
+                                            </Tooltip>
+                                        )}
                                     </div>
                                     {isJoining && (
                                         <>
@@ -2892,7 +2965,7 @@
                                 <div className="flex-1 p-4 overflow-y-auto no-scrollbar flex flex-col gap-3">
                                     {categoryVoters[viewingVotersFor]?.map(player => (
                                         <div key={player.id} className="flex items-center gap-3 bg-white/5 px-4 h-[58px] rounded-xl border border-transparent flex-shrink-0">
-                                            <PlayerAvatar name={player.name} className="w-7 h-7 flex-shrink-0" />
+                                            <PlayerAvatar name={player.name} avatarStyle={player.avatarStyle} className="w-7 h-7 flex-shrink-0" />
                                             <div className="font-bold text-white/90 truncate text-base">{player.name}</div>
                                         </div>
                                     ))}
@@ -3199,9 +3272,9 @@
                      
                     <div className="flex-1 overflow-y-auto no-scrollbar pb-28 [overflow-anchor:none]">
                         <div className="max-w-lg mx-auto p-6 pt-28">
-                            <div class="mb-10 text-center">
+                            <div className="mb-10 text-center">
 								<SeasonalTitle season={currentSeason} className="text-5xl font-display font-black text-white mb-2 drop-shadow-lg tracking-tight" />
-								<p class="text-white/40 font-semibold tracking-wide">Mission Lobby • Waiting for agents</p>
+								<p className="text-white/40 font-semibold tracking-wide">Mission Lobby • Waiting for agents</p>
 							</div>
 
                             {lobbyData.gameState === 'waiting' && (
@@ -3280,7 +3353,7 @@
                                                             <FaIcon name={p.id === lobbyData.hostId ? 'icon-crown' : 'icon-user-secret'} className={p.id === lobbyData.hostId ? 'text-yellow-400 text-sm drop-shadow-md' : 'text-white/20 text-sm'} />
                                                         </div>
                                                     )}
-                                                    <PlayerAvatar name={p.name} className="w-7 h-7 flex-shrink-0"/>
+                                                    <PlayerAvatar name={p.name} avatarStyle={p.avatarStyle} className="w-7 h-7 flex-shrink-0"/>
                                                     <span className={`font-bold truncate ${p.id === user.uid ? 'text-white' : 'text-white/80'}`}>{p.name}</span>
                                                     
                                                     {(lobbyData.gameState === 'reveal' || lobbyData.gameState === 'turnOrder') && (
@@ -4599,7 +4672,7 @@
             );
         };
         
-        const Tooltip = ({ text, isDisabled, children, className = "" }) => {
+        const Tooltip = ({ text, isDisabled, showOnHover = false, children, className = "" }) => {
             const [isRendered, setIsRendered] = useState(false);
             const [isVisible, setIsVisible] = useState(false);
             const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -4611,16 +4684,20 @@
 
             const updatePosition = () => {
                 if (containerRef.current) {
-                    const scrollContainer = containerRef.current.closest('.overflow-y-auto');
-                    if (scrollContainer) {
-                        if (window.getComputedStyle(scrollContainer).position === 'static') {
-                            scrollContainer.style.position = 'relative';
-                        }
-                        setScrollNode(scrollContainer);
+                    const scrollContainer = containerRef.current.closest('.overflow-y-auto') || document.body;
+                    if (scrollContainer !== document.body && window.getComputedStyle(scrollContainer).position === 'static') {
+                        scrollContainer.style.position = 'relative';
+                    }
+                    setScrollNode(scrollContainer);
 
-                        const containerRect = containerRef.current.getBoundingClientRect();
+                    const containerRect = containerRef.current.getBoundingClientRect();
+                    if (scrollContainer === document.body) {
+                        setCoords({
+                            x: containerRect.left + (containerRect.width / 2) + window.scrollX,
+                            y: containerRect.top + window.scrollY
+                        });
+                    } else {
                         const scrollRect = scrollContainer.getBoundingClientRect();
-                        
                         setCoords({
                             x: containerRect.left - scrollRect.left + (containerRect.width / 2) + scrollContainer.scrollLeft,
                             y: containerRect.top - scrollRect.top + scrollContainer.scrollTop
@@ -4630,10 +4707,13 @@
             };
 
             const show = (e) => {
-                const button = e.target.closest('button');
-                if (!isDisabled || !text || !button || !button.disabled) {
-                    return;
+                if (!showOnHover) {
+                    const button = e?.target?.closest('button');
+                    if (!isDisabled || !text || !button || !button.disabled) {
+                        return;
+                    }
                 }
+                if (!text) return;
                 
                 updatePosition();
 
@@ -4648,7 +4728,7 @@
 
                 hideTimeoutRef.current = setTimeout(() => {
                     hide();
-                }, 3000);
+                }, 2800);
             };
 
             const hide = () => {
@@ -4667,10 +4747,8 @@
                     if (isVisible) hide();
                 };
                 
-                const scrollContainer = containerRef.current?.closest('.overflow-y-auto');
-                if (scrollContainer) {
-                    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
-                }
+                const scrollContainer = containerRef.current?.closest('.overflow-y-auto') || window;
+                scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
                 
                 const handleResize = () => {
                     if (isVisible) updatePosition();
@@ -4678,7 +4756,7 @@
                 window.addEventListener('resize', handleResize);
                 
                 return () => {
-                    if (scrollContainer) scrollContainer.removeEventListener('scroll', handleScroll);
+                    scrollContainer.removeEventListener('scroll', handleScroll);
                     window.removeEventListener('resize', handleResize);
                 };
             }, [isRendered, isVisible]);
@@ -4688,12 +4766,13 @@
                     ref={containerRef}
                     className={className}
                     onPointerDownCapture={show}
+                    onMouseEnter={showOnHover ? show : undefined}
                     onMouseLeave={hide}
                 >
                     {children}
                     {isRendered && text && scrollNode && ReactDOM.createPortal(
                         <div 
-                            className={`absolute w-max max-w-xs bg-slate-800 text-white text-xs rounded-md px-3 py-2 shadow-lg z-[150] pointer-events-none text-center transition-opacity duration-300 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+                            className={`absolute w-max max-w-xs bg-slate-800 text-white text-xs rounded-md px-3 py-1.5 shadow-lg z-[150] pointer-events-none text-center transition-opacity duration-300 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}
                             style={{ 
                                 left: coords.x, 
                                 top: coords.y - 8, 
@@ -4836,7 +4915,7 @@
                                     <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-brand-500/20 text-brand-400 font-display font-bold text-sm rounded-lg border border-brand-500/20">
                                         {index + 1}
                                     </div>
-                                    <PlayerAvatar name={player.name} className="w-7 h-7 flex-shrink-0" />
+                                    <PlayerAvatar name={player.name} avatarStyle={player.avatarStyle} className="w-7 h-7 flex-shrink-0" />
                                     <div className="font-bold text-white/90 truncate">{player.name}</div>
                                 </div>
                             ))}
@@ -4921,7 +5000,27 @@
 		};
 
         const SetupScreen = ({ onStartGame, audioManager, onBack, displayCategories, wordBank, customCategoryNames = {}, customCategoryNouns = {} }) => {
-			const DEFAULT_PLAYERS = [{ name: 'Player 1', audioData: null }, { name: 'Player 2', audioData: null }, { name: 'Player 3', audioData: null }];
+			const [avatarStyle, setAvatarStyle] = useState(() => {
+				try {
+					return parseInt(localStorage.getItem('imposter_avatar_style') || '0', 10);
+				} catch { return 0; }
+			});
+
+			const cycleAvatarStyle = (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				const nextStyle = (avatarStyle + 1) % AVATAR_STYLES.length;
+				setAvatarStyle(nextStyle);
+				localStorage.setItem('imposter_avatar_style', nextStyle.toString());
+				if (audioManager) audioManager.playSound('avatarStyle');
+				if (navigator.vibrate) navigator.vibrate(10);
+			};
+
+			const DEFAULT_PLAYERS = [
+				{ name: 'Player 1', audioData: null, avatarStyle: 0 }, 
+				{ name: 'Player 2', audioData: null, avatarStyle: 0 }, 
+				{ name: 'Player 3', audioData: null, avatarStyle: 0 }
+			];
 			const MIN_PLAYERS = 3;
 			
 			const [playerError, setPlayerError] = useState('');
@@ -4934,7 +5033,9 @@
 						let parsed = JSON.parse(saved);
 						if (Array.isArray(parsed) && parsed.length > 0) {
 							if (typeof parsed[0] === 'string') {
-								parsed = parsed.map(name => ({ name, audioData: null }));
+								parsed = parsed.map(name => ({ name, audioData: null, avatarStyle: 0 }));
+							} else {
+								parsed = parsed.map(p => ({ avatarStyle: 0, ...p }));
 							}
 							return parsed;
 						}
@@ -5162,7 +5263,7 @@
 
 				  audioManager.playSound('uiClick');
 
-				  setPlayers([...players, { name: trimmedName, audioData: recordedAudioData }]);
+				  setPlayers([...players, { name: trimmedName, audioData: recordedAudioData, avatarStyle }]);
 				  setNewPlayerName('');
 				  setRecordedAudioData(null);
 				  setPlayerError('');
@@ -5277,15 +5378,26 @@
 													  type="text"
 													  value={newPlayerName}
 													  onChange={(e) => {
-														  setNewPlayerName([...e.target.value].slice(0, 25).join(''));
+														  const val = [...e.target.value].slice(0, 25).join('');
+														  setNewPlayerName(val);
 														  if (playerError) setPlayerError('');
+														  preloadAllAvatarStyles(val);
 													  }}
 													  onKeyDown={(e) => e.key === 'Enter' && addPlayer()}
 													  placeholder="Enter name..."
 													  maxLength="25"
 													  className="flex-1 bg-transparent px-5 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none placeholder:text-white/20 font-display font-semibold text-lg text-white min-w-0"
 												  />
-												  {newPlayerName.trim() && <PlayerAvatar name={newPlayerName.trim()} className="w-8 h-8" />}
+												  {newPlayerName.trim() && (
+													  <Tooltip text="Change Avatar Style" showOnHover={true}>
+														  <PlayerAvatar 
+															  name={newPlayerName.trim()} 
+															  avatarStyle={avatarStyle} 
+															  onClick={cycleAvatarStyle}
+															  className="w-8 h-8" 
+														  />
+													  </Tooltip>
+												  )}
 											  </div>
 											  
 											  <div className={`grid transition-all duration-300 ease-in-out relative z-0 ${playerError ? 'grid-rows-[1fr] opacity-100 mt-2' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
@@ -5340,7 +5452,7 @@
 											  onTouchStart={() => handlePlayerPress(p)}
 											  onTouchEnd={handlePlayerRelease}
 										  >
-											  <PlayerAvatar name={p.name} className="w-7 h-7 flex-shrink-0" />
+											  <PlayerAvatar name={p.name} avatarStyle={p.avatarStyle} className="w-7 h-7 flex-shrink-0" />
 											  <span className={`flex-1 min-w-0 truncate font-bold ${p.audioData ? 'text-brand-200' : 'text-white/80'}`}>
 												  {p.name}
 											  </span>
@@ -5722,20 +5834,8 @@
 
             const renderHandover = () => {
                 const cleanName = player.name.trim().toLowerCase();
-                
-                const spyMapping = {
-					'james bond': { url: "https://api.dicebear.com/9.x/thumbs/svg?seed=JamesBond&backgroundColor=99b0bf&shapeColor=020617" },
-					'007': { url: "https://api.dicebear.com/9.x/thumbs/svg?seed=Agent007&backgroundColor=99b0bf&shapeColor=0f172a" },
-				};
-
-                const isSpy = !!spyMapping[cleanName];
-                let avatarUrl = `https://api.dicebear.com/9.x/thumbs/svg?seed=${encodeURIComponent(player.name)}&backgroundColor=transparent`;
-                let spyScaleClass = '';
-                
-                if (isSpy) {
-                    avatarUrl = spyMapping[cleanName].url;
-                    spyScaleClass = spyMapping[cleanName].size;
-                }
+                const isSpy = cleanName === 'james bond' || cleanName === '007';
+                const avatarUrl = getAvatarUrl(player.name, player.avatarStyle);
 
                 return (
                     <div className="flex flex-col items-center justify-center h-full text-center p-8 animate-slide-up relative z-10">
@@ -5745,7 +5845,7 @@
                                     src={avatarUrl} 
                                     alt={`${player.name}'s avatar`} 
                                     draggable="false" 
-                                    className={`w-25 h-25 object-contain ${isSpy ? `${spyScaleClass} drop-shadow-md` : ''}`} 
+                                    className={`w-full h-full ${isSpy ? 'object-cover' : 'object-contain'} drop-shadow-md`} 
                                 />
                             </div>
                         </div>
@@ -5929,7 +6029,7 @@
                                             <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-brand-500/20 text-brand-400 font-display font-bold text-sm rounded-lg border border-brand-500/20">
                                                 {index + 1}
                                             </div>
-                                            <PlayerAvatar name={player.name} className="w-7 h-7 flex-shrink-0" />
+                                            <PlayerAvatar name={player.name} avatarStyle={player.avatarStyle} className="w-7 h-7 flex-shrink-0" />
                                             <span className="font-bold text-white/80 truncate">{player.name}</span>
                                         </div>
                                     ))}
@@ -6332,7 +6432,7 @@
                 if (!player) return <span className="font-bold text-white truncate">Unknown</span>;
                 return (
                     <div className="flex items-center gap-3">
-                        <PlayerAvatar name={player.name} className="w-6 h-6" />
+                        <PlayerAvatar name={player.name} avatarStyle={player.avatarStyle} className="w-6 h-6" />
                         <span className="font-bold text-white truncate text-lg">{player.name}</span>
                     </div>
                 );
@@ -6392,7 +6492,7 @@
                                             {lobbyPlayers.map(player => (
                                                 <div key={player.id} className="flex items-center justify-between bg-white/5 px-4 py-3 rounded-xl border border-transparent flex-shrink-0">
                                                     <div className="flex items-center gap-3 truncate">
-                                                        <PlayerAvatar name={player.name} className="w-7 h-7 flex-shrink-0"/>
+                                                        <PlayerAvatar name={player.name} avatarStyle={player.avatarStyle} className="w-7 h-7 flex-shrink-0"/>
                                                         <span className="font-bold text-white/80 truncate">{player.name}</span>
                                                     </div>
                                                     <div className="flex items-center justify-center flex-shrink-0">
@@ -6420,7 +6520,7 @@
                                                 <div className={`w-6 h-6 flex-shrink-0 rounded-full flex items-center justify-center border-2 transition-colors ${selectedVotes.includes(player.id) ? 'bg-brand-500 border-brand-500' : 'border-white/20'}`}>
                                                     {selectedVotes.includes(player.id) && <FaIcon name="icon-check" className=" text-xs text-white" />}
                                                 </div>
-                                                <PlayerAvatar name={player.name} className="w-8 h-8 flex-shrink-0" />
+                                                <PlayerAvatar name={player.name} avatarStyle={player.avatarStyle} className="w-8 h-8 flex-shrink-0" />
                                                 <span className={`font-bold text-lg truncate ${selectedVotes.includes(player.id) ? 'text-white' : 'text-white/80'}`}>{player.name}</span>
                                             </button>
                                         ))}
@@ -6587,7 +6687,7 @@
                                                 {lobbyData.votingRecord.map((record, index) => (
                                                     <div key={index} className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent flex-shrink-0">
                                                         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                                                            <PlayerAvatar name={record.voterName} className="w-7 h-7 flex-shrink-0" />
+                                                            <PlayerAvatar name={record.voterName} avatarStyle={record.voterAvatarStyle} className="w-7 h-7 flex-shrink-0" />
                                                             <span className="font-bold text-white/80 truncate text-sm">{record.voterName}</span>
                                                         </div>
                                                         <div className="text-white/30 text-sm flex-shrink-0 flex items-center justify-center px-1">
@@ -6595,7 +6695,7 @@
                                                         </div>
                                                         <div className="flex items-center justify-end gap-2 sm:gap-3 min-w-0">
                                                             <span className={`font-bold truncate text-sm text-right ${record.votedForName === 'No Vote' ? 'text-white/40' : 'text-white'}`}>{record.votedForName}</span>
-                                                            {record.votedForName !== 'No Vote' && <PlayerAvatar name={record.votedForName} className="w-7 h-7 flex-shrink-0" />}
+                                                            {record.votedForName !== 'No Vote' && <PlayerAvatar name={record.votedForName} avatarStyle={record.votedForAvatarStyle} className="w-7 h-7 flex-shrink-0" />}
                                                         </div>
                                                     </div>
                                                 ))}
@@ -6740,6 +6840,7 @@
             });
 
             essentialAudioUrls.add(AUDIO_URLS.uiClick);
+            essentialAudioUrls.add(AUDIO_URLS.avatarStyle);
             essentialAudioUrls.add(AUDIO_URLS.cardFlip);
             essentialAudioUrls.add(AUDIO_URLS.startMission);
             essentialAudioUrls.add(AUDIO_URLS.mainMenuMusic);
@@ -7692,7 +7793,7 @@
                     }
                 }
 
-                const shuffledTurnOrder = shuffleArray([...orderedPlayers]).map((p, i) => ({ name: p.name, id: `local_${i}` }));
+                const shuffledTurnOrder = shuffleArray([...orderedPlayers]).map((p, i) => ({ name: p.name, id: `local_${i}`, avatarStyle: p.avatarStyle || 0 }));
 
                 setLocalGameData({ 
                     players: orderedPlayers, 
@@ -7812,7 +7913,7 @@
                 }
             };
 
-            const handleCreateLobby = async (username) => {
+            const handleCreateLobby = async (username, avatarStyle = 0) => {
                 if (audioManagerRef.current) audioManagerRef.current.unlockAudio();
                 const newLobbyId = generateLobbyId();
                 const newPassword = generateLobbyPassword();
@@ -7851,13 +7952,15 @@
                 });
                 
                 await lobbyRef.collection('players').doc(user.uid).set({
-                    name: username, isHost: true,
+                    name: username,
+                    avatarStyle: avatarStyle || 0,
+                    isHost: true,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 setLobbyId(newLobbyId);
             };
 
-            const handleJoinLobby = async (lobbyIdToJoin, password, username) => {
+            const handleJoinLobby = async (lobbyIdToJoin, password, username, avatarStyle = 0) => {
                 if (audioManagerRef.current) audioManagerRef.current.unlockAudio();
                 
                 let targetDb = db;
@@ -7926,6 +8029,7 @@
 
                 await lobbyRef.collection('players').doc(currentUid).set({
                     name: username,
+                    avatarStyle: avatarStyle || 0,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 setLobbyId(lobbyIdToJoin);
@@ -7974,7 +8078,7 @@
                 let wordPool = availableWords.length > 0 ? availableWords : actualWords;
                 const secretWord = wordPool[Math.floor(Math.random() * wordPool.length)];
                 
-                const mappedPlayers = lobbyPlayers.map(p => ({name: p.name, id: p.id}));
+                const mappedPlayers = lobbyPlayers.map(p => ({name: p.name, id: p.id, avatarStyle: p.avatarStyle || 0}));
                 const turnOrderList = shuffleArray(mappedPlayers);
                 
                 const numRoguePlayers = lobbyData.enableTwoImposters && lobbyPlayers.length >= 10 ? 2 : 1;
@@ -8136,14 +8240,21 @@
                          return [{
                             voterId: voter.id,
                             voterName: voter.name,
-                            votedForName: 'No Vote'
+                            voterAvatarStyle: voter.avatarStyle || 0,
+                            votedForName: 'No Vote',
+                            votedForAvatarStyle: 0
                         }];
                     }
-                    return voter.votedFor.map(voteId => ({
-                        voterId: voter.id,
-                        voterName: voter.name,
-                        votedForName: currentLobbyPlayers.find(p => p.id === voteId)?.name || 'Unknown'
-                    }));
+                    return voter.votedFor.map(voteId => {
+                        const target = currentLobbyPlayers.find(p => p.id === voteId);
+                        return {
+                            voterId: voter.id,
+                            voterName: voter.name,
+                            voterAvatarStyle: voter.avatarStyle || 0,
+                            votedForName: target?.name || 'Unknown',
+                            votedForAvatarStyle: target?.avatarStyle || 0
+                        };
+                    });
                 });
 
                 if (result.winner === 'agents' && currentLobbyData.imposterCanGuess && !currentLobbyData.isFakeWordMode) {
@@ -8200,7 +8311,7 @@
                 let wordPool = availableWords.length > 0 ? availableWords : actualWords;
                 const secretWord = wordPool[Math.floor(Math.random() * wordPool.length)];
                 
-                const mappedPlayers = lobbyPlayers.map(p => ({name: p.name, id: p.id}));
+                const mappedPlayers = lobbyPlayers.map(p => ({name: p.name, id: p.id, avatarStyle: p.avatarStyle || 0}));
                 const turnOrderList = shuffleArray(mappedPlayers);
                 
                 const numRoguePlayers = lobbyData.enableTwoImposters && lobbyPlayers.length >= 10 ? 2 : 1;
@@ -8342,7 +8453,7 @@
                         const isImposterOnline = !lobbyData.isFakeWordMode && lobbyData.imposterIds?.includes(user.uid);
                         const wordForOnlinePlayer = isImposterOnline ? "IMPOSTER" : (isFakeWordPlayerOnline ? lobbyData.fakeWord : lobbyData.secretWord);
                         return <CardRevealScreen 
-                                        isOnline={true} player={{ name: meAsPlayer?.name }} 
+                                        isOnline={true} player={{ name: meAsPlayer?.name, avatarStyle: meAsPlayer?.avatarStyle || 0 }} 
                                         word={wordForOnlinePlayer}
                                         audioManager={audioManagerRef.current}
                                         onAcknowledge={handleAcknowledgeCard}
