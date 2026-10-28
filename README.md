@@ -222,9 +222,24 @@
   <li><strong>Infrastructure &amp; Load Balancing:</strong> Time-based Database Load Balancing (Dynamically checks the Pacific Time Zone and swaps between primary Firebase instances 'APP1' and 'APP2' at 12:00 PT to prevent rate limit throttling).</li>
   <li><strong>Communigories Architecture:</strong> User-generated categories are pushed to a completely separate, dedicated Firebase instance to safely handle public uploads, votes, and queries without congesting live game servers.</li> 
   <li><strong>WebView/APK Fallbacks:</strong> The game detects if it's running inside an iOS UIWebView or an Android APK wrapper and dynamically disables the 3D depth layering on cards to prevent native graphical glitching.</li>
-  <li><strong>Avatars:</strong> Auto-generated on the fly via the Dicebear API based on the user's typed name.</li>
+  <li><strong>Avatars &amp; Style Switching:</strong> Auto-generated on the fly using Dicebear 10.x. Players can tap/click the avatar preview box in the name input field to cycle between 8 custom avatar styles.</li>
   <li><strong>Audio Engine:</strong> Custom-built <code>audioManager</code> for parallel SFX, automatic iOS Web Audio unlocking, and looping music states.</li>
 </ul>
+
+<p>Every player's avatar is generated dynamically based on their typed name. All styles preload simultaneously in the background while typing, enabling instant zero-lag switching when tapping or clicking the <strong>avatar preview box</strong>:</p>
+
+| Style # | Preview | Style Name | Style Config Details |
+| :---: | :---: | :--- | :--- |
+| **1** | <a href="#!"><img src="https://api.dicebear.com/10.x/gaze/svg?backgroundColor=ececee&bodyColor=c9c9cd,aeaeb4,dcdce0,94949a&eyesVariant=bars,beans,big,dots,grin,happy,small,squint,tall,wide&seed=Felix" width="48" height="48" style="border-radius: 8px;"></a> | **Gaze** | Minimalist retro characters with custom eyes and muted bodies. |
+| **2** | <a href="#!"><img src="https://api.dicebear.com/10.x/line-face/svg?backgroundColor=111113&inkColor=f2f2f4&seed=Felix" width="48" height="48" style="border-radius: 8px;"></a> | **Line Face** | Dark aesthetic sleek single-line sketches. |
+| **3** | <a href="#!"><img src="https://api.dicebear.com/10.x/marbles/svg?backgroundColor=16161a&inkColor=f4f4f6&topVariant=afro,crimp,flick,spikes,swirl,zigzag&mouthVariant=grin,jagged,line,open,pout,small,smile,smirk,wavy&blendColor=fe9596,fe9a6e,fc9f13,68d54e,18d79b,17d2c7,17cde9,5ac3fe,8eb8fe,aeadfe,d19dfe,fe81ef,fe8fba&sphereColor=fe9596,fe9a6e,fc9f13,68d54e,18d79b,17d2c7,17cde9,5ac3fe,8eb8fe,aeadfe,d19dfe,fe81ef,fe8fba&noseVariant=&seed=Felix" width="48" height="48" style="border-radius: 8px;"></a> | **Marbles** | Vibrant multi-color blended spherical characters with hair &amp; expressions. |
+| **4** | <a href="#!"><img src="https://api.dicebear.com/10.x/thumbs/svg?backgroundColor=16161c&shapeColor=f2f2f4&eyesVariant=variant02,variant03,variant04,variant05,variant06,variant07,variant08&mouthVariant=variant01,variant02,variant03,variant04&seed=Felix" width="48" height="48" style="border-radius: 8px;"></a> | **Thumbs** | Friendly expressive thumb characters. |
+| **5** | <a href="#!"><img src="https://api.dicebear.com/10.x/glyphs/svg?glyphColor=1f1f22&seed=Felix" width="48" height="48" style="border-radius: 8px;"></a> | **Glyphs** | Abstract symbolic icon glyphs. |
+| **6** | <a href="#!"><img src="https://api.dicebear.com/10.x/shape-grid/svg?backgroundColor=16161c&seed=Felix" width="48" height="48" style="border-radius: 8px;"></a> | **Shape Grid** | Modern generative mosaic tiles. |
+| **7** | <a href="#!"><img src="https://api.dicebear.com/10.x/cameo/svg?backgroundColor=16161a&knotVariant=&hairVariant=bangs,bowl,cap,frame,side,wave&bodyColor=e7799e,e68171,d68f51,5ab972,5ab4a4,5ab0bf,58aae1,889ee4,ae8fe4,e667de&shapeVariant=jaw,round,squircle&seed=Felix" width="48" height="48" style="border-radius: 8px;"></a> | **Cameo** | Vintage profile silhouette portraits with colorful body shapes. |
+
+<h4>Secret Agent Easter Eggs</h4>
+<p>Typing specific classified spy codenames (such as <code>James Bond</code> or <code>007</code>) bypasses the random vector generator entirely and assigns hidden secret agent visuals.</p>
 
 <br>
 
