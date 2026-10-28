@@ -1395,11 +1395,12 @@
             };
 
             const showImage = !hasError && (isCurrentlyCached || isLoaded);
+            const canClick = !isSpy && Boolean(onClick);
 
             return (
                 <div 
-                    onClick={onClick}
-                    className={`flex-shrink-0 flex items-center justify-center bg-white/5 border border-white/5 overflow-hidden w-4 h-4 rounded-[0.5rem] relative ${onClick ? 'cursor-pointer active:scale-90 transition-transform' : ''} ${className}`}
+                    onClick={canClick ? onClick : undefined}
+                    className={`flex-shrink-0 flex items-center justify-center bg-white/5 border border-white/5 overflow-hidden w-4 h-4 rounded-[0.5rem] relative ${canClick ? 'cursor-pointer active:scale-90 transition-transform' : ''} ${className}`}
                 >
                     <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out ${!showImage && !hasError ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                         <svg className="sleek-spinner w-[60%] h-[60%] text-white/60 drop-shadow-sm" viewBox="25 25 50 50">
@@ -2355,16 +2356,19 @@
                                                 maxLength="25"
                                                 className="flex-1 bg-transparent px-5 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none placeholder:text-white/20 font-display font-semibold text-lg text-white min-w-0"
                                             />
-                                        {username.trim() && (
-                                            <Tooltip text="Change Avatar Style" showOnHover={true} alignRight={true}>
-                                                <PlayerAvatar 
-                                                    name={username} 
-                                                    avatarStyle={avatarStyle} 
-                                                    onClick={cycleAvatarStyle} 
-                                                    className="w-8 h-8" 
-                                                />
-                                            </Tooltip>
-                                        )}
+                                        {username.trim() && (() => {
+                                            const isSpy = ['james bond', '007'].includes(username.trim().toLowerCase());
+                                            return (
+                                                <Tooltip text={isSpy ? "" : "Change Avatar Style"} showOnHover={!isSpy} alignRight={true}>
+                                                    <PlayerAvatar 
+                                                        name={username} 
+                                                        avatarStyle={avatarStyle} 
+                                                        onClick={isSpy ? undefined : cycleAvatarStyle} 
+                                                        className="w-8 h-8" 
+                                                    />
+                                                </Tooltip>
+                                            );
+                                        })()}
                                     </div>
                                     {isJoining && (
                                         <>
@@ -5417,16 +5421,19 @@
 													  maxLength="25"
 													  className="flex-1 bg-transparent px-5 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none placeholder:text-white/20 font-display font-semibold text-lg text-white min-w-0"
 												  />
-												  {newPlayerName.trim() && (
-													  <Tooltip text="Change Avatar Style" showOnHover={true} alignRight={true}>
-														  <PlayerAvatar 
-															  name={newPlayerName.trim()} 
-															  avatarStyle={avatarStyle} 
-															  onClick={cycleAvatarStyle}
-															  className="w-8 h-8" 
-														  />
-													  </Tooltip>
-												  )}
+												  {newPlayerName.trim() && (() => {
+													  const isSpy = ['james bond', '007'].includes(newPlayerName.trim().toLowerCase());
+													  return (
+														  <Tooltip text={isSpy ? "" : "Change Avatar Style"} showOnHover={!isSpy} alignRight={true}>
+															  <PlayerAvatar 
+																  name={newPlayerName.trim()} 
+																  avatarStyle={avatarStyle} 
+																  onClick={isSpy ? undefined : cycleAvatarStyle} 
+																  className="w-8 h-8" 
+															  />
+														  </Tooltip>
+													  );
+												  })()}
 											  </div>
 											  
 											  <div className={`grid transition-all duration-300 ease-in-out relative z-0 ${playerError ? 'grid-rows-[1fr] opacity-100 mt-2' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
