@@ -4707,6 +4707,9 @@
             };
 
             const show = (e) => {
+                if (showOnHover && typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
+                    return;
+                }
                 if (!showOnHover) {
                     const button = e?.target?.closest('button');
                     if (!isDisabled || !text || !button || !button.disabled) {
