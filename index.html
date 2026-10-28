@@ -2340,7 +2340,7 @@
                                                 className="flex-1 bg-transparent px-5 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none placeholder:text-white/20 font-display font-semibold text-lg text-white min-w-0"
                                             />
                                         {username.trim() && (
-                                            <Tooltip text="Change Avatar Style" showOnHover={true}>
+                                            <Tooltip text="Change Avatar Style" showOnHover={true} alignRight={true}>
                                                 <PlayerAvatar 
                                                     name={username} 
                                                     avatarStyle={avatarStyle} 
@@ -4672,7 +4672,7 @@
             );
         };
         
-        const Tooltip = ({ text, isDisabled, showOnHover = false, children, className = "" }) => {
+        const Tooltip = ({ text, isDisabled, showOnHover = false, alignRight = false, children, className = "" }) => {
             const [isRendered, setIsRendered] = useState(false);
             const [isVisible, setIsVisible] = useState(false);
             const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -4691,15 +4691,17 @@
                     setScrollNode(scrollContainer);
 
                     const containerRect = containerRef.current.getBoundingClientRect();
+                    const targetX = alignRight ? (containerRect.right - 16) : (containerRect.left + containerRect.width / 2);
+                    
                     if (scrollContainer === document.body) {
                         setCoords({
-                            x: containerRect.left + (containerRect.width / 2) + window.scrollX,
+                            x: targetX + window.scrollX,
                             y: containerRect.top + window.scrollY
                         });
                     } else {
                         const scrollRect = scrollContainer.getBoundingClientRect();
                         setCoords({
-                            x: containerRect.left - scrollRect.left + (containerRect.width / 2) + scrollContainer.scrollLeft,
+                            x: targetX - scrollRect.left + scrollContainer.scrollLeft,
                             y: containerRect.top - scrollRect.top + scrollContainer.scrollTop
                         });
                     }
@@ -4707,10 +4709,11 @@
             };
 
             const show = (e) => {
-                if (showOnHover && typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
-                    return;
-                }
-                if (!showOnHover) {
+                if (showOnHover) {
+                    if (e && (e.pointerType === 'touch' || ('ontouchstart' in window && !window.matchMedia('(hover: hover)').matches))) {
+                        return;
+                    }
+                } else {
                     const button = e?.target?.closest('button');
                     if (!isDisabled || !text || !button || !button.disabled) {
                         return;
@@ -4725,13 +4728,17 @@
                 
                 setIsRendered(true);
                 
-                setTimeout(() => {
-                    setIsVisible(true);
-                }, 10);
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        setIsVisible(true);
+                    });
+                });
 
-                hideTimeoutRef.current = setTimeout(() => {
-                    hide();
-                }, 2800);
+                if (!showOnHover) {
+                    hideTimeoutRef.current = setTimeout(() => {
+                        hide();
+                    }, 2800);
+                }
             };
 
             const hide = () => {
@@ -4768,7 +4775,7 @@
                 <div 
                     ref={containerRef}
                     className={className}
-                    onPointerDownCapture={show}
+                    onPointerDownCapture={showOnHover ? undefined : show}
                     onMouseEnter={showOnHover ? show : undefined}
                     onMouseLeave={hide}
                 >
@@ -4779,11 +4786,14 @@
                             style={{ 
                                 left: coords.x, 
                                 top: coords.y - 8, 
-                                transform: 'translate(-50%, -100%)' 
+                                transform: alignRight ? 'translate(calc(-100% + 16px), -100%)' : 'translate(-50%, -100%)' 
                             }}
                         >
                             {text}
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"></div>
+                            <div 
+                                className="absolute top-full w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"
+                                style={alignRight ? { right: '12px' } : { left: '50%', transform: 'translateX(-50%)' }}
+                            ></div>
                         </div>,
                         scrollNode
                     )}
@@ -5392,7 +5402,7 @@
 													  className="flex-1 bg-transparent px-5 py-4 outline-none focus:outline-none focus:ring-0 focus:shadow-none appearance-none placeholder:text-white/20 font-display font-semibold text-lg text-white min-w-0"
 												  />
 												  {newPlayerName.trim() && (
-													  <Tooltip text="Change Avatar Style" showOnHover={true}>
+													  <Tooltip text="Change Avatar Style" showOnHover={true} alignRight={true}>
 														  <PlayerAvatar 
 															  name={newPlayerName.trim()} 
 															  avatarStyle={avatarStyle} 
