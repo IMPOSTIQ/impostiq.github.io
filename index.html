@@ -10,6 +10,7 @@
     <title>Impostiq • Find the Spy</title>
     <link rel="canonical" href="https://impostiq.github.io" />
     <meta name="robots" content="max-image-preview:large">
+    <meta name="color-scheme" content="dark">
     
     <script type="application/ld+json">
     [
@@ -219,12 +220,16 @@
     <style>
         * {
             -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
         }
 		.text-pretty {
             text-wrap: pretty;
         }
         *:focus { outline: none !important; }
 
+        .select-all, .select-text, input, textarea {
+            -webkit-touch-callout: default;
+        }
         input, textarea {
             caret-color: #8b5cf6; 
         }
@@ -245,6 +250,7 @@
         }
         
         :root {
+            color-scheme: dark;
             --safe-bottom: env(safe-area-inset-bottom, 20px);
         }
 
@@ -8404,24 +8410,6 @@
                 if (audioManagerRef.current) {
                     audioManagerRef.current.unlockAudio();
                     audioManagerRef.current.playSound('uiClick');
-                }
-
-                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || navigator.maxTouchPoints > 0;
-                
-                const isWebView = /wv/i.test(navigator.userAgent) || 
-                                  (/iphone|ipod|ipad/i.test(navigator.userAgent) && !/safari/i.test(navigator.userAgent));
-                
-                const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-
-                const isAlreadyFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
-
-                if (isMobile && !isWebView && !isStandalone && !isAlreadyFullscreen) {
-                    try {
-                        const elem = document.documentElement;
-                        const fsPromise = elem.requestFullscreen ? elem.requestFullscreen() : 
-                                         (elem.webkitRequestFullscreen ? elem.webkitRequestFullscreen() : null);
-                        if (fsPromise) fsPromise.catch(() => {});
-                    } catch (err) {}
                 }
 
                 setIsLoading(false);
