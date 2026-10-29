@@ -53,8 +53,8 @@
 	
     <meta property="og:title" content="Impostiq • Find the Spy" />
     <meta property="og:url" content="https://impostiq.github.io" />
-    <meta property="og:image" id="og-image" content="https://impostiq.github.io/images/ogimagehalloween.png" />
-    <meta property="og:image:secure_url" content="https://impostiq.github.io/images/ogimagehalloween.png" />
+    <meta property="og:image" id="og-image" content="https://impostiq.github.io/images/ogimage.png" />
+    <meta property="og:image:secure_url" content="https://impostiq.github.io/images/ogimage.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -64,7 +64,7 @@
     
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Impostiq • Find the Spy" />
-    <meta name="twitter:image" id="twitter-image" content="https://impostiq.github.io/images/ogimagehalloween.png" />
+    <meta name="twitter:image" id="twitter-image" content="https://impostiq.github.io/images/ogimage.png" />
     <meta name="twitter:description" content="Can you blend in? Find the spy before time runs out. Play with friends online or on one device!" />
     
     <script>
@@ -2161,14 +2161,14 @@
                             <FaIcon name="icon-donate" className="" />
                             <div className="absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-800 text-white text-xs rounded-md px-3 py-2 shadow-lg z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
                                 Support Impostiq
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-b-4 border-b-slate-800"></div>
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 translate-y-1/2 w-2 h-2 bg-slate-800 rotate-45 rounded-sm"></div>
                             </div>
                         </button>
                         <button onClick={() => { audioManager.playSound('uiClick'); audioManager.playMusic('communigoriesMusic'); onShowCommunigories(); }} className="glass-btn relative w-12 h-12 flex items-center justify-center bg-white/5 rounded-full text-white/50 hover:bg-white/10 hover:text-white active:scale-90 transition-all group">
                             <FaIcon name="icon-communigories" className="" />
                             <div className="absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-800 text-white text-xs rounded-md px-3 py-2 shadow-lg z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
                                 Discover & Create Categories
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-b-4 border-b-slate-800"></div>
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 translate-y-1/2 w-2 h-2 bg-slate-800 rotate-45 rounded-sm"></div>
                             </div>
                         </button>
                         {isAndroid && (
@@ -2180,7 +2180,7 @@
                                 <FaIcon name="icon-android" className="text-white opacity-50 group-hover:opacity-100 transition-opacity text-lg" />
                                 <div className={`absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-800 text-white text-xs rounded-md px-3 py-2 shadow-lg z-20 pointer-events-none transition-opacity duration-300 ease-in-out ${isDownloading ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
                                     {isDownloading ? "Downloading APK..." : "Download App"}
-                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-b-4 border-b-slate-800"></div>
+                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 translate-y-1/2 w-2 h-2 bg-slate-800 rotate-45 rounded-sm"></div>
                                 </div>
                             </button>
                         )}
@@ -4811,9 +4811,11 @@
                         >
                             {text}
                             <div 
-                                className="absolute top-full w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"
-                                style={alignRight ? { right: '12px' } : { left: '50%', transform: 'translateX(-50%)' }}
-                            ></div>
+                                className="absolute top-full flex justify-center"
+                                style={alignRight ? { right: '14px' } : { left: '50%', transform: 'translateX(-50%)' }}
+                            >
+                                <div className="w-1.5 h-1.5 bg-slate-800 rotate-45 -translate-y-1/2 rounded-br-[2px]"></div>
+                            </div>
                         </div>,
                         scrollNode
                     )}
@@ -5445,31 +5447,21 @@
 												  </div>
 											  </div>
 										  </div>
-									  <div className="flex gap-3 relative">
-										  <button 
-											  onClick={handleMicClick}
-											  onMouseDown={handleMicPress}
-											  onMouseUp={handleMicRelease}
-											  onMouseLeave={handleMicRelease}
-											  onTouchStart={handleMicPress}
-											  onTouchEnd={handleMicRelease}
-											  className={`flex-1 flex items-center justify-center rounded-xl font-bold transition-all shadow-lg active:scale-95 border border-white/5 h-14 ${isMicPermissionDenied ? 'bg-red-500/20' : isRecording ? 'bg-red-500 animate-pulse' : (recordedAudioData ? 'bg-green-500' : 'bg-white/10 hover:bg-white/20')}`}
-										  >
-											  <FaIcon name={isMicPermissionDenied ? 'icon-no-microphone' : (recordedAudioData && !isRecording ? 'icon-check' : 'icon-microphone')} className={`text-white text-lg ${isMicPermissionDenied ? 'text-red-400/70' : (isRecording ? '' : 'opacity-70')}`} />
-										  </button>
-										  
-										  <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-xs bg-slate-800 text-white text-xs rounded-md px-3 py-2 shadow-lg z-20 pointer-events-none transition-opacity duration-300 ease-in-out ${showMicTooltip ? 'opacity-100' : 'opacity-0'}`}>
-											  Record a custom "It's your turn" voice note!
-											  <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"></div>
-										  </div>
-										  
-										  <button 
-											  onClick={addPlayer}
-											  className="bg-brand-600 hover:bg-brand-500 flex-1 flex items-center justify-center rounded-xl font-bold transition shadow-lg shadow-brand-900/20 active:scale-95 border border-white/5 h-14"
-										  >
-											  <FaIcon name="icon-plus-button" className=" text-white text-lg" />
-										  </button>
-									  </div>
+											  <div className="flex gap-3 relative">
+												  <button 
+													  onClick={handleMicClick}
+													  className={`flex-1 flex items-center justify-center rounded-xl font-bold transition-all shadow-lg active:scale-95 border border-white/5 h-14 ${isMicPermissionDenied ? 'bg-red-500/20' : isRecording ? 'bg-red-500 animate-pulse' : (recordedAudioData ? 'bg-green-500' : 'bg-white/10 hover:bg-white/20')}`}
+												  >
+													  <FaIcon name={isMicPermissionDenied ? 'icon-no-microphone' : (recordedAudioData && !isRecording ? 'icon-check' : 'icon-microphone')} className={`text-white text-lg ${isMicPermissionDenied ? 'text-red-400/70' : (isRecording ? '' : 'opacity-70')}`} />
+												  </button>
+												  
+												  <button 
+													  onClick={addPlayer}
+													  className="bg-brand-600 hover:bg-brand-500 flex-1 flex items-center justify-center rounded-xl font-bold transition shadow-lg shadow-brand-900/20 active:scale-95 border border-white/5 h-14"
+												  >
+													  <FaIcon name="icon-plus-button" className=" text-white text-lg" />
+												  </button>
+											  </div>
 										  </div>
 									  </div>
 								  <div className="p-4 max-h-[320px] overflow-y-auto no-scrollbar">
