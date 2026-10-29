@@ -488,7 +488,7 @@
             }
         };
         document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible') {
+            if (document.visibilityState === 'visible' && !wakeLock) {
                 requestWakeLock();
             }
         });
@@ -1331,7 +1331,7 @@
                         img.src = url;
                     }
                 });
-            }, 120);
+            }, 400);
         };
 
         const getAvatarUrl = (name, styleIndex = 0) => {
@@ -7300,18 +7300,8 @@
 
                 window.addEventListener('beforeunload', handleUnload);
 
-                let visibilityTimeout;
-                const handleVisibilityChange = () => {
-                    if (document.hidden) {
-                        visibilityTimeout = setTimeout(() => {
-                            if (gameMode === 'online' && lobbyId && user) {
-                                console.log("Inactive for too long, leaving lobby to save resources.");
-                                handleBackToHome(true);
-                            }
-                        }, 60 * 60 * 1000); 
-                    } else {
-                        if (visibilityTimeout) clearTimeout(visibilityTimeout);
-                    }
+                return () => {
+                    window.removeEventListener('beforeunload', handleUnload);
                 };
                 document.addEventListener('visibilitychange', handleVisibilityChange);
 
