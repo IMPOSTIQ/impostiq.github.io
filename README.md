@@ -41,7 +41,7 @@
 
 <p>
   <picture><img draggable="false" src="https://em-content.zobj.net/source/microsoft-teams/337/joystick_1f579-fe0f.png" width="32" align="absmiddle"></picture>&nbsp;
-  <picture><img draggable="false" src="https://i.ibb.co/rRdsnZcR/3c6201be79be2e668f3ccaa4b4cd8b87.png" alt="Two Ways to Play" height="22" align="middle" style="margin-top: 3px;"></picture>
+  <picture><img draggable="false" src="https://i.ibb.co/SH1gxWm/3c6201be79be2e668f3ccaa4b4cd8b87.png" alt="Two Ways to Play" height="22" align="middle" style="margin-top: 3px;"></picture>
 </p>
 
 <p align="center">
