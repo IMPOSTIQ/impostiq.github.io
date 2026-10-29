@@ -27,7 +27,7 @@
 
 <p align="center">
   <picture>
-    <img draggable="false" src="https://i.ibb.co/DjZwkcV/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
+    <img draggable="false" src="https://i.ibb.co/1tGf7yJn/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
   </picture>
 </p>
 
@@ -46,7 +46,7 @@
 
 <p align="center">
   <picture>
-    <img draggable="false" src="https://i.ibb.co/DjZwkcV/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
+    <img draggable="false" src="https://i.ibb.co/1tGf7yJn/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
   </picture>
 </p>
 
@@ -91,7 +91,7 @@
 
 <p align="center">
   <picture>
-    <img draggable="false" src="https://i.ibb.co/DjZwkcV/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
+    <img draggable="false" src="https://i.ibb.co/1tGf7yJn/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
   </picture>
 </p>
 
@@ -114,7 +114,7 @@
 
 <p align="center">
   <picture>
-    <img draggable="false" src="https://i.ibb.co/DjZwkcV/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
+    <img draggable="false" src="https://i.ibb.co/1tGf7yJn/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
   </picture>
 </p>
 
@@ -127,18 +127,18 @@
 | **Second Imposter** | <picture><img draggable="false" src="https://i.ibb.co/nMgdLLR5/second.png" width="24"></picture> | **Both Modes** | Have a massive group? Lobbies with **10 or more players** unlock the ability to add a second Imposter (or a second Fake Card) to the mission. |
 | **Speak Category** | <picture><img draggable="false" src="https://i.ibb.co/d4F73hwV/speak.png" width="24"></picture> | **Both Modes** | When the round begins, text-to-speech automatically announces the chosen category aloud so everyone is on the same page. *(Auto-disabled for Custom Categories)*. |
 | **Countdown Timer** | <picture><img draggable="false" src="https://i.ibb.co/1tPRHmC3/time.png" width="24"></picture> | **Both Modes** | Adjust the discussion timer from 1 to 15 minutes, or turn it off entirely for a relaxed, **Untimed Mode**. |
-| **Notify Imposter** | <picture><img draggable="false" src="https://i.ibb.co/B2fxJRNH/bell.png" width="24"></picture> | **Play with Friends** | If an Agent is confused by a word, they can trigger a secret poll. This setting gives the Imposter a secret red popup warning so they aren't caught off-guard. |
+| **Notify Imposter** | <picture><img draggable="false" src="https://i.ibb.co/73fBKFf/bell.png" width="24"></picture> | **Play with Friends** | If an Agent is confused by a word, they can trigger a secret poll. This setting gives the Imposter a secret red popup warning so they aren't caught off-guard. |
 
 <br>
 
 <p>
   <picture><img draggable="false" src="https://em-content.zobj.net/source/microsoft-teams/337/face-with-monocle_1f9d0.png" width="32" align="absmiddle"></picture>&nbsp;
-  <picture><img draggable="false" src="https://i.ibb.co/qF3m8Zwr/0b954bd83611d9e720b3b7078e2c76ff.png" alt="Word Check" height="17" align="absmiddle" style="margin-top: 3px;"></picture>
+  <picture><img draggable="false" src="https://i.ibb.co/0RgK1MXh/00b954bd83611d9e720b3b7078e2c76ff.png" alt="Word Check" height="17" align="absmiddle" style="margin-top: 3px;"></picture>
 </p>
 
 <p align="center">
   <picture>
-    <img draggable="false" src="https://i.ibb.co/DjZwkcV/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
+    <img draggable="false" src="https://i.ibb.co/1tGf7yJn/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
   </picture>
 </p>
 
@@ -160,7 +160,7 @@
 
 <p align="center">
   <picture>
-    <img draggable="false" src="https://i.ibb.co/DjZwkcV/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
+    <img draggable="false" src="https://i.ibb.co/1tGf7yJn/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
   </picture>
 </p>
 
@@ -180,7 +180,7 @@
 
 <p align="center">
   <picture>
-    <img draggable="false" src="https://i.ibb.co/DjZwkcV/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
+    <img draggable="false" src="https://i.ibb.co/1tGf7yJn/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
   </picture>
 </p>
 
@@ -212,7 +212,7 @@
 
 <p align="center">
   <picture>
-    <img draggable="false" src="https://i.ibb.co/DjZwkcV/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
+    <img draggable="false" src="https://i.ibb.co/1tGf7yJn/line-1024x5.png" style="width: 100%; max-width: 887px; display: block; margin: 0 auto;">
   </picture>
 </p>
 
@@ -258,7 +258,7 @@
   </p>
   
   <p>
-    <a href="https://fillabrona.github.io"><img draggable="false" src="https://i.ibb.co/xq4QkDv7/impostiq-button-1775748206726-4x.png" alt="View Developer Portfolio" height="50"></a>
+    <a href="https://fillabrona.github.io"><img draggable="false" src="https://i.ibb.co/xqpQZLx9/impostiq-button-1775748206726-4x.png" alt="View Developer Portfolio" height="50"></a>
   </p>
 </div>
 
