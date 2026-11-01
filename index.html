@@ -1325,7 +1325,7 @@
             avatarPreloadTimer = setTimeout(() => {
                 const clean = name.trim().toLowerCase();
                 if (clean === 'james bond' || clean === '007') {
-                    const spyUrl = clean === 'james bond' ? "https://i.ibb.co/dsFZzTPB/jamesbond.jpg" : "https://i.ibb.co/6cGRkF9h/007.png";
+                    const spyUrl = clean === 'james bond' ? "https://i.postimg.cc/K8fr6P6k/jamesbond.jpg" : "https://i.postimg.cc/0yndTYT6/007.png";
                     if (!globalAvatarCache.has(spyUrl)) {
                         const img = new Image();
                         img.onload = () => globalAvatarCache.add(spyUrl);
@@ -1348,8 +1348,8 @@
             if (!name) return "";
             const cleanName = name.trim().toLowerCase();
             const spyMapping = {
-                'james bond': "https://i.ibb.co/dsFZzTPB/jamesbond.jpg",
-                '007': "https://i.ibb.co/6cGRkF9h/007.png"
+                'james bond': "https://i.postimg.cc/K8fr6P6k/jamesbond.jpg",
+                '007': "https://i.postimg.cc/0yndTYT6/007.png"
             };
             if (spyMapping[cleanName]) {
                 return spyMapping[cleanName];
