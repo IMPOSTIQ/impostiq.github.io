@@ -347,6 +347,59 @@
             33% { transform: translate(30px, -50px) scale(1.1); }
             66% { transform: translate(-20px, 20px) scale(0.9); }
         }
+        .matte-liquid-stage {
+            position: absolute;
+            inset: -20%;
+            pointer-events: none;
+            filter: blur(clamp(50px, 7vmax, 110px)) saturate(1.2);
+            transform: translateZ(0);
+            will-change: transform;
+        }
+        .matte-liquid-blob {
+            position: absolute;
+            opacity: 1;
+            mix-blend-mode: screen;
+            pointer-events: none;
+            will-change: transform, border-radius;
+        }
+        .matte-liquid-blob-1 {
+            top: -10%;
+            left: -10%;
+            width: max(75vw, 68vmax);
+            height: max(75vw, 68vmax);
+            background: radial-gradient(circle at 42% 42%, rgba(167, 139, 250, 0.36) 0%, rgba(124, 58, 237, 0.24) 34%, rgba(67, 56, 202, 0.09) 64%, transparent 80%);
+            animation: liquid-flow-1 36s infinite ease-in-out;
+        }
+        .matte-liquid-blob-2 {
+            bottom: -15%;
+            right: -10%;
+            width: max(75vw, 70vmax);
+            height: max(75vw, 70vmax);
+            background: radial-gradient(circle at 58% 58%, rgba(103, 232, 249, 0.28) 0%, rgba(8, 145, 178, 0.20) 34%, rgba(15, 118, 110, 0.07) 64%, transparent 80%);
+            animation: liquid-flow-2 42s infinite ease-in-out;
+        }
+        .matte-liquid-blob-3 {
+            top: 22%;
+            left: 18%;
+            width: max(60vw, 56vmax);
+            height: max(60vw, 56vmax);
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.24) 0%, rgba(55, 48, 163, 0.14) 45%, transparent 76%);
+            animation: liquid-flow-3 48s infinite ease-in-out;
+        }
+        .matte-liquid-blob-4 {
+            top: -5%;
+            right: 5%;
+            width: max(55vw, 50vmax);
+            height: max(55vw, 50vmax);
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, rgba(30, 58, 138, 0.10) 48%, transparent 78%);
+            animation: liquid-flow-2 38s infinite ease-in-out reverse;
+        }
+        .matte-frost-veil {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse at 50% 45%, rgba(2, 6, 23, 0.22) 0%, rgba(2, 6, 23, 0.56) 65%, rgba(2, 6, 23, 0.88) 100%);
+        }
         .liquid-blob {
             position: absolute;
             filter: blur(40px);
@@ -376,10 +429,24 @@
         .noise-overlay {
             position: absolute;
             inset: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.05;
-            z-index: 0;
+            mix-blend-mode: color-burn;
+            opacity: 0.72;
+            transform: translateZ(0);
+            z-index: 1;
+        }
+        .noise-highlights {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            mix-blend-mode: color-dodge;
+            opacity: 0.26;
+            transform: translateZ(0);
+            z-index: 2;
         }
         
         .subtle-shine-container {
@@ -1212,10 +1279,38 @@
 
             return (
                 <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-6 bg-slate-950 text-center animate-fadeIn select-none overflow-hidden">
-                    <div className="background-container">
-                        <div className="blob blob-brand"></div>
-                        <div className="blob blob-cyan"></div>
-                        <div className="blur-overlay"></div>
+                    <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden bg-[#020617] isolate">
+                        <div className="matte-liquid-stage">
+                            <div className="matte-liquid-blob matte-liquid-blob-1"></div>
+                            <div className="matte-liquid-blob matte-liquid-blob-2"></div>
+                            <div className="matte-liquid-blob matte-liquid-blob-3"></div>
+                            <div className="matte-liquid-blob matte-liquid-blob-4"></div>
+                        </div>
+                        <div className="matte-frost-veil"></div>
+                        <svg className="noise-overlay" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <filter id="offline-burn-noise" x="0" y="0" width="100%" height="100%">
+                                <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="3" seed="2" stitchTiles="stitch" />
+                                <feColorMatrix type="saturate" values="0" />
+                                <feComponentTransfer>
+                                    <feFuncR type="linear" slope="0.38" intercept="0.65" />
+                                    <feFuncG type="linear" slope="0.38" intercept="0.65" />
+                                    <feFuncB type="linear" slope="0.38" intercept="0.65" />
+                                </feComponentTransfer>
+                            </filter>
+                            <rect width="100%" height="100%" filter="url(#offline-burn-noise)" />
+                        </svg>
+                        <svg className="noise-highlights" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <filter id="offline-dodge-noise" x="0" y="0" width="100%" height="100%">
+                                <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="9" stitchTiles="stitch" />
+                                <feColorMatrix type="saturate" values="0" />
+                                <feComponentTransfer>
+                                    <feFuncR type="linear" slope="0.44" intercept="-0.07" />
+                                    <feFuncG type="linear" slope="0.44" intercept="-0.07" />
+                                    <feFuncB type="linear" slope="0.44" intercept="-0.07" />
+                                </feComponentTransfer>
+                            </filter>
+                            <rect width="100%" height="100%" filter="url(#offline-dodge-noise)" />
+                        </svg>
                     </div>
 
                     <div className={`relative z-10 w-full max-w-sm glass-panel p-6 pb-8 rounded-[2.5rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.5)] ${isShaking ? 'shake' : ''}`}>
@@ -6969,6 +7064,47 @@
 		};
 
         const App = () => {
+            const [grainZoomFactor, setGrainZoomFactor] = useState(1);
+            const initialDprRef = useRef(window.devicePixelRatio || 1);
+
+            useEffect(() => {
+                const updateZoom = () => {
+                    const currentDpr = window.devicePixelRatio || 1;
+                    const pinchScale = window.visualViewport ? window.visualViewport.scale : 1;
+                    const factor = (currentDpr / (initialDprRef.current || 1)) * pinchScale;
+                    setGrainZoomFactor(Math.max(0.1, factor));
+                };
+
+                window.addEventListener('resize', updateZoom);
+                if (window.visualViewport) {
+                    window.visualViewport.addEventListener('resize', updateZoom);
+                }
+
+                let mq = null;
+                const addMqListener = () => {
+                    if (mq && mq.removeEventListener) mq.removeEventListener('change', onMqChange);
+                    try {
+                        mq = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+                        if (mq.addEventListener) mq.addEventListener('change', onMqChange);
+                    } catch (e) {}
+                };
+                const onMqChange = () => {
+                    updateZoom();
+                    addMqListener();
+                };
+                addMqListener();
+
+                return () => {
+                    window.removeEventListener('resize', updateZoom);
+                    if (window.visualViewport) {
+                        window.visualViewport.removeEventListener('resize', updateZoom);
+                    }
+                    if (mq && mq.removeEventListener) {
+                        mq.removeEventListener('change', onMqChange);
+                    }
+                };
+            }, []);
+
             useEffect(() => {
                 const imagesToLoad = [
                     "https://em-content.zobj.net/source/microsoft-teams/400/disguised-face_1f978.png",
@@ -8519,11 +8655,38 @@
             return (
                 <div className="w-full h-full text-slate-200 font-sans selection:bg-brand-500/30">
                     {!isOnlineStatus && <OfflineScreen />} 
-                    <div className="fixed inset-0 bg-[#020617] -z-20"></div>
-                    <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
-                        <div className="blob bg-brand-600/30 top-[-20%] left-[-20%] w-[60%] h-[60%]"></div>
-                        <div className="blob bg-cyan-600/30 bottom-[-20%] right-[-20%] w-[60%] h-[60%] animation-delay-2000"></div>
-                        <div className="absolute inset-0 backdrop-blur-[80px] transform-gpu"></div>
+                    <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden bg-[#020617] isolate">
+                        <div className="matte-liquid-stage">
+                            <div className="blob matte-liquid-blob matte-liquid-blob-1"></div>
+                            <div className="blob matte-liquid-blob matte-liquid-blob-2"></div>
+                            <div className="blob matte-liquid-blob matte-liquid-blob-3"></div>
+                            <div className="blob matte-liquid-blob matte-liquid-blob-4"></div>
+                        </div>
+                        <div className="matte-frost-veil"></div>
+                        <svg className="noise-overlay" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <filter id="matte-burn-noise" x="0" y="0" width="100%" height="100%">
+                                <feTurbulence type="fractalNoise" baseFrequency={(0.72 * grainZoomFactor).toFixed(4)} numOctaves="3" seed="2" stitchTiles="stitch" />
+                                <feColorMatrix type="saturate" values="0" />
+                                <feComponentTransfer>
+                                    <feFuncR type="linear" slope="0.38" intercept="0.65" />
+                                    <feFuncG type="linear" slope="0.38" intercept="0.65" />
+                                    <feFuncB type="linear" slope="0.38" intercept="0.65" />
+                                </feComponentTransfer>
+                            </filter>
+                            <rect width="100%" height="100%" filter="url(#matte-burn-noise)" />
+                        </svg>
+                        <svg className="noise-highlights" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <filter id="matte-dodge-noise" x="0" y="0" width="100%" height="100%">
+                                <feTurbulence type="fractalNoise" baseFrequency={(0.8 * grainZoomFactor).toFixed(4)} numOctaves="3" seed="9" stitchTiles="stitch" />
+                                <feColorMatrix type="saturate" values="0" />
+                                <feComponentTransfer>
+                                    <feFuncR type="linear" slope="0.44" intercept="-0.07" />
+                                    <feFuncG type="linear" slope="0.44" intercept="-0.07" />
+                                    <feFuncB type="linear" slope="0.44" intercept="-0.07" />
+                                </feComponentTransfer>
+                            </filter>
+                            <rect width="100%" height="100%" filter="url(#matte-dodge-noise)" />
+                        </svg>
                     </div>
                     {showHowToPlay && <HowToPlayModal onClose={() => setShowHowToPlay(false)} />}
                     {showSponsorModal && <SponsorModal onClose={() => setShowSponsorModal(false)} audioManager={audioManagerRef.current} />}
